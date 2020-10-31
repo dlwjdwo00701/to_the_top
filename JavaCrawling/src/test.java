@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class test {
-
+ 
 	private static final String Login_URL = 
 			"https://myclass.ssu.ac.kr/login/index.php";
 	private static final String smart_campus_URL = 
