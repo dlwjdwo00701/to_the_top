@@ -21,22 +21,17 @@ public class test {
 	
 	
 	public static void main(String[] args) throws IOException {
-		/*
+
 		Scanner scanner = new Scanner (System.in);
 		System.out.println("ID를 입력하시오");
 		String ID = scanner.next();
 		System.out.println("PW를 입력하시오");
 		String PW = scanner.next();
-		*/
-		String ID_m = "20190511";
-		String PW_m = "qwert101806!";
-		
-		
 		
 		//1.login
 		Response loginResponse = (Response)Jsoup.connect(Login_URL)
-				.data("username", ID_m)
-				.data("password" , PW_m)
+				.data("username", ID)
+				.data("password" , PW)
 				.method(Method.POST)
 				.execute();
 		
@@ -156,75 +151,55 @@ public class test {
 				//1주차는 예외로 하나 빼줌 (first변수 부터 시작해야되기 때문)
 				if (k == 1)
 				{
+					System.out.println("k = "+k+"주차");
 					startIdxLink = doc_link_string.indexOf("<h3 class=\"sectionname\"><span>",first);
 					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix\" role=\"region\" aria-label=",first);
-					System.out.println("==========================================================================");
-					int count2 = 0;
-					int lecture_start = 0;
-					int lecture_end = 0;
-					while(true)
-					{
-						String len_start = "<span class=\"instancename\">";
-						if (count2 == 0)
-						{
-							lecture_start = doc_link_string.indexOf("<span class=\"instancename\">", startIdxLink);
-							lecture_end = doc_link_string.indexOf("</div>", lecture_start + len_start.length());
-							first_index = lecture_start;
-						}
-						else
-						{
-							lecture_start = doc_link_string.indexOf("<span class=\"instancename\">", lecture_end);
-							lecture_end = doc_link_string.indexOf("</div>", lecture_start + len_start.length());
-						}
-						if(lecture_start == -1 || lecture_start < startIdxLink || lecture_end > endIdxLink)
-							break;
-//						week_things[k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
-//						System.out.println("count = "+count2+"\n"+week_things[k][count2]);
-						
-						array_subject_link[section][k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
-						System.out.println("count = "+count2+"\n"+array_subject_link[section][k][count2]);
-						count2++;
-					}
-					System.out.println("==========================================================================");
+					first_index = doc_link_string.indexOf("<span class=\"instancename\">", startIdxLink);
 				}
 				else 
 				{
 					System.out.println("k = "+ k+"주차");
-					
 					startIdxLink = doc_link_string.indexOf("<h3 class=\"sectionname\"><span>",endIdxLink);
 					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix\" role=\"region\" aria-label=",endIdxLink+len.length());
-					
-					System.out.println("==========================================================================");
-					int count2 = 0;
-					int lecture_start = 0;
-					int lecture_end = 0;
-					while(true)
+
+				}
+				System.out.println("==========================================================================");
+				int count2 = 0;
+				int lecture_start = 0;
+				int lecture_end = 0;
+				while(true)
+				{
+					String len_start = "<span class=\"instancename\">";
+					if (count2 == 0)
 					{
-						String len_start = "<span class=\"instancename\">";
-						if (count2 == 0)
-						{
-							lecture_start = doc_link_string.indexOf("<span class=\"instancename\">", startIdxLink);
-							lecture_end = doc_link_string.indexOf("</div>", lecture_start + len_start.length());
-						}
-						else
-						{
-							lecture_start = doc_link_string.indexOf("<span class=\"instancename\">", lecture_end);
-							lecture_end = doc_link_string.indexOf("</div>", lecture_start + len_start.length());
-						}
-						
-						//현재 주차가 맨 앞으로 가서 되돌아가는 현상 때문에 lecture_start == first_index  삽입하였음
+						lecture_start = doc_link_string.indexOf("<span class=\"instancename\">", startIdxLink);
+						lecture_end = doc_link_string.indexOf("</div>", lecture_start + len_start.length());
+					}
+					else
+					{
+						lecture_start = doc_link_string.indexOf("<span class=\"instancename\">", lecture_end);
+						lecture_end = doc_link_string.indexOf("</div>", lecture_start + len_start.length());
+					}
+					
+					//현재 주차가 맨 앞으로 가서 되돌아가는 현상 때문에 lecture_start == first_index  삽입하였음
+					if(k == 1)
+					{
+						if(lecture_start == -1 || lecture_start < startIdxLink || lecture_end > endIdxLink)
+							break;
+					}
+					else
+					{
 						if(lecture_start == -1 || lecture_start == first_index ||lecture_end > endIdxLink)
 							break;
-//						week_things[k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
-//						System.out.println("count = "+count2+"\n"+week_things[k][count2]);
-						
-						array_subject_link[section][k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
-						System.out.println("count = "+count2+"\n"+array_subject_link[section][k][count2]);
-						count2++;
 					}
-					System.out.println("==========================================================================");
+//					week_things[k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
+//					System.out.println("count = "+count2+"\n"+week_things[k][count2]);
+					
+					array_subject_link[section][k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
+					System.out.println("count = "+count2+"\n"+array_subject_link[section][k][count2]);
+					count2++;
 				}
-
+				System.out.println("==========================================================================");
 			}
 		}
 
