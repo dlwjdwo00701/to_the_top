@@ -187,7 +187,7 @@ public class test {
 					}
 					System.out.println("==========================================================================");
 				}
-				else
+				else 
 				{
 					System.out.println("k = "+ k+"ÁÖÂ÷");
 					
