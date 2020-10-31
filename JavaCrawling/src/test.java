@@ -1,9 +1,9 @@
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
+//import java.util.HashMap;
+//import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
+//import java.util.Set;
 
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -23,9 +23,6 @@ import org.jsoup.nodes.Document;
 		private static String [] subject_title;
 		private static String [] subject_link;
 		private static String[][][] array_subject_link;  // 가장 중요한 객체
-		
-		
-		
 		
 		
 		/* 메소드들*/
@@ -156,7 +153,68 @@ import org.jsoup.nodes.Document;
 						.cookies(cookies)
 						.get();
 				String doc_link_string = doc_link.toString(); 
-
+				
+				
+				//0번인덱스 추가
+				System.out.println("==========================================================================");
+				String start_index_0 = "<h3 class=\"sectionname accesshide\"><span>강의 개요</span></h3>";
+				String end_index_0 = "<div class=\"course_box course_box_current\">";
+				int index_0_start = doc_link_string.indexOf(start_index_0);
+				int index_0_end = doc_link_string.indexOf(end_index_0);
+				//System.out.println(""+doc_link_string.substring(index_0_start,index_0_end));
+				int index0_count = 0;
+				int start_point = 0;
+				int end_point = 0;
+				//해당 과제 명
+				int start_assignmentName = 0;
+				int end_assignmentName = 0;
+				int index0_point = 0;
+				System.out.println("==========================================================================");
+				System.out.println("k = 0주차 (강의개요)");
+				while(true)
+				{
+					String assignment_point = "<a class=\"\" onclick=\"\" href=\"http://myclass.ssu.ac.kr/mod/assign/";
+					String assignment_URL = "<a class=\"\" onclick=\"\" ";
+					
+					String assignment_name = "alt=\"과제\" class=\"activityicon\"><span class=\"instancename\">";
+					
+					if(index0_count == 0)
+					{
+						start_point = doc_link_string.indexOf(assignment_point, index_0_start);
+						end_point = doc_link_string.indexOf("\"><img src=\"http://myclass.ssu.ac.kr/local/ubion/pix/course_format/mod_icon/assign.png\"",index_0_start);
+						
+						start_assignmentName = doc_link_string.indexOf(assignment_name, index_0_start);
+						end_assignmentName = doc_link_string.indexOf("<span class=\"accesshide \"> 과제</span></span></a>", index_0_start);
+						
+						index0_point = start_point;
+					}
+					else
+					{
+						start_point = doc_link_string.indexOf(assignment_point, end_point);
+						end_point = doc_link_string.indexOf("\"><img src=\"http://myclass.ssu.ac.kr/local/ubion/pix/course_format/mod_icon/assign.png\"",end_point+1);
+						
+						start_assignmentName = doc_link_string.indexOf(assignment_name, end_assignmentName);
+						end_assignmentName = doc_link_string.indexOf("<span class=\"accesshide \"> 과제</span></span></a>", end_assignmentName+1);
+					}
+					
+					if(index0_count == 0)
+					{
+						if(end_point>index_0_end || start_point == -1 || end_point == -1)
+							break;
+					}
+					else
+					{
+						if(end_point>index_0_end || start_point == -1 || end_point == -1 || start_point == index0_point)
+							break;
+					}
+					
+					
+					array_subject_link[section][0][index0_count] = doc_link_string.substring(start_assignmentName+assignment_name.length(),end_assignmentName)+","+doc_link_string.substring(start_point+assignment_URL.length(),end_point);
+					System.out.println("count = "+index0_count+"\n"+array_subject_link[section][0][index0_count]);
+					index0_count++;
+				}
+				System.out.println("==========================================================================");
+						
 				// 1~15달까지이며 , 0번째 달은 컴퓨터구조 같이 맨 앞에 엤는 assignment를 담는 용도
 //				String[][] week_things = new String[16][15];
 				int first = doc_link_string.indexOf("<h2 class=\"main\">주차 별 학습 활동<span class=\"icons\"></span></h2>");
@@ -168,6 +226,7 @@ import org.jsoup.nodes.Document;
 				//1~16주차 강의까지 작업
 				for (int k = 1 ; k < 16 ; k++)
 				{
+					System.out.println("==========================================================================");
 					sen = Integer.toString(k+1);
 					//1주차는 예외로 하나 빼줌 (first 변수부터 시작해야되기 때문)
 					if (k == 1)
@@ -185,7 +244,6 @@ import org.jsoup.nodes.Document;
 
 					}
 					//강의를 추가하는 코드 (달 별로 있는 것들 모두 가져옴 단, 1번째 달부터 시작함, 0번째 인덱스에는 컴퓨터구조와 같이 맨 앞에 띄운 과제를 담을 것임.
-					System.out.println("==========================================================================");
 					int count2 = 0;
 					int lecture_start = 0;
 					int lecture_end = 0;
@@ -243,18 +301,111 @@ import org.jsoup.nodes.Document;
 		{
 			return subject_link;
 		}
+		public static int return_count()
+		{
+			return count;
+		}
 		
 		/*Scanner 닫기 */
 		public static void scanner_Close()
 		{
 			scanner.close();
 		}
+
 		
 		public static void execute() throws IOException
 		{
 			login();
 			access_lecture_index();
 			week_somthing_object();
+			scanner_Close();
+		}
+		
+		/*디버그 전용 함수 (index_session은 원하는 과목의 배열을 넣을 수 있음 */
+		public static void execute_debug(int index_session) throws IOException
+		{
+			if(index_session < count)
+			{
+				login();
+				Document doc_link = Jsoup.connect(subject_link[index_session])
+						.cookies(cookies)
+						.get();
+				String doc_link_string = doc_link.toString(); 
+				System.out.println("====================================================");
+				System.out.println("subject name = "+subject_title[index_session]);
+				System.out.println("" + doc_link_string);
+				System.out.println("====================================================");
+			}
+			else
+				System.out.println("not enough array index");
+		}
+		
+		/*0번 인덱스 함수 (과제명 , href=주소)로 구성 (이는 링크를 들어가서 확인하게 하는것 이 맞다고 판단함)*/
+		public static void execption_0_index() throws IOException
+		{
+			//0번 인덱스에는 해당 과제의 링크를 담음.
+			login();
+			access_lecture_index();
+			array_subject_link = new String [count][16][15];
+			Document doc_link = Jsoup.connect(subject_link[2])
+					.cookies(cookies)
+					.get();
+			String doc_link_string = doc_link.toString(); 
+			
+			String start_index_0 = "<h3 class=\"sectionname accesshide\"><span>강의 개요</span></h3>";
+			String end_index_0 = "<div class=\"course_box course_box_current\">";
+			int index_0_start = doc_link_string.indexOf(start_index_0);
+			int index_0_end = doc_link_string.indexOf(end_index_0);
+			System.out.println(""+doc_link_string.substring(index_0_start,index_0_end));
+			int index0_count = 0;
+			int start_point = 0;
+			int end_point = 0;
+			//해당 과제 명
+			int start_assignmentName = 0;
+			int end_assignmentName = 0;
+			int index0_point = 0;
+			while(true)
+			{
+				String assignment_point = "<a class=\"\" onclick=\"\" href=\"http://myclass.ssu.ac.kr/mod/assign/";
+				String assignment_URL = "<a class=\"\" onclick=\"\" ";
+				
+				String assignment_name = "alt=\"과제\" class=\"activityicon\"><span class=\"instancename\">";
+				
+				if(index0_count == 0)
+				{
+					start_point = doc_link_string.indexOf(assignment_point, index_0_start);
+					end_point = doc_link_string.indexOf("\"><img src=\"http://myclass.ssu.ac.kr/local/ubion/pix/course_format/mod_icon/assign.png\"",index_0_start);
+					
+					start_assignmentName = doc_link_string.indexOf(assignment_name, index_0_start);
+					end_assignmentName = doc_link_string.indexOf("<span class=\"accesshide \"> 과제</span></span></a>", index_0_start);
+					
+					index0_point = start_point;
+				}
+				else
+				{
+					start_point = doc_link_string.indexOf(assignment_point, end_point);
+					end_point = doc_link_string.indexOf("\"><img src=\"http://myclass.ssu.ac.kr/local/ubion/pix/course_format/mod_icon/assign.png\"",end_point+1);
+					
+					start_assignmentName = doc_link_string.indexOf(assignment_name, end_assignmentName);
+					end_assignmentName = doc_link_string.indexOf("<span class=\"accesshide \"> 과제</span></span></a>", end_assignmentName+1);
+				}
+				
+				if(index0_count == 0)
+				{
+					if(end_point>index_0_end || start_point == -1 || end_point == -1)
+						break;
+				}
+				else
+				{
+					if(end_point>index_0_end || start_point == -1 || end_point == -1 || start_point == index0_point)
+						break;
+				}
+				
+				
+				array_subject_link[2/*미정*/][0/*미정*/][index0_count] = doc_link_string.substring(start_assignmentName+assignment_name.length(),end_assignmentName)+","+doc_link_string.substring(start_point+assignment_URL.length(),end_point);
+				System.out.println(""+array_subject_link[2][0][index0_count]);
+				index0_count++;
+			}
 			scanner_Close();
 		}
 }
@@ -266,6 +417,9 @@ import org.jsoup.nodes.Document;
 public class test {
 	public static void main(String[] args) throws IOException {
 		SmartCampus.execute();
+//  	SmartCampus.execption_0_index();
+
+				
 	}
 
 }
