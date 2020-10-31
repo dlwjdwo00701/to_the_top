@@ -12,7 +12,7 @@ import org.jsoup.nodes.Document;
 
 
  class SmartCampus {
-	 
+	 	private static Scanner scanner = new Scanner (System.in);
 		private static final String Login_URL = 
 				"https://myclass.ssu.ac.kr/login/index.php";
 		private static final String smart_campus_URL = 
@@ -32,7 +32,6 @@ import org.jsoup.nodes.Document;
 		public static void login() throws IOException
 		{
 			//스마트 캠퍼스 ID ,PW 받아옴 : 비밀번호 틀렸을 때 아직 못 만듦 -> 정재가 만들어주시길
-			Scanner scanner = new Scanner (System.in);
 			System.out.println("ID를 입력하시오");
 			String ID = scanner.next();
 			System.out.println("PW를 입력하시오");
@@ -245,6 +244,19 @@ import org.jsoup.nodes.Document;
 			return subject_link;
 		}
 		
+		/*Scanner 닫기 */
+		public static void scanner_Close()
+		{
+			scanner.close();
+		}
+		
+		public static void execute() throws IOException
+		{
+			login();
+			access_lecture_index();
+			week_somthing_object();
+			scanner_Close();
+		}
 }
 
 
@@ -253,9 +265,7 @@ import org.jsoup.nodes.Document;
 
 public class test {
 	public static void main(String[] args) throws IOException {
-		SmartCampus.login();
-		SmartCampus.access_lecture_index();
-		SmartCampus.week_somthing_object();
+		SmartCampus.execute();
 	}
 
 }
