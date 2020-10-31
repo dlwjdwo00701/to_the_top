@@ -22,6 +22,7 @@ public class test {
 	
 	public static void main(String[] args) throws IOException {
 
+		//스마트 캠퍼스 ID ,PW 받아옴 : 비밀번호 틀렸을 때 아직 못 만듦 -> 정재가 만들어주시길
 		Scanner scanner = new Scanner (System.in);
 		System.out.println("ID를 입력하시오");
 		String ID = scanner.next();
@@ -36,7 +37,7 @@ public class test {
 				.execute();
 		
 		//System.out.println("  - PAGE STATUS CODE : " +loginResponse.statusCode() );
-		Document doc = loginResponse.parse();
+//		Document doc = loginResponse.parse();
 		//System.out.println("" + doc.toString());
 		
 		//2.Session 정보 얻기.
@@ -55,6 +56,7 @@ public class test {
 		int count = 1;
 		int startIdxCount = 0;
 		int endIdxCount =0;
+		//count를 구해서 총 강의가 몇 개 있는지 판단.
 		while (true)
 		{
 			if(count == 1)
@@ -78,7 +80,8 @@ public class test {
 		int [] endIdx_array = new int [count];
 		String [] subject_title = new String [count];
 		String [] subject_link = new String [count];
-		HashMap<String,String> index_subject_link = new HashMap<>() ;
+		//해시값으로 만들려했으나 의미없을 것 같아서 일단 주석처리
+//		HashMap<String,String> index_subject_link = new HashMap<>() ;
 		
 		for (int i = 0; i < startIdx_array.length ; i++)
 		{
@@ -114,9 +117,10 @@ public class test {
 		
 		
 //		System.out.println("=========================================\n");
+		//위의 해시맵을 쓸 필요 없을 것이라는 주석 달려있음 참고바람
 //		System.out.println("수강하는 과목명과 해당 링크\n");
-		for (int i = 0 ; i < startIdx_array.length ; i++)
-			index_subject_link.put(subject_title[i] , subject_link[i]);
+//		for (int i = 0 ; i < startIdx_array.length ; i++)
+//			index_subject_link.put(subject_title[i] , subject_link[i]);
 		
 		
 		
@@ -148,7 +152,7 @@ public class test {
 			for (int k = 1 ; k < 16 ; k++)
 			{
 				sen = Integer.toString(k+1);
-				//1주차는 예외로 하나 빼줌 (first변수 부터 시작해야되기 때문)
+				//1주차는 예외로 하나 빼줌 (first 변수부터 시작해야되기 때문)
 				if (k == 1)
 				{
 					System.out.println("k = "+k+"주차");
@@ -163,6 +167,7 @@ public class test {
 					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix\" role=\"region\" aria-label=",endIdxLink+len.length());
 
 				}
+				//강의를 추가하는 코드 (달 별로 있는 것들 모두 가져옴 단, 1번째 달부터 시작함, 0번째 인덱스에는 컴퓨터구조와 같이 맨 앞에 띄운 과제를 담을 것임.
 				System.out.println("==========================================================================");
 				int count2 = 0;
 				int lecture_start = 0;
