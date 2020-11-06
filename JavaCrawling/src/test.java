@@ -28,19 +28,38 @@ import org.jsoup.nodes.Document;
 		private static String[][][] subject_videoPeriod;
 		private static String[][][] subject_videoLength;
 		private static String[][][] subject_videoLate;
-		//과제는 주차를 나눌 필요가 없다고 판단. subject_assignmentName[과목명][과제이름] , subject_assignmentPeriond[과목명][과제 기간]
-		private static String[][] subject_assignmentName;
-		private static String[][] subject_assignmentPeriond;
 		
+		/*과제 업데이트 방식 전환 -> (강의 제출확인 목록에서 이름과 정보 모두 크롤링 해옴) == 속도 개선됨*/
+		//과제는 주차를 나눌 필요가 없다고 판단. subject_assignmentName[과목명][과제이름] , subject_assignmentPeriond[과목명][과제 기간]
+//		private static String[][] subject_assignmentName;
+//		private static String[][] subject_assignmentPeriond;
+		
+		/*(2020.11.04 추가할 필드 */
+		//비디오와 과제 제출 현황 세션으로 넘어가는 링크를 모아둠
+		private static String[] check_video_link; 
+		private static String[] check_assignment_link;
+//		private static String[][] subject_video_lateCheck;
+		//비디오 링크와 o/x체크도 가능했으면 좋겠음.
+		private static String[][][] check_video;
+		private static String[][] check_assignment;
+		private static String[][] temp_subject_assignmentName;
+		private static String[][] temp_subject_assignmentPeriond;
+		//강의 체크 목록에서 이번주에 듣지않은 강의목록 띄울 수 있으면 좋겠음.
 		
 		/* 메소드들*/
 		public static void login() throws IOException
 		{
 			//스마트 캠퍼스 ID ,PW 받아옴 : 비밀번호 틀렸을 때 아직 못 만듦 -> 정재가 만들어주시길
+			
 			System.out.println("ID를 입력하시오");
-			String ID = scanner.next();
+			String ID_scan = scanner.next();
 			System.out.println("PW를 입력하시오");
-			String PW = scanner.next();
+			String PW_scan = scanner.next();
+			
+			//앞 뒤 공백 제거
+			String ID = ID_scan.trim();
+			String PW = PW_scan.trim();
+			
 			
 			//1.login
 			Response loginResponse = (Response)Jsoup.connect(Login_URL)
@@ -65,11 +84,9 @@ import org.jsoup.nodes.Document;
 		
 		
 		
-		
 		//스마트캠퍼스 첫 페이지 인덱스 리턴
 		public static void access_lecture_index() throws IOException
 		{
-			//3. 날 접근	
 			Document doc1 = Jsoup.connect(smart_campus_URL)
 					.cookies(cookies)
 					.get();
@@ -172,11 +189,12 @@ import org.jsoup.nodes.Document;
 		
 		
 		/*디버그 전용 함수 (index_session은 원하는 과목의 배열을 넣을 수 있음 */
-		public static void execute_debug(int index_session) throws IOException
+		public static String execute_debug(int index_session) throws IOException
 		{
+			login();
+			access_lecture_index();
 			if(index_session < count)
 			{
-				login();
 				Document doc_link = Jsoup.connect(subject_link[index_session])
 						.cookies(cookies)
 						.get();
@@ -185,9 +203,11 @@ import org.jsoup.nodes.Document;
 				System.out.println("subject name = "+subject_title[index_session]);
 				System.out.println("" + doc_link_string);
 				System.out.println("====================================================");
+				return doc_link_string;
 			}
 			else
 				System.out.println("not enough array index");
+				return "-1";
 		}
 		
 		
@@ -250,7 +270,7 @@ import org.jsoup.nodes.Document;
 				
 				
 				array_subject_link[section][0][index0_count] = doc_link_string.substring(start_assignmentName+assignment_name.length(),end_assignmentName)+","+doc_link_string.substring(start_point+assignment_URL.length(),end_point);
-				System.out.println(""+array_subject_link[2][0][index0_count]);
+//				System.out.println(""+array_subject_link[2][0][index0_count]);
 				index0_count++;
 			}
 		}
@@ -265,30 +285,54 @@ import org.jsoup.nodes.Document;
 			String len = "<li id=\\\"section-\"+sen+\"\\\" class=\\\"section main clearfix\\\" role=\\\"region\\\" aria-label=";
 			String sen = "0";
 			int first_index = 0;
+			
+			/*
+			System.out.println("==============================");
+			System.out.println(doc_link_string);
+			System.out.println("==============================");
+			*/
 			//1~16주차 강의까지 작업
 			for (int k = 1 ; k < 16 ; k++)
 			{
-				System.out.println("==========================================================================");
+				
+//				System.out.println("==========================================================================");
 				sen = Integer.toString(k+1);
 				//1주차는 예외로 하나 빼줌 (first 변수부터 시작해야되기 때문)
 				if (k == 1)
 				{
-					System.out.println("k = "+k+"주차");
+//					System.out.println("k = "+k+"주차");
 					startIdxLink = doc_link_string.indexOf("<h3 class=\"sectionname\"><span>",first);
-					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix\" role=\"region\" aria-label=",first);
+					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix",first);
 					first_index = doc_link_string.indexOf("<span class=\"instancename\">", startIdxLink);
 				}
 				else 
 				{
-					System.out.println("k = "+ k+"주차");
+//					System.out.println("k = "+ k+"주차");
 					startIdxLink = doc_link_string.indexOf("<h3 class=\"sectionname\"><span>",endIdxLink);
-					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix\" role=\"region\" aria-label=",endIdxLink+len.length());
-
+					endIdxLink = doc_link_string.indexOf("<li id=\"section-"+sen+"\" class=\"section main clearfix",endIdxLink+len.length());
+			
+					if(Integer.parseInt(sen) == 16)
+					{
+						startIdxLink = doc_link_string.indexOf("<h3 class=\"sectionname\"><span>15주차",endIdxLink);
+						endIdxLink = doc_link_string.indexOf("<div class=\"coursemos-course-menu-expand\">",endIdxLink+len.length());
+					}
+//					System.out.println(doc_link_string.substring(startIdxLink,endIdxLink));
 				}
 				//강의를 추가하는 코드 (달 별로 있는 것들 모두 가져옴 단, 1번째 달부터 시작함, 0번째 인덱스에는 컴퓨터구조와 같이 맨 앞에 띄운 과제를 담을 것임.
 				int count2 = 0;
 				int lecture_start = 0;
 				int lecture_end = 0;
+				
+				
+				/*------------------2020 . 11 . 05 추가한 강의 들었는지 확인하는 함수 시행-------------------- */
+//				System.out.println("=====/===============================");
+//				System.out.println("link = "+check_video_link[section]);
+//				count_video_check = video_check_function(section , count_video_check,k);
+//				System.out.println("count_video_check = "+count_video_check);
+//				System.out.println("====================================");
+				/*----------------------------------------------------*/
+				
+				
 				while(true)
 				{
 					String len_start = "<span class=\"instancename\">";
@@ -315,11 +359,11 @@ import org.jsoup.nodes.Document;
 							break;
 					}
 					array_subject_link[section][k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
-//					System.out.println("count = "+count2+"\n"+array_subject_link[section][k][count2]);
-					System.out.println(""+array_subject_link[section][k][count2]);
+//					System.out.println("count = "+count2+"\n"+array_subject_link[section][k][count2]); //한 색션(과목)당 출력
+//					System.out.println(""+array_subject_link[section][k][count2]); //한 주차당 출력
 					count2++;
 				}
-				System.out.println("==========================================================================");
+//				System.out.println("==========================================================================");
 			}
 		}
 		
@@ -327,33 +371,71 @@ import org.jsoup.nodes.Document;
 		{
 			//array_subject_link[강의 인덱스][달][자료]
 			array_subject_link = new String [count][16][15];
+			check_video_link = new String [count];
+			check_assignment_link = new String [count];
+			
 			for (int section = 0 ; section < count ; section++)
 			{
 				//과목명 출력
+				/*
 				System.out.println("\n============================================================================");
 				System.out.println(section+1+"번 강의명 " + subject_title[section]);
 				System.out.println("============================================================================\n");
+				*/
 				//링크의 과제 수업 분할
 				Document doc_link = Jsoup.connect(subject_link[section])
 						.cookies(cookies)
 						.get();
 				String doc_link_string = doc_link.toString();
+				/*
 				System.out.println("==========================================================================");
 				System.out.println("k = 0주차(강의 개요에 있는 과제 파일들)");
+				*/
+//				System.out.println(subject_title[section]+"과목의 동영상과 과제 링크 배열");
+//				System.out.println("video link = "+check_video_link[section]+"\nassign link = "+check_assignment_link[section]);
+				
+				
 				setup_0_index(doc_link_string, section);
-				System.out.println("==========================================================================");
+//				System.out.println("==========================================================================");
 				setup_other_index(doc_link_string,section);
+				
+//				System.out.println("==========================================================================");
+
+
 			}
 		}
 		
 		
-		//실행 함수 (로그인 -> 데이터 크롤링)
+		//실행 함수 (로그인 -> 과목 인덱스 제목/링크 크롤링 -> 과목 이름 분할 -> 과제/동영상 제출현황 크롤링)
 		public static void execute() throws IOException
 		{
-			login();
+			//Login 잘못 입력했을 때 방지.
+			System.out.println("======================================================================");
+			is_login();
+			System.out.println("======================================================================");
+			System.out.println("A. 로그인 중....");
 			access_lecture_index();
+			System.out.println("======================================================================");
+			System.out.println("B. 강의 목록 확인 중(주의 ! 스마트 캠퍼스에서 숨김을 해놓은 경우 나타나지 않음)....");
+			System.out.println("======================================================================");
 			execution_crawling();
+			System.out.println("======================================================================");
+			System.out.println("C. 강좌 , 과제 업데이트 중 ....");
+			System.out.println("======================================================================");
+			video_assignment_divide();
+			//동영상 관련 배열 출력
+			System.out.println("======================================================================");
+			System.out.println("D. 동영상 이름/길이/기한/지각시간/제출현황 출력 준비 중 ....");
+			System.out.println("======================================================================");
+			return_videoName_attendance();
+			
+			System.out.println("======================================================================");
+			System.out.println("E. 동영상 이름/길이/기한/지각시간/제출현황 출력 준비 중 ....");
+			System.out.println("======================================================================");
+			//과제 관련 배열 출력
+			return_assign_attendance();
 			scanner_Close();
+			
 		}
 		
 		
@@ -466,29 +548,63 @@ import org.jsoup.nodes.Document;
 			return sentence.substring(start+period_assign.length() , end);
 		}
 		
-		public static void video_assignment_divide()
+		public static void video_assignment_divide() throws IOException
 		{
 			subject_videoName = new String [count][15][15];
 			subject_videoPeriod = new String [count][15][15];
 			subject_videoLength = new String [count][15][15];
 			subject_videoLate = new String[count][15][15];
-			subject_assignmentName = new String [count][15];
-			subject_assignmentPeriond = new String [count][15];
+//			subject_assignmentName = new String [count][15];
+//			subject_assignmentPeriond = new String [count][15];
+			
+			/*2020.11.05 추가된 과제,영상 시청 현황 체크 필드 생성자 */
+			check_video = new String [count][16][15];
+			//과제 방식 좋은 아이디어가 떠오름 
+			check_assignment = new String [count][40];
+			temp_subject_assignmentName = new String [count][40];
+			temp_subject_assignmentPeriond = new String [count][40];
 			
 			//1~15주차 데이터 (강의와 과제 구분)
 			for(int count_sub = 0 ; count_sub < count ; count_sub++)
 			{
+				/*
 				System.out.println("\n============================================================================");
 				System.out.println(count_sub+1+"번 강의명 " + subject_title[count_sub]);
 				System.out.println("============================================================================\n");
+				*/
+				//동영상 ,과제 현황을 알 수 있는 링크 크롤링 +-> 과제가 없는 경우 "과제"란이 없으므로, null로 저장됨  --> check_video_assignment_link[동영상 링크][과제 링크]
+				
+				
+				System.out.println(count_sub+1+"번 강의명 " + subject_title[count_sub]+" 분석중 .... ("+(count_sub+1)+"/"+count+")");
+				
+				//체크 인덱스SS
+				check_assignment(count_sub);
+				Document doc_video_check = Jsoup.connect(check_video_link[count_sub])
+						.cookies(cookies)
+						.get();
+//				System.out.println("link = "+check_video_link[count_sub]);
+//				System.out.println("assign = "+check_assignment_link[count_sub]);
+				Document doc_assignment_check = Jsoup.connect(check_assignment_link[count_sub])
+						.cookies(cookies)
+						.get();
+				
+				
+				assignment_check_function(doc_assignment_check ,count_sub);
+				
+				int count_video_check = 0;
+				
 				for(int week = 1 ; week <= 15 ; week++)
 				{
+					//동영상 진도현황 확인
+					count_video_check = video_check_function(doc_video_check ,count_sub, count_video_check,week);
+					
 					int week_video_count = 0;
-					int week_assign_count = 0;
+//					int week_assign_count = 0;
 					for (int data = 0 ; data < 15 ; data++)
 					{
 						if(judgeFunction(array_subject_link[count_sub][week][data]).equals("video"))
-						{
+						{ 	
+//							System.out.println("data = "+array_subject_link[count_sub][week][data]);
 							subject_videoName[count_sub][week][week_video_count] = video_name(array_subject_link[count_sub][week][data]);
 							subject_videoPeriod[count_sub][week][week_video_count] = video_period(array_subject_link[count_sub][week][data]);
 							subject_videoLength[count_sub][week][week_video_count] = video_length(array_subject_link[count_sub][week][data]);
@@ -497,11 +613,15 @@ import org.jsoup.nodes.Document;
 							{
 								subject_videoPeriod[count_sub][week][week_video_count] = video_period2(array_subject_link[count_sub][week][data]);
 							}
+							/*
 							System.out.println("video name = "+video_name(array_subject_link[count_sub][week][data])+"\nvideo period = "+subject_videoPeriod[count_sub][week][week_video_count]+"\nvideo length = "+video_length(array_subject_link[count_sub][week][data])+
-									"\nvideo late = "+subject_videoLate[count_sub][week][week_video_count]+"\n");
+									"\nvideo late = "+subject_videoLate[count_sub][week][week_video_count]+"\nvideo Attendance(% or O/X) = "+check_video[count_sub][week][data]+"\n");
+							*/
 							week_video_count++;
 							
 						}
+						//좋은 아이디어가 떠올라서 필요없어짐
+						/*
 						else if(judgeFunction(array_subject_link[count_sub][week][data]).equals("assignment"))
 						{
 							if(assign_name(array_subject_link[count_sub][week][data]).equals("this is not assignment"))
@@ -510,22 +630,475 @@ import org.jsoup.nodes.Document;
 							{
 								subject_assignmentName[count_sub][week_assign_count] = assign_name(array_subject_link[count_sub][week][data]);
 								subject_assignmentPeriond[count_sub][week_assign_count] = assign_period(array_subject_link[count_sub][week][data]);
-								System.out.println("assign name = "+assign_name(array_subject_link[count_sub][week][data])+"\nassign period = "+assign_period(array_subject_link[count_sub][week][data])+"\n");
+//								System.out.println("assign name = "+assign_name(array_subject_link[count_sub][week][data])+"\nassign period = "+assign_period(array_subject_link[count_sub][week][data])+"\n");
 								week_assign_count++;
 							}
 						}
+						*/
 					}
 				}
 			}
 		}
+		
+		
+		
+		
+		/*2020.11.04 추가된 메소드 , */
+		 
+		//Crawling 함수 (크롤링 전반 함수) -> 맨 앞의 줄에서 크롤링을 하는경우
+		public static String crawl_start(String crawl_HTML , String end_string)
+		{
+			int end = crawl_HTML.indexOf(end_string);
+			if(end == -1)//크롤링 데이터가 없는 경우.
+				return "-1";
+			return crawl_HTML.substring(0, end);
+		}
+		// 중간 부분 텍스트를 크롤링 하는 경우 , -1을 넣으면, 시작 인덱스 번호가 없음을 의미함.
+		public static String crawl_middle(String crawl_HTML ,String start_string, String end_string)
+		{
+			int start_len = start_string.length();
+			int start = crawl_HTML.indexOf(start_string);
+			int end = crawl_HTML.indexOf(end_string,start);
+
+
+			if(start == -1)
+				return "Start can't be found";
+			else if(end == -1)
+				return "End can't be found";
+			else if(start > end)
+				return "start > end";
+			return crawl_HTML.substring(start+start_len, end);
+		}
+		//마지막 부분을 크롤링 하는 경우
+		public static String crawl_end(String crawl_HTML , String start_string)
+		{
+			int start_len = start_string.length();
+			int start = crawl_HTML.indexOf(start_string);
+			if (start == -1)
+				return "-1";
+			return crawl_HTML.substring(start+start_len);
+		}
+		
+		
+		
+		 //과제 동영상 진도 현황을 보여주는 링크를 담는 배열을 위한 크롤링 함수
+		public static void check_assignment(int section) throws IOException 
+		{
+			/*과제 얻는 방식 수정 하겠음 */
+//			System.out.println(subject_link[0]);
+			String link_id = "http://myclass.ssu.ac.kr/course/view.php";
+			String id = crawl_end(subject_link[section],link_id);
+			//ID 방식으로 링크 얻어오기 (개선된 방법)
+			String video_link ="http://myclass.ssu.ac.kr/report/ubcompletion/progress.php"+id;
+			check_video_link[section] = video_link;
+			
+			String assign_link = "http://myclass.ssu.ac.kr/mod/assign/index.php"+id;
+//			System.out.println(assign_link);
+			check_assignment_link[section] = assign_link;
+			
+			
+		}
+		
+		
+		
+		
+		
+		//동영상 진도현황 체크 함수
+		public static int video_check_function(Document doc_video_check ,int section, int length , int k) throws IOException
+		{
+			/*동영상 링크에서 동영상 진도현황 체크*/
+			
+			String doc_video_check_string = doc_video_check.toString();
+//			System.out.println(doc_video_check_string);
+			
+			//대면인 경우
+			String check_video_offline_block_open = "<div class=\"sectiontitle\" title=\"";
+			String check_video_offline_block_close = "class=\"vmiddle text-center\">";
+			int offline_check_previous_count = doc_video_check_string.indexOf(check_video_offline_block_close);
+			
+			
+			//비대면인 경우
+			String check_video_online_block_open = "<td class=\"text-center\">"+Integer.toString(k)+"</td>";
+			int online_check_previous_count00 = doc_video_check_string.indexOf(check_video_online_block_open,length);
+			String check_video_online_block_middle = "</tr>";
+			int online_check_previous_count0 = doc_video_check_string.indexOf(check_video_online_block_middle,online_check_previous_count00);
+			String check_video_online_block_close = "<td class=\"text-center\" rowspan=";
+			int online_check_previous_count = doc_video_check_string.indexOf(check_video_online_block_close,online_check_previous_count0);
+			
+			if (online_check_previous_count00 != -1)
+			{
+//				System.out.println(doc_video_check_string.substring(online_check_previous_count00,online_check_previous_count0));
+				online_check_previous_count = online_check_previous_count0;
+			}
+			else
+			{
+				check_video_online_block_open = "<td class=\"text-center\" rowspan=";
+				online_check_previous_count00 = doc_video_check_string.indexOf(check_video_online_block_open,length);
+				if(online_check_previous_count00 == -1 && offline_check_previous_count == -1)
+				{
+					System.out.println("프로그램으로 찾을 수 없는 강의가 존재할 수도 있습니다. (수강시간이 존재하지 않는 경우)");
+					return doc_video_check_string.length();
+				}
+				check_video_online_block_middle = "</tr>";
+				online_check_previous_count0 = doc_video_check_string.indexOf(check_video_online_block_middle,online_check_previous_count00);
+				check_video_online_block_close = "<td class=\"text-center\" rowspan=";
+				online_check_previous_count = doc_video_check_string.indexOf(check_video_online_block_close,online_check_previous_count0);
+				
+				//현재 주차인 경우 다음 주차에 rowsapn이 없기 때문에 체킹이 힘들어서 사용
+				String if_check_video_online_overWeek = "<td class=\"text-center\">"+Integer.toString(k+1)+"</td>";
+				int online_check_previous_count1 = doc_video_check_string.indexOf(if_check_video_online_overWeek,online_check_previous_count00);
+				
+				if(online_check_previous_count1 != -1 && offline_check_previous_count == -1)
+				{
+					online_check_previous_count = online_check_previous_count1;
+				}
+				else if(online_check_previous_count == -1 && offline_check_previous_count == -1)
+				{
+//					System.out.println(doc_video_check_string.substring(online_check_previous_count00,online_check_previous_count0));
+					online_check_previous_count = online_check_previous_count0;
+				}
+			}			
+			
+			
+			if(offline_check_previous_count != -1)
+			{
+				
+//				System.out.println("OffLine");
+				//대면수업과 비대면 수업 방식이 달라서 체킹해주기 바랆.
+				//return 값이고 밑의 crawl_middle()에 넣어지는 값임.
+//				int length = check_video_offline_block_close.length();
+
+				
+				int offline_check_start = doc_video_check_string.indexOf(check_video_offline_block_open,length);
+				int offline_check_end = doc_video_check_string.indexOf(check_video_offline_block_close,offline_check_start);
+				if(offline_check_end == -1)
+					return doc_video_check_string.length();
+				
+				//실제로 리턴해야하는 값.
+				int length_offline = offline_check_end;
+				
+				String check_video_offline_block = doc_video_check_string.substring(offline_check_start,offline_check_end);
+//				System.out.println("========================================");
+//				System.out.println(check_video_offline_block);
+				
+				String len_offline = "</button></td>";
+				int next_value = check_video_offline_block.indexOf(len_offline);
+				int count_offline = 1;
+//				System.out.println("=========================================");
+				int index_start = 0;
+				int check_recursive = 0;
+				int index_end = 0;
+				while(true)
+				{
+					String check_video_offline_start = "<td class=\"text-center\">";
+					String check_video_offline_end = "%";
+					int length2 = check_video_offline_start.length();
+					int length3 = check_video_offline_end.length();
+					index_start = check_video_offline_block.indexOf(check_video_offline_start,next_value);
+					index_end = check_video_offline_block.indexOf(check_video_offline_end,next_value);
+
+
+					if(index_start == -1 || index_end==-1 || index_start>index_end || (check_recursive > index_start && count_offline != 1))
+						break;
+					next_value = check_video_offline_block.indexOf("</button></td>",index_end+length3);
+//					System.out.println("start = " + index_start+", end = "+index_end);
+//					System.out.println(check_video_offline_block.substring(index_start+length2,index_end+1));
+					check_video[section][k][count_offline-1] = check_video_offline_block.substring(index_start+length2,index_end+1);
+					count_offline++;
+					check_recursive = index_start;
+				}
+				return length_offline /*+ check_video_offline_block_close.length()*/;
+			}
+			else
+			{
+				
+//				System.out.println(doc_video_check_string);
+//				System.out.println("OnLine");
+				
+				int online_check_start = online_check_previous_count00;
+				int online_check_end = online_check_previous_count;
+				
+				//실제로 리턴해야하는 값
+				int length_online = online_check_end;
+				String check_video_online_block = doc_video_check_string.substring(online_check_start,online_check_end);
+				
+				/*
+				System.out.println("=========================================");
+				System.out.println(check_video_online_block);
+				System.out.println("=========================================");
+				*/
+				
+				String len_online = "</button></td>";
+				int next_value = check_video_online_block.indexOf(len_online);
+				String len_online2 = "</tr>";
+				int next_value_total = 0;
+				
+				int count_online = 1;
+				int index_start_O = 0;
+				int index_start_X = 0;
+//				int index_end = 0;
+			
+				while(true)
+				{
+					String length_cal = "<td class=\"text-center\">";
+					//O
+					String check_video_online_check_point_O =  "<td class=\"text-center\">O</td>"; 
+					//X
+					String check_video_online_check_point_X =  "<td class=\"text-center\">X</td>"; 
+					int length_O = check_video_online_check_point_O.length(); //길이는 O/X 동일
+					int length_X = check_video_online_check_point_X.length();
+					index_start_O = check_video_online_block.indexOf(check_video_online_check_point_O,next_value_total);
+					index_start_X = check_video_online_block.indexOf(check_video_online_check_point_X,next_value_total);
+//					System.out.println("previous O/X = "+index_start_O+"/"+index_start_X);
+//					System.out.println("If circumstance is O/X = "+index_start_O+"/"+index_start_X); //돌아가는 것 확인
+					if((index_start_O == -1 && index_start_X == -1) || next_value_total == -1)
+					{
+						break;
+					}
+					else if(index_start_O == -1 && index_start_X != -1) //X
+					{
+						next_value = check_video_online_block.indexOf(len_online2,index_start_X) + len_online2.length();
+//						System.out.println("start = " + index_start_X+", end = "+(index_start_X+1));
+//						System.out.println(check_video_online_block.substring(index_start_X+length_cal.length(),index_start_X+length_cal.length()+1));
+						check_video[section][k][count_online-1] = check_video_online_block.substring(index_start_X+length_cal.length(),index_start_X+length_cal.length()+1);
+//						System.out.println("X");
+						count_online++;
+						next_value_total = next_value;
+					}
+					else if (index_start_O != -1 && index_start_X == -1) //O
+					{
+						next_value = check_video_online_block.indexOf(len_online2,index_start_O) + len_online2.length();
+//						System.out.println("start = " + index_start_O+", end = "+(index_start_O+1));
+//						System.out.println(check_video_online_block.substring(index_start_O+length_cal.length(),index_start_O+length_cal.length()+1));
+						check_video[section][k][count_online-1] = check_video_online_block.substring(index_start_O+length_cal.length(),index_start_O+length_cal.length()+1);
+//						System.out.println("O");
+						count_online++;
+						next_value_total = next_value;
+					}
+					else if (index_start_O != -1 && index_start_X != -1) //O X 같이 있는 경우 처리
+					{
+//						System.out.println("O/X = "+index_start_O+"/"+index_start_X);
+						//둘이 있더라도 한 블럭만 처리하도록 한다. (순서가 꼬일 수 있기 때문이다.)
+						if(index_start_O < index_start_X)
+						{
+//							next_value = check_video_online_block.indexOf(len_online2,index_start_O) + len_online2.length();
+							next_value = index_start_X;
+//							System.out.println("start = " + index_start_O+", end = "+(index_start_O+1));
+//							System.out.println(check_video_online_block.substring(index_start_O+length_cal.length(),index_start_O+length_cal.length()+1));
+							check_video[section][k][count_online-1] = check_video_online_block.substring(index_start_O+length_cal.length(),index_start_O+length_cal.length()+1);
+//							System.out.println("O");
+							count_online++;
+							next_value_total = next_value;
+						}
+						else
+						{
+//							next_value = check_video_online_block.indexOf(len_online2,index_start_X) + len_online2.length();
+							next_value = index_start_O;
+//							System.out.println("start = " + index_start_X+", end = "+(index_start_X+1));
+//							System.out.println(check_video_online_block.substring(index_start_X+length_cal.length(),index_start_X+length_cal.length()+1));
+							check_video[section][k][count_online-1] = check_video_online_block.substring(index_start_X+length_cal.length(),index_start_X+length_cal.length()+1);
+//							System.out.println("X");
+							count_online++;
+							next_value_total = next_value;
+						}
+//						System.out.println("next_value = "+next_value_total);
+					}
+					
+				}
+//				System.out.println("finish");
+				return length_online;
+				
+			}
+
+		}
+		
+		public static void assignment_check_function (Document doc , int section) throws IOException
+		{			
+//			System.out.println(doc);
+			String doc_assignment = doc.toString();
+			String doc2 = "이 강좌에는 과제가 없습니다.";
+			int check_assign = doc_assignment.indexOf(doc2);
+			if(check_assign == -1)
+			{
+//				System.out.println(doc_assignment);
+//				String assign_style = "<td class=\"cell c3\" style=\"text-align:right;\">";
+				
+				//해당 과제 블럭
+				String assign_check_block_open = "<tbody>";
+				String assign_check_block_close = "</tbody>";
+				String assign_check_block = crawl_middle(doc_assignment,assign_check_block_open,assign_check_block_close);
+//				System.out.println(assign_check_block);
+				
+				//과제 이름 , 과제 기한 , 과제 제출 현황 긁어오기
+				int start_point = 0;
+				int count_assign = 0;
+				while(true)
+				{
+//					System.out.println("=====================================================================================================");
+//					System.out.println("count = "+count_assign);
+					String assign_name_start = "<td class=\"cell c1\" style=\"text-align:left;\"><a href=\"http://myclass.ssu.ac.kr/mod/assign/view.php?id=";
+					String assign_name_end = "</a></td>";
+					int assign_name_start_index = assign_check_block.indexOf(assign_name_start,start_point) ;
+					int assign_name_end_index = assign_check_block.indexOf(assign_name_end,assign_name_start_index) ;
+					
+					String assign_period_start = "<td class=\"cell c2\" style=\"text-align:center;\">";
+					String assign_period_end = "</td>";
+					int assign_period_start_index = assign_check_block.indexOf(assign_period_start,assign_name_end_index) ;
+					int assign_period_end_index = assign_check_block.indexOf(assign_period_end,assign_period_start_index) ;
+					
+					String assign_check_start = "<td class=\"cell c3\" style=\"text-align:right;\">";
+					String assign_check_end = "</td>";
+					int assign_check_start_index = assign_check_block.indexOf(assign_check_start,assign_period_end_index) ;
+					int assign_check_end_index = assign_check_block.indexOf(assign_check_end,assign_check_start_index) ;
+					
+					if(assign_name_start_index == -1 || ((start_point > assign_name_start_index) &&  assign_name_start_index != -1))
+					{
+						break;
+					}
+					
+					String assign_name_unmodified = assign_check_block.substring(assign_name_start_index+assign_name_start.length(), assign_name_end_index);
+					String assign_period = assign_check_block.substring(assign_period_start_index+assign_period_start.length() , assign_period_end_index);
+					String assign_check = assign_check_block.substring(assign_check_start_index+assign_check_start.length() , assign_check_end_index);
+					
+					String modify_assign_name = ">";
+					int modify_assign_name_index = assign_name_unmodified.indexOf(modify_assign_name);
+					String assign_name = assign_name_unmodified.substring(modify_assign_name_index+modify_assign_name.length());
+					
+//					System.out.println("과제 명  = "+assign_name+"\n과제 기한 = "+assign_period+"\n과제 체크 = "+assign_check);
+					
+					temp_subject_assignmentName [section][count_assign] = assign_name;
+					temp_subject_assignmentPeriond[section][count_assign] = assign_period;
+					check_assignment [section][count_assign] = assign_check;
+					
+					start_point = assign_check_end_index+assign_check_end.length();
+					
+					
+//					System.out.println("=====================================================================================================");
+					count_assign++;
+				}
+			}
+
+			
+			/*과제 진도현황 체크*/
+			/*
+			Document doc_video_check = Jsoup.connect(check_assignment_link[0])
+					.cookies(cookies)
+					.get();
+			String doc_assignment_check_string = doc_video_check.toString();
+			System.out.println(doc_assignment_check_string);
+			*/
+		}
+		
+		
+	
+		
+		
+		//video 관련 배열 출력문
+		 public static void return_videoName_attendance()
+		 {
+			 for(int i = 0 ; i < count ; i++)
+			 {
+				 System.out.println("====================================================================================");
+				 System.out.println("subject = "+subject_title[i]);
+				 System.out.println();
+				 for(int j = 0 ; j < 15 ; j++)
+				 {
+					 System.out.println("------------------------------------------------------");
+					 System.out.println("week = "+(j+1));
+
+					 if(j != 0 && check_video[i][j][0] == null)
+					 {
+						 System.out.println((j+1)+"주에는 강의가 올라와있지 않거나 출석기한이 이미 지났습니다.");
+					 }
+					 for(int k = 0 ; k < 15 ; k++)
+					 {
+						 if(subject_videoName[i][j][k] != null && check_video[i][j][k] != null)
+						 {
+//							 System.out.println("subject_videoName["+i+"]["+j+"]["+k+"] = "+subject_videoName[i][j][k]);
+//							 System.out.println("check_video["+i+"]["+j+"]["+k+"] = "+check_video[i][j][k]);
+							 
+							 System.out.println("과목 명 = "+subject_videoName[i][j][k]);
+							 System.out.println("수강 기간  = "+subject_videoPeriod[i][j][k]);
+							 System.out.println("영상 길이  = "+subject_videoLength[i][j][k]);
+							 if(subject_videoLate[i][j][k] != null)
+							 {
+								 System.out.println("지각 기간(있는경우)  = "+subject_videoLate[i][j][k]);
+							 }
+							 System.out.println("진도 확인(O/X or %) = "+check_video[i][j][k]);
+							 System.out.println();
+							 
+						 }
+						
+					 }
+					 System.out.println();
+					 System.out.println("------------------------------------------------------");
+				 }
+				 System.out.println("====================================================================================");
+			 }
+					 
+		 }
+		 
+		 
+		//과제(assignment)관련 배열 호출문
+		 public static void return_assign_attendance ()
+		 {
+			 for (int section_s = 0 ; section_s < count ; section_s++)
+			 {
+				 
+				 System.out.println("======================================================================");
+				 System.out.println(section_s+1 + "번 과목 ["+subject_title[section_s]+"]의 과제 목록과 자료들");
+				 if(temp_subject_assignmentName[section_s][0] == null)
+					 System.out.println("해당 과목의 과제는 존재하지 않습니다.");
+				 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
+				 {
+					 if(temp_subject_assignmentName[section_s][count_assign] != null)
+					 {
+						 System.out.println("과제 명 = "+temp_subject_assignmentName[section_s][count_assign]);
+						 System.out.println("과제 기한 = "+temp_subject_assignmentPeriond[section_s][count_assign]);
+						 System.out.println("과제 제출 상태 = "+check_assignment[section_s][count_assign]);
+						 System.out.println();
+					 }
+				 }
+				 System.out.println("======================================================================");
+			 }
+		 }
+		 
+		 
+		 
+		 public static void is_login() throws IOException
+		 {
+			 int count_login = 1;
+			 while(true)
+			 {
+				 login();
+				 Document login_check = Jsoup.connect(smart_campus_URL)
+							.cookies(cookies)
+							.get();
+				 String log = login_check.toString();
+//				 System.out.println(log);
+				 String check_str =  "아이디 / 비밀번호 찾기";
+				 int check_str_index = log.indexOf(check_str);
+				 if(check_str_index == -1)
+				 {
+					 break;
+				 }
+				 System.out.println("아이디/비밀번호를 잘못 입력하셨습니다. 다시 입력해주십시오.");
+				 System.out.println("login 시도 = "+count_login);
+				 System.out.println();
+				 count_login++;
+			 }
+		 }
 }
+
 
 
 
 public class test {
 	public static void main(String[] args) throws IOException {
+//		SmartCampus.execute_debug(0);
 		SmartCampus.execute();
-		SmartCampus.video_assignment_divide();
+		
+
 	}
 
 }
