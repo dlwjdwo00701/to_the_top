@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="application.LoginController">
+   <children>
+      <Button layoutX="42.0" layoutY="223.0" mnemonicParsing="false" text="    로그인    " onAction="#LoginButton"/>
+      <Button layoutX="223.0" layoutY="224.0" mnemonicParsing="false" text="    지우기    " onAction="#DeleteButton" />
+      <Label fx:id="explain" layoutX="66.0" layoutY="180.0" text="스캠 아이디와 비밀번호를 입력해주세요." underline="true" />
+      <Label layoutX="89.0" layoutY="21.0" text="과탑을 향해서">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Label layoutX="35.0" layoutY="77.0" text="아이디" />
+      <Label layoutX="28.0" layoutY="125.0" text="비밀번호" />
+      <TextField fx:id="ID" layoutX="98.0" layoutY="75.0" prefHeight="23.0" prefWidth="211.0" />
+      <TextField fx:id="PASS" layoutX="98.0" layoutY="125.0" prefHeight="23.0" prefWidth="211.0" />
+   </children>
+</Pane>
