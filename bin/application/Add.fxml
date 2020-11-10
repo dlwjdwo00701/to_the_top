@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Pane layoutY="1.0" prefHeight="201.0" prefWidth="234.0">
+         <children>
+            <Button layoutX="21.0" layoutY="150.0" mnemonicParsing="false" text="    추가    " />
+            <Button layoutX="139.0" layoutY="150.0" mnemonicParsing="false" text="    취소    " />
+            <TextField layoutX="90.0" layoutY="41.0" />
+            <Label layoutX="10.0" layoutY="45.0" text="추가일정이름" />
+            <DatePicker layoutX="90.0" layoutY="89.0" prefHeight="23.0" prefWidth="137.0" />
+            <Label layoutX="10.0" layoutY="93.0" text="추가일정날짜" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
