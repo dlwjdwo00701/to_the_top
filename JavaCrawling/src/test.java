@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 //import java.util.HashMap;
 //import java.util.Iterator;
 import java.util.Map;
@@ -13,21 +15,22 @@ import org.jsoup.nodes.Document;
 
  class SmartCampus {
 	 	private static Scanner scanner = new Scanner (System.in);
-		private static final String Login_URL = 
+	 	protected static final String Login_URL = 
 				"https://myclass.ssu.ac.kr/login/index.php";
-		private static final String smart_campus_URL = 
+	 	protected static final String smart_campus_URL = 
 				"http://myclass.ssu.ac.kr/";
 		
-		private static Map<String,String> cookies;
-		private static int count;
-		private static String [] subject_title;
-		private static String [] subject_link;
-		private static String[][][] array_subject_link;  // 가장 중요한 객체
+	 	//접근 지정자 private -> protected 변경 (SmartCampusTokenizer때문) _ (2020.11.14_ 20190511배준형)
+	 	protected static Map<String,String> cookies;
+	 	protected static int count;
+	 	protected static String [] subject_title;
+	 	protected static String [] subject_link;
+		protected static String[][][] array_subject_link;  // 가장 중요한 객체
 		/*(2020.11.01. 14:31 추가된 필드*/
-		private static String[][][] subject_videoName;
-		private static String[][][] subject_videoPeriod;
-		private static String[][][] subject_videoLength;
-		private static String[][][] subject_videoLate;
+		protected static String[][][] subject_videoName;
+		protected static String[][][] subject_videoPeriod;
+		protected static String[][][] subject_videoLength;
+		protected static String[][][] subject_videoLate;
 		
 		/*과제 업데이트 방식 전환 -> (강의 제출확인 목록에서 이름과 정보 모두 크롤링 해옴) == 속도 개선됨*/
 		//과제는 주차를 나눌 필요가 없다고 판단. subject_assignmentName[과목명][과제이름] , subject_assignmentPeriond[과목명][과제 기간]
@@ -36,14 +39,14 @@ import org.jsoup.nodes.Document;
 		
 		/*(2020.11.04 추가할 필드 */
 		//비디오와 과제 제출 현황 세션으로 넘어가는 링크를 모아둠
-		private static String[] check_video_link; 
-		private static String[] check_assignment_link;
+		protected static String[] check_video_link; 
+		protected static String[] check_assignment_link;
 //		private static String[][] subject_video_lateCheck;
 		//비디오 링크와 o/x체크도 가능했으면 좋겠음.
-		private static String[][][] check_video;
-		private static String[][] check_assignment;
-		private static String[][] temp_subject_assignmentName;
-		private static String[][] temp_subject_assignmentPeriond;
+		protected static String[][][] check_video;
+		protected static String[][] check_assignment;
+		protected static String[][] temp_subject_assignmentName;
+		protected static String[][] temp_subject_assignmentPeriond;
 		//강의 체크 목록에서 이번주에 듣지않은 강의목록 띄울 수 있으면 좋겠음.
 		
 		/* 메소드들*/
@@ -142,7 +145,6 @@ import org.jsoup.nodes.Document;
 //				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
 				subject_title[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 			}
-			
 			for (int i = 0; i < startIdx_array.length ; i++)
 			{
 				if(i == 0)
@@ -532,7 +534,8 @@ import org.jsoup.nodes.Document;
 		
 		
 		
-		
+		//과제 크롤링 방법 수정으로 인한 파기 함수들
+		/*
 		private static String assign_name (String sentence)
 		{
 			int end = sentence.indexOf("</span></a> ");
@@ -547,7 +550,7 @@ import org.jsoup.nodes.Document;
 			int end = sentence.indexOf("</span>",start);
 			return sentence.substring(start+period_assign.length() , end);
 		}
-		
+		*/
 		public static void video_assignment_divide() throws IOException
 		{
 			subject_videoName = new String [count][15][15];
@@ -700,8 +703,30 @@ import org.jsoup.nodes.Document;
 		}
 		
 		
-		
-		
+		//세모 , X , 중 가장 작은 인덱스 리턴
+		public static int small_index_return(int value1 , int value2 , int value3)
+		{
+			if (value1 == -1 && value2 == -1 && value3 == -1)
+				return -1;
+			int va1 = value1;
+			int va2 = value2;
+			int va3 = value3;
+			
+			//매개변수를 바꾸면 인식 불가
+			if(va1 == -1)
+				va1 = 999999999;
+			if(va2 == -1)
+				va2 = 999999999;
+			if(va3 == -1)
+				va3 = 999999999;
+			
+			int small_est = va1;
+			if(va2 < va1)
+				small_est = va2;
+			if(va3 < va2)
+				small_est = va3;
+			return small_est;
+		}
 		
 		//동영상 진도현황 체크 함수
 		public static int video_check_function(Document doc_video_check ,int section, int length , int k) throws IOException
@@ -758,8 +783,6 @@ import org.jsoup.nodes.Document;
 					online_check_previous_count = online_check_previous_count0;
 				}
 			}			
-			
-			
 			if(offline_check_previous_count != -1)
 			{
 				
@@ -836,6 +859,7 @@ import org.jsoup.nodes.Document;
 				int count_online = 1;
 				int index_start_O = 0;
 				int index_start_X = 0;
+				int index_start_another = 0;
 //				int index_end = 0;
 			
 				while(true)
@@ -845,16 +869,36 @@ import org.jsoup.nodes.Document;
 					String check_video_online_check_point_O =  "<td class=\"text-center\">O</td>"; 
 					//X
 					String check_video_online_check_point_X =  "<td class=\"text-center\">X</td>"; 
-					int length_O = check_video_online_check_point_O.length(); //길이는 O/X 동일
-					int length_X = check_video_online_check_point_X.length();
+					//▲ (2020.11.14 추가된 필드)
+					String check_video_online_check_point_another =  "<td class=\"text-center\">▲</td>"; 
+					
+//					int length_O = check_video_online_check_point_O.length(); //길이는 O/X 동일
+//					int length_X = check_video_online_check_point_X.length();
 					index_start_O = check_video_online_block.indexOf(check_video_online_check_point_O,next_value_total);
 					index_start_X = check_video_online_block.indexOf(check_video_online_check_point_X,next_value_total);
-//					System.out.println("previous O/X = "+index_start_O+"/"+index_start_X);
-//					System.out.println("If circumstance is O/X = "+index_start_O+"/"+index_start_X); //돌아가는 것 확인
-					if((index_start_O == -1 && index_start_X == -1) || next_value_total == -1)
+					index_start_another = check_video_online_block.indexOf(check_video_online_check_point_another,next_value_total);
+					
+//					System.out.println(" ( index_start_O , index_start_X , index_start_another) = ( "+index_start_O+" , "+index_start_X+" , "+index_start_another+" )");
+					int small_index = small_index_return (index_start_O , index_start_X , index_start_another);
+//					System.out.println("small index = "+small_index);
+					if(small_index == -1 || next_value_total == -1)
 					{
+//						System.out.println("break + count = "+count_online);
 						break;
 					}
+					else
+					{
+						next_value = check_video_online_block.indexOf(len_online2,small_index) + len_online2.length();
+//						System.out.println("start = " + index_start_X+", end = "+(index_start_X+1));
+//						System.out.println(check_video_online_block.substring(index_start_X+length_cal.length(),index_start_X+length_cal.length()+1));
+						check_video[section][k][count_online-1] = check_video_online_block.substring(small_index+length_cal.length(),small_index+length_cal.length()+1);
+//						System.out.println(check_video_online_block.substring(small_index+length_cal.length(),small_index+length_cal.length()+1));
+						count_online++;
+						next_value_total = next_value;
+					}
+					
+					//다른 방식 메커니즘을 찾아내서 속도 증가 (2020 . 11. 14 _ 20190511)
+					/*
 					else if(index_start_O == -1 && index_start_X != -1) //X
 					{
 						next_value = check_video_online_block.indexOf(len_online2,index_start_X) + len_online2.length();
@@ -902,7 +946,7 @@ import org.jsoup.nodes.Document;
 							next_value_total = next_value;
 						}
 //						System.out.println("next_value = "+next_value_total);
-					}
+					 	*/
 					
 				}
 //				System.out.println("finish");
@@ -1090,14 +1134,305 @@ import org.jsoup.nodes.Document;
 		 }
 }
 
+ 
+ 
+ /*스마트캠퍼스 시간 가공을 위해 SimpleDateFormat객체를 사용할 예정 (2020-11-14 09:56:57) 형태로 포멧 해주기 때문임.*/
+ /*Java API 문서 기준 java.text.SimpleDateFormat */
+ 
+ //스마트캠퍼스 가공 객체 (SmartCampus가공객체) _ 2020.11.14 _20190511
+class SmartCampusTokenizer extends SmartCampus
+{
+	//현재시간 변수
+	public static String current_time;
+	//if_notattendent_week_video[video_name] or [video_date] or [video_Late]
+	private static String if_notattendent_week_videoName[];
+	private static String if_notattendent_week_videoDate[];
+	private static String if_notattendent_week_videoLate[];
+	private static String if_notattendent_week_videoLength[];
+	private static String if_notattendent_week_videoSubject[];
+	
+	/*과제 미제출만 다룸*/
+	private static String if_notPassed_AssignedSubject[];
+	private static String if_notPassed_AssignedName[];
+	private static String if_notPassed_AssignedDate[];
+	
+	
+	//Override는 아니고 부모 객체 소한
+	public static void execute () throws IOException
+	{
+		SmartCampus.execute();
+	}
+	//ctrl + o ## 메소드 필드 단축키
+	
+	//현재 시간 객체
+	public static void current_time()
+	{
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		Date time = new Date();
+		current_time = format1.format(time);
+	}
+	
+	//시간 객체들
+	public static int year(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[0].split("-")[0]);
+		return year;
+	}
+	
+	public static int month(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[0].split("-")[1]);
+		return year;
+	}
+	public static int date(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[0].split("-")[2]);
+		return year;
+	}
+	public static int hour(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[1].split(":")[0]);
+		return year;
+	}
+	public static int minute(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[1].split(":")[1]);
+		return year;
+	}
+	public static int second(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[1].split(":")[2]);
+		return year;
+	}
+	
+	//2020-09-29 00:00:00 ~ 2020-10-05 23:59:59 이런 형식인 경우 끝의 날짜만 분석하기
+	public static String video_date_tokenizer(String video_date)
+	{
+		String video_close_date = video_date.split("~")[1];
+		video_close_date = video_close_date.trim();
+		return video_close_date;
+	}
+	
+	
+	//현재 시간과 동영상 날짜 비교함수 (한계를 지나갔는지 판단.)
+	public static boolean video_verse_current(String video_date , String video_late)
+	{
+		
+		if(video_late == null)
+		{
+			if((month(current_time)<=month(video_date))&&(date(current_time)<=date(video_date)))
+				return true;
+		}
+		else
+		{
+			if((month(current_time)<=month(video_late))&&(date(current_time)<=date(video_late)))
+				return true;
+		}
+		return false;
+	}
+	
+	//지각 날짜 혹은 마감날짜가 현재 시간보다 남아 있는 경우 -->
+	public static void check_x_video_time()
+	{
+		current_time();
+		System.out.println("현재 시간 : "+current_time);
+		if_notattendent_week_videoName = new String [100];
+		if_notattendent_week_videoDate = new String [100];
+		if_notattendent_week_videoLate = new String [100];
+		if_notattendent_week_videoLength = new String [100];
+		if_notattendent_week_videoSubject = new String [100];
+		
+		int count_video_check = 0;
+		for(int i = 0 ; i < count ; i++)
+		 {
+			 for(int j = 0 ; j < 15 ; j++)
+			 {
+				 for(int k = 0 ; k < 15 ; k++)
+				 {
+					 if(subject_videoName[i][j][k] != null && check_video[i][j][k] != null)
+					 {
+						 
+						 
+						 /*
+						System.out.println("디버그 과목 이름 = "+subject_videoName[i][j][k]);
+						System.out.println("디버그 과목 영상 기한 = "+subject_videoPeriod[i][j][k]);
+						System.out.println("체킹 마크  = "+check_video[i][j][k].trim());
+						
+							*/
+						 
+						 boolean offline = check_video[i][j][k].equals(" 100%");
+						 boolean online =  check_video[i][j][k].equals("O");
+//						 System.out.println("subject_videoName = "+subject_videoName[i][j][k]+", check="+check_video[i][j][k]);
+						 if(offline == false && online == false)
+						 {
+//							System.out.println("count = "+count_video_check);
+							String video_date = video_date_tokenizer(subject_videoPeriod[i][j][k]);
+							boolean time_check = video_verse_current(video_date,subject_videoLate[i][j][k]);
+							if(time_check == true)
+							{
+								if_notattendent_week_videoName[count_video_check] = subject_videoName[i][j][k];
+								if_notattendent_week_videoDate[count_video_check] = video_date;
+								if_notattendent_week_videoLate[count_video_check] = subject_videoLate[i][j][k];
+								if_notattendent_week_videoLength[count_video_check] = subject_videoLength[i][j][k];
+								if_notattendent_week_videoSubject[count_video_check] = subject_title[i];
+								count_video_check++;
+							}
+						}
+					 }
+					
+				 }
+			 }
+		 }
+	}
+	
+	
+	public static void print_notAttendent_video()
+	{
+		System.out.println("==========================================================================");
+		System.out.println("현재 시각과 대비되어 아직 출석할 수 있는 영상의 경우 ");
+		System.out.println("현재 시각 =: "+current_time);
+		int count_print = 0;
+		while(true)
+		{
+			if(if_notattendent_week_videoName[count_print] == null)
+				break;
+			else
+			{
+				System.out.println("count = "+(count_print+1));
+				System.out.println("해당 과목 수업명  = "+if_notattendent_week_videoSubject[count_print]);
+				System.out.println("과목 명 = "+if_notattendent_week_videoName[count_print]);
+				System.out.println("수강 기간  = "+if_notattendent_week_videoDate[count_print]);
+				System.out.println("영상 길이  = "+if_notattendent_week_videoLength[count_print]);
+				if(if_notattendent_week_videoLate[count_print] != null)
+					System.out.println("지각 기간  = "+if_notattendent_week_videoLate[count_print]);
+				System.out.println();
+			}
+			count_print++;
+		}
+		System.out.println("==========================================================================");
+	}
+	
+	
+	/*과제 체크 함수 */
+	public static boolean assignment_verse_current(String assign_date)
+	{
 
+		if((month(current_time)<=month(assign_date))&&(date(current_time)<=date(assign_date)))
+			return true;
+		return false;
+	}
+	
+	
+	public static void check_x_assignment_time ()
+	{
+		if_notPassed_AssignedSubject = new String [100];
+		if_notPassed_AssignedName = new String [100];
+		if_notPassed_AssignedDate = new String[100];
+		
+		int count_assign_check = 0;
+		for (int section_s = 0 ; section_s < count ; section_s++)
+		 {
+			 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
+			 {
+				 if(temp_subject_assignmentName[section_s][count_assign] != null)
+				 {
+					 /*
+					 System.out.println("과제 명 = "+temp_subject_assignmentName[section_s][count_assign]);
+					 System.out.println("과제 기한 = "+temp_subject_assignmentPeriond[section_s][count_assign]);
+					 System.out.println("과제 제출 상태 = "+check_assignment[section_s][count_assign]);
+					 System.out.println();
+					 */
+					 boolean assign_check = check_assignment[section_s][count_assign].equals("미제출");
+					 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
+					 if(assign_check == true && time_check == true)
+					 {
+						if_notPassed_AssignedSubject[count_assign_check] = subject_title[section_s];
+						if_notPassed_AssignedName[count_assign_check] = temp_subject_assignmentName[section_s][count_assign];
+						if_notPassed_AssignedDate[count_assign_check] = temp_subject_assignmentPeriond[section_s][count_assign];
+						count_assign_check++;
+					 }
+				 }
+			 }
+		 }
+	}
+	
+	public static void print_notPassed_assignment()
+	{
+		System.out.println("현재 시각과 대비되어 아직 제출할 수 있는 과제의 경우 ");
+		System.out.println("현재 시각 =: "+current_time);
+		int count_print = 0;
+		while(true)
+		{
+			if(if_notPassed_AssignedName[count_print] == null)
+				break;
+			else
+			{
+				System.out.println("count = "+(count_print+1));
+				System.out.println("해당 과목 수업명  = "+if_notPassed_AssignedSubject[count_print]);
+				System.out.println("과제 명 = "+if_notPassed_AssignedName[count_print]);
+				System.out.println("과제 기한  = "+if_notPassed_AssignedDate[count_print]);
+				System.out.println();
+			}
+			count_print++;
+		}
+	}
+	public static void execute_tokenizer() throws IOException
+	{
+		//Login 잘못 입력했을 때 방지.
+		System.out.println("======================================================================");
+		is_login();
+		System.out.println("======================================================================");
+		System.out.println("A. 로그인 중....");
+		access_lecture_index();
+		System.out.println("======================================================================");
+		System.out.println("B. 강의 목록 확인 중(주의 ! 스마트 캠퍼스에서 숨김을 해놓은 경우 나타나지 않음)....");
+		System.out.println("======================================================================");
+		execution_crawling();
+		System.out.println("======================================================================");
+		System.out.println("C. 강좌 , 과제 업데이트 중 ....");
+		System.out.println("======================================================================");
+		video_assignment_divide();
+//		return_assign_attendance();
+		
+		scanner_Close();
+		
+		//SmartCampus_tokenzier
+		System.out.println("======================================================================");
+		System.out.println("D. 현재 시간과 비교하여 아직 출석하지 않은 영상 출력");
+		System.out.println("======================================================================");
+		check_x_video_time();
+		print_notAttendent_video();
+		
+		System.out.println("======================================================================");
+		System.out.println("E. 현재 시간과 비교하여 아직 미제출된 과제 출력");
+		System.out.println("======================================================================");
+		check_x_assignment_time();
+		print_notPassed_assignment();
+	}
+}
 
 
 public class test {
 	public static void main(String[] args) throws IOException {
 //		SmartCampus.execute_debug(0);
-		SmartCampus.execute();
+//		SmartCampus.execute();
 		
+		
+//		SmartCampusTokenizer.execute();
+//		SmartCampusTokenizer.current_time();
+		SmartCampusTokenizer.execute_tokenizer();
 
 	}
 
