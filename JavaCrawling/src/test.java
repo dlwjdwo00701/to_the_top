@@ -1246,8 +1246,6 @@ class SmartCampusTokenizer extends SmartCampus
 	//지각 날짜 혹은 마감날짜가 현재 시간보다 남아 있는 경우 -->
 	public static void check_x_video_time()
 	{
-		current_time();
-		System.out.println("현재 시간 : "+current_time);
 		if_notattendent_week_videoName = new String [100];
 		if_notattendent_week_videoDate = new String [100];
 		if_notattendent_week_videoLate = new String [100];
@@ -1301,13 +1299,17 @@ class SmartCampusTokenizer extends SmartCampus
 	public static void print_notAttendent_video()
 	{
 		System.out.println("==========================================================================");
-		System.out.println("현재 시각과 대비되어 아직 출석할 수 있는 영상의 경우 ");
-		System.out.println("현재 시각 =: "+current_time);
+//		System.out.println("현재 시각과 대비되어 아직 출석할 수 있는 영상의 경우 ");
+//		System.out.println("현재 시각 =: "+current_time);
 		int count_print = 0;
 		while(true)
 		{
 			if(if_notattendent_week_videoName[count_print] == null)
+			{
+				if(count_print == 0)
+					System.out.println("\n현재 들을 수 있는 강의는 모두 청강하였습니다.\n");
 				break;
+			}
 			else
 			{
 				System.out.println("count = "+(count_print+1));
@@ -1370,13 +1372,17 @@ class SmartCampusTokenizer extends SmartCampus
 	
 	public static void print_notPassed_assignment()
 	{
-		System.out.println("현재 시각과 대비되어 아직 제출할 수 있는 과제의 경우 ");
-		System.out.println("현재 시각 =: "+current_time);
+//		System.out.println("현재 시각과 대비되어 아직 제출할 수 있는 과제의 경우 ");
+//		System.out.println("현재 시각 =: "+current_time);
 		int count_print = 0;
 		while(true)
 		{
 			if(if_notPassed_AssignedName[count_print] == null)
+			{
+				if(count_print == 0)
+					System.out.println("\n현재 수행할 수 있는 과제는 모두 제출하셨습니다.\n");
 				break;
+			}
 			else
 			{
 				System.out.println("count = "+(count_print+1));
@@ -1406,9 +1412,17 @@ class SmartCampusTokenizer extends SmartCampus
 		video_assignment_divide();
 //		return_assign_attendance();
 		
+		//주의 -> 나중에 디벨롭에서 문제가 생길 수 있으니 일단 조심히 다루기.
 		scanner_Close();
 		
 		//SmartCampus_tokenzier
+		System.out.println("\n");
+		System.out.println("======================================================================");
+		current_time();
+		System.out.println("=                     현재 시간 : "+current_time+"                    =");
+		System.out.println("======================================================================");
+		System.out.println("\n");
+		
 		System.out.println("======================================================================");
 		System.out.println("D. 현재 시간과 비교하여 아직 출석하지 않은 영상 출력");
 		System.out.println("======================================================================");
