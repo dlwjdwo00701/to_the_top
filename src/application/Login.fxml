@@ -5,11 +5,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="application.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Button layoutX="42.0" layoutY="223.0" mnemonicParsing="false" text="    로그인    " onAction="#LoginButton"/>
-      <Button layoutX="223.0" layoutY="224.0" mnemonicParsing="false" text="    지우기    " onAction="#DeleteButton" />
+      <Button layoutX="42.0" layoutY="223.0" mnemonicParsing="false" onAction="#LoginButton" text="    로그인    " />
+      <Button layoutX="223.0" layoutY="224.0" mnemonicParsing="false" onAction="#DeleteButton" text="    지우기    " />
       <Label fx:id="explain" layoutX="66.0" layoutY="180.0" text="스캠 아이디와 비밀번호를 입력해주세요." underline="true" />
       <Label layoutX="89.0" layoutY="21.0" text="과탑을 향해서">
          <font>

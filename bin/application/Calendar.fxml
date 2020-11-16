@@ -8,12 +8,34 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="446.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane prefHeight="421.0" prefWidth="703.0">
+      <Pane prefHeight="446.0" prefWidth="703.0">
          <children>
-            <Canvas height="421.0" width="535.0" />
+            <ListView layoutX="523.0" layoutY="49.0" prefHeight="339.0" prefWidth="169.0" />
+            <Button layoutX="522.0" layoutY="401.0" mnemonicParsing="false" text="    추가    " />
+            <Button layoutX="621.0" layoutY="401.0" mnemonicParsing="false" text="    삭제    " />
+            <Button layoutX="525.0" layoutY="11.0" mnemonicParsing="false" text="저번 달로" />
+            <Button layoutX="622.0" layoutY="11.0" mnemonicParsing="false" text="다음 달로" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#c0d6e8" height="401.0" layoutX="2.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
+            <Label layoutX="22.0" layoutY="16.0" text="일요일" />
+            <Label layoutX="97.0" layoutY="16.0" text="월요일" />
+            <Label layoutX="167.0" layoutY="16.0" text="화요일" />
+            <Label layoutX="241.0" layoutY="16.0" text="수요일" />
+            <Label layoutX="314.0" layoutY="16.0" text="목요일" />
+            <Label layoutX="387.0" layoutY="16.0" text="금요일" />
+            <Label layoutX="459.0" layoutY="16.0" text="토요일" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="3.0" layoutX="3.0" layoutY="104.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="3.0" layoutX="3.0" layoutY="171.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="3.0" layoutX="3.0" layoutY="238.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="3.0" layoutX="3.0" layoutY="305.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="3.0" layoutX="3.0" layoutY="372.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="401.0" layoutX="75.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="401.0" layoutX="148.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="401.0" layoutX="221.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="401.0" layoutX="293.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="401.0" layoutX="365.0" layoutY="38.0" stroke="BLACK" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="401.0" layoutX="437.0" layoutY="36.0" stroke="BLACK" strokeType="INSIDE" width="4.0" />
          </children>
       </Pane>
    </children>
