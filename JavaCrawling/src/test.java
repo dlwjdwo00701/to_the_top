@@ -52,7 +52,7 @@ import org.jsoup.nodes.Document;
 		/* 메소드들*/
 		public static void login() throws IOException
 		{
-			//스마트 캠퍼스 ID ,PW 받아옴 : 비밀번호 틀렸을 때 아직 못 만듦 -> 정재가 만들어주시길
+			//스마트 캠퍼스 ID ,PW 받아옴 :
 			
 			System.out.println("ID를 입력하시오");
 			String ID_scan = scanner.next();
