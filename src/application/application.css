@@ -1,1 +1,19 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+ .label {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
+
+ .check-box {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
+
+ .button {
+-fx-font-family: "GyeonggiTitle Bold"; 
+-fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+}
+
+.background {
+    -fx-background-color: #1d1d1d;
+}

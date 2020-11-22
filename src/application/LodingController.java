@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
@@ -41,6 +43,21 @@ public class LodingController {
 	protected static String[][] temp_subject_assignmentName;
 	protected static String[][] temp_subject_assignmentPeriond;
 	
+	protected static String if_notattendent_week_videoSubject[];
+	protected static String if_notattendent_week_videoName[];
+	protected static String if_notattendent_week_videoDate[];
+	protected static String if_notattendent_week_videoLate[];
+	protected static String if_notattendent_week_videoLength[];
+	
+	protected static String if_notPassed_AssignedSubject[];
+	protected static String if_notPassed_AssignedName[];
+	protected static String if_notPassed_AssignedDate[];
+	
+	protected static int count_notWatching_video;
+	protected static int count_notPassed_assign;
+	
+	public static String current_time;
+	
 	@FXML Label ONE;
 	@FXML Label TWO;
 	@FXML Label THREE;
@@ -56,13 +73,14 @@ public class LodingController {
 	
 	File SUBJECT_TITLE = new File("c://SmartCampas//"+ID_+"//subject_title.txt");
 	File SUBJECT_VIDEONAME = new File("c://SmartCampas//"+ID_+"//subject_videoName.txt");
-	File SUBJECT_VIDEOPERIOD = new File("c://SmartCampas//"+ID_+"//subject_videoPeriod.txt;");
+	File SUBJECT_VIDEOPERIOD = new File("c://SmartCampas//"+ID_+"//subject_videoPeriod.txt");
 	File SUBJECT_VIDEOLENGTH = new File("c://SmartCampas//"+ID_+"//subject_videoLength.txt");
 	File SUBJECT_VIDEOLATE = new File("c://SmartCampas//"+ID_+"//subject_videoLate.txt");
 	File CHECK_VIDEO = new File("c://SmartCampas//"+ID_+"//check_video.txt");
 	File CHECK_ASSIGNMENT = new File("c://SmartCampas//"+ID_+"//check_assignment.txt");
 	File TEMP_SUBJECT_ASSIGNMENTNAME = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentName.txt");
 	File TEMP_SUBJECT_ASSIGNMENTPERIOD = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentPeriond.txt");
+	
 	
 	@FXML protected void CRAWLING(ActionEvent on){  
 		if(new_check==0) {
@@ -71,18 +89,24 @@ public class LodingController {
 		}
 		if(check==0) {
 			try {
-//				FileWriter SUBJECT_TITLE_= new FileWriter(SUBJECT_TITLE);
-//				FileWriter SUBJECT_VIDEONAME_= new FileWriter(SUBJECT_VIDEONAME);
-//				FileWriter SUBJECT_VIDEOPERIOD_= new FileWriter(SUBJECT_VIDEOPERIOD);
-//				FileWriter SUBJECT_VIDEOLENGTH_= new FileWriter(SUBJECT_VIDEOLENGTH);
-//				FileWriter SUBJECT_VIDEOLATE_= new FileWriter(SUBJECT_VIDEOLATE);
-//				FileWriter CHECK_VIDEO_= new FileWriter(CHECK_VIDEO);
-//				FileWriter CHECK_ASSIGNMENT_= new FileWriter(CHECK_ASSIGNMENT);
-//				FileWriter TEMP_SUBJECT_ASSIGNMENTNAME_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTNAME);
-//				FileWriter TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTPERIOD);
 				this.access_lecture_index();
 				this.execution_crawling();
 				this.video_assignment_divide();
+				current_time();
+				check_video_count();
+				check_assign_count();
+				
+				FileWriter SUBJECT_TITLE_= new FileWriter(SUBJECT_TITLE);
+				FileWriter SUBJECT_VIDEONAME_= new FileWriter(SUBJECT_VIDEONAME);
+				FileWriter SUBJECT_VIDEOPERIOD_= new FileWriter(SUBJECT_VIDEOPERIOD);
+				FileWriter SUBJECT_VIDEOLENGTH_= new FileWriter(SUBJECT_VIDEOLENGTH);
+				FileWriter SUBJECT_VIDEOLATE_= new FileWriter(SUBJECT_VIDEOLATE);
+				FileWriter CHECK_VIDEO_= new FileWriter(CHECK_VIDEO);
+				FileWriter CHECK_ASSIGNMENT_= new FileWriter(CHECK_ASSIGNMENT);
+				FileWriter TEMP_SUBJECT_ASSIGNMENTNAME_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTNAME);
+				FileWriter TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTPERIOD);
+				
+				
 				explain.setLayoutX(45);
 				explain.setText("수강하시는 강의가 맞나요? 맞으면 확인 버튼을 눌러주세요!");
 				check++;		
@@ -775,6 +799,219 @@ public class LodingController {
 			}
 		}
 		return null;
+	}
+	
+	public static void current_time()
+	{
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		Date time = new Date();
+		current_time = format1.format(time);
+	}
+	
+	//시간 객체들
+	public static int year(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[0].split("-")[0]);
+		return year;
+	}
+	
+	public static int month(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[0].split("-")[1]);
+		return year;
+	}
+	public static int date(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[0].split("-")[2]);
+		return year;
+	}
+	public static int hour(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[1].split(":")[0]);
+		return year;
+	}
+	public static int minute(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[1].split(":")[1]);
+		return year;
+	}
+	public static int second(String time_obj)
+	{
+		String[] Date_time = new String[2];
+		Date_time = time_obj.split(" ");
+		int year = Integer.parseInt(Date_time[1].split(":")[2]);
+		return year;
+	}
+	
+	//2020-09-29 00:00:00 ~ 2020-10-05 23:59:59 이런 형식인 경우 끝의 날짜만 분석하기
+	public static String video_date_tokenizer(String video_date)
+	{
+		String video_close_date = video_date.split("~")[1];
+		video_close_date = video_close_date.trim();
+		return video_close_date;
+	}
+	
+	
+	//현재 시간과 동영상 날짜 비교함수 (한계를 지나갔는지 판단.)
+	public static boolean video_verse_current(String video_date , String video_late)
+	{
+		
+		if(video_late == null)
+		{
+			if((month(current_time)<=month(video_date))&&(date(current_time)<=date(video_date)))
+				return true;
+		}
+		else
+		{
+			if((month(current_time)<=month(video_late))&&(date(current_time)<=date(video_late)))
+				return true;
+		}
+		return false;
+	}
+	
+	//지각 날짜 혹은 마감날짜가 현재 시간보다 남아 있는 경우 -->
+	public static void check_x_video_time()
+	{
+		//2020.11.18 => 100->count_notWatching_video (앞의 count_notPassed_assign로 강의 개수를 배열을 만들기 때문에 배열칸수 부족 걱정 없어짐)
+		if_notattendent_week_videoName = new String [count_notWatching_video];
+		if_notattendent_week_videoDate = new String [count_notWatching_video];
+		if_notattendent_week_videoLate = new String [count_notWatching_video];
+		if_notattendent_week_videoLength = new String [count_notWatching_video];
+		if_notattendent_week_videoSubject = new String [count_notWatching_video];
+		
+		int count_video_check = 0;
+		for(int i = 0 ; i < count ; i++)
+		 {
+			 for(int j = 0 ; j < 15 ; j++)
+			 {
+				 for(int k = 0 ; k < 15 ; k++)
+				 {
+					 if(subject_videoName[i][j][k] != null && check_video[i][j][k] != null)
+					 {
+						 
+						 
+
+						 boolean offline = check_video[i][j][k].equals(" 100%");
+						 boolean online =  check_video[i][j][k].equals("O");
+//						 System.out.println("subject_videoName = "+subject_videoName[i][j][k]+", check="+check_video[i][j][k]);
+						 if(offline == false && online == false)
+						 {
+							String video_date = video_date_tokenizer(subject_videoPeriod[i][j][k]);
+							boolean time_check = video_verse_current(video_date,subject_videoLate[i][j][k]);
+							if(time_check == true)
+							{
+								if_notattendent_week_videoName[count_video_check] = subject_videoName[i][j][k];
+								if_notattendent_week_videoDate[count_video_check] = video_date;
+								if_notattendent_week_videoLate[count_video_check] = subject_videoLate[i][j][k];
+								if_notattendent_week_videoLength[count_video_check] = subject_videoLength[i][j][k];
+								if_notattendent_week_videoSubject[count_video_check] = subject_title[i];
+								count_video_check++;
+							}
+						}
+					 }
+					
+				 }
+			 }
+		 }
+	}
+	
+
+	public static boolean assignment_verse_current(String assign_date)
+	{
+
+		if((month(current_time)<=month(assign_date))&&(date(current_time)<=date(assign_date)))
+			return true;
+		return false;
+	}
+	
+	
+	public static void check_x_assignment_time ()
+	{
+		if_notPassed_AssignedSubject = new String [count_notPassed_assign];
+		if_notPassed_AssignedName = new String [count_notPassed_assign];
+		if_notPassed_AssignedDate = new String[count_notPassed_assign];
+		
+		int count_assign_check = 0;
+		for (int section_s = 0 ; section_s < count ; section_s++)
+		 {
+			 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
+			 {
+				 if(temp_subject_assignmentName[section_s][count_assign] != null)
+				 {
+		
+					 boolean assign_check = check_assignment[section_s][count_assign].equals("미제출");
+					 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
+					 if(assign_check == true && time_check == true)
+					 {
+						if_notPassed_AssignedSubject[count_assign_check] = subject_title[section_s];
+						if_notPassed_AssignedName[count_assign_check] = temp_subject_assignmentName[section_s][count_assign];
+						if_notPassed_AssignedDate[count_assign_check] = temp_subject_assignmentPeriond[section_s][count_assign];
+						count_assign_check++;
+					 }
+				 }
+			 }
+		 }
+	}
+	
+	public static void check_video_count()
+	{
+
+		count_notWatching_video = 1;
+		for(int i = 0 ; i < count ; i++)
+		 {
+			 for(int j = 0 ; j < 15 ; j++)
+			 {
+				 for(int k = 0 ; k < 15 ; k++)
+				 {
+					 if(subject_videoName[i][j][k] != null && check_video[i][j][k] != null)
+					 {				 
+						 boolean offline = check_video[i][j][k].equals(" 100%");
+						 boolean online =  check_video[i][j][k].equals("O");
+						 if(offline == false && online == false)
+						 {
+
+							String video_date = video_date_tokenizer(subject_videoPeriod[i][j][k]);
+							boolean time_check = video_verse_current(video_date,subject_videoLate[i][j][k]);
+							if(time_check == true)
+							{
+								count_notWatching_video++;
+							}
+						}
+					 }
+					
+				 }
+			 }
+		 }
+	}
+	
+	public static void check_assign_count ()
+	{
+		count_notPassed_assign = 1;		
+		for (int section_s = 0 ; section_s < count ; section_s++)
+		 {
+			 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
+			 {
+				 if(temp_subject_assignmentName[section_s][count_assign] != null)
+				 {
+					 boolean assign_check = check_assignment[section_s][count_assign].equals("미제출");
+					 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
+					 if(assign_check == true && time_check == true)
+					 {
+						 count_notPassed_assign++;
+					 }
+				 }
+			 }
+		 }
 	}
 	
 }

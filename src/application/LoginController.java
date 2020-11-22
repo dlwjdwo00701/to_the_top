@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -28,6 +29,7 @@ public class LoginController {
 	@FXML Label explain;   //FXML과 매핑시켜줌 
 	@FXML TextField ID;
 	@FXML TextField PASS;
+	@FXML CheckBox CHECK;
 	
 	@FXML protected void LoginButton(ActionEvent on) { //해당 매핑된 버튼이 클릭 되었을때 
 		try {
@@ -51,6 +53,7 @@ public class LoginController {
 			{
 				try{
 					File SmartCampas = new File("c://SmartCampas");
+					File PASSW = new File("c://SmartCampas//"+ID.getText()+"//PASSW.txt");
 					if(!SmartCampas.exists()){
 						SmartCampas.mkdirs();
 			        }
@@ -58,11 +61,24 @@ public class LoginController {
 					if(!IMP.exists()) {
 						IMP.mkdirs();
 						new_check=1;
+						if(CHECK.isSelected()==true) {
+							if(!PASSW.exists()){
+								FileWriter PASSW_= new FileWriter(PASSW);
+								PASSW_.write(PASS.getText());
+								PASSW_.flush();
+							}
+						}
 					}
 					else {
 						new_check=0;
+						if(CHECK.isSelected()==true) {
+							if(!PASSW.exists()){
+								FileWriter PASSW_= new FileWriter(PASSW);
+								PASSW_.write(PASS.getText());
+								PASSW_.flush();
+					        }
+						}
 					}
-					
 					ID_=ID.getText();
 
 				    Parent login = FXMLLoader.load(getClass().getResource("Loding.fxml"));
