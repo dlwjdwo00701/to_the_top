@@ -11,7 +11,7 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
+ 
 
  class SmartCampus {
 	 	private static Scanner scanner = new Scanner (System.in);
@@ -1236,15 +1236,18 @@ class SmartCampusTokenizer extends SmartCampus
 	//현재 시간과 동영상 날짜 비교함수 (한계를 지나갔는지 판단.)
 	public static boolean video_verse_current(String video_date , String video_late)
 	{
-		
 		if(video_late == null)
 		{
 			if((month(current_time)<=month(video_date))&&(date(current_time)<=date(video_date)))
+				return true;
+			else if(month(current_time) < month(video_date))
 				return true;
 		}
 		else
 		{
 			if((month(current_time)<=month(video_late))&&(date(current_time)<=date(video_late)))
+				return true;
+			else if(month(current_time) < month(video_late))
 				return true;
 		}
 		return false;
@@ -1278,16 +1281,18 @@ class SmartCampusTokenizer extends SmartCampus
 						
 							*/
 						 
-						 boolean offline = check_video[i][j][k].equals(" 100%");
+						 boolean offline = check_video[i][j][k].trim().equals("100%");
 						 boolean online =  check_video[i][j][k].equals("O");
 //						 System.out.println("subject_videoName = "+subject_videoName[i][j][k]+", check="+check_video[i][j][k]);
 						 if(offline == false && online == false)
 						 {
+//							System.out.println("video_name = "+subject_videoName[i][j][k]);
 //							System.out.println("count = "+count_video_check);
 							String video_date = video_date_tokenizer(subject_videoPeriod[i][j][k]);
 							boolean time_check = video_verse_current(video_date,subject_videoLate[i][j][k]);
 							if(time_check == true)
 							{
+//								System.out.println("video_name = "+subject_videoName[i][j][k]);
 								if_notattendent_week_videoName[count_video_check] = subject_videoName[i][j][k];
 								if_notattendent_week_videoDate[count_video_check] = video_date;
 								if_notattendent_week_videoLate[count_video_check] = subject_videoLate[i][j][k];
@@ -1418,12 +1423,11 @@ class SmartCampusTokenizer extends SmartCampus
 				 {
 					 if(subject_videoName[i][j][k] != null && check_video[i][j][k] != null)
 					 {				 
-						 boolean offline = check_video[i][j][k].equals(" 100%");
+						 boolean offline = check_video[i][j][k].trim().equals("100%");
 						 boolean online =  check_video[i][j][k].equals("O");
 //						 System.out.println("subject_videoName = "+subject_videoName[i][j][k]+", check="+check_video[i][j][k]);
-						 if(offline == false && online == false)
+						 if(offline == false && online == false && check_video[i][j][k] != null)
 						 {
-//							System.out.println("count = "+count_video_check);
 							String video_date = video_date_tokenizer(subject_videoPeriod[i][j][k]);
 							boolean time_check = video_verse_current(video_date,subject_videoLate[i][j][k]);
 							if(time_check == true)
