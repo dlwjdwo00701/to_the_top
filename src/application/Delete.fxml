@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane stylesheets="@../../bin/application/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DeleteController">
+   <children>
+      <Pane prefHeight="174.0" prefWidth="301.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="174.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="301.0" />
+      <Label fx:id="TMP" layoutX="29.0" layoutY="49.0" prefHeight="15.0" prefWidth="247.0" text="선택하신 일정을 삭제하시겠습니까?">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Button layoutX="46.0" layoutY="110.0" mnemonicParsing="false" onAction="#DELETE" prefHeight="27.0" prefWidth="73.0" text="삭제" textFill="WHITE" />
+      <Button layoutX="180.0" layoutY="110.0" mnemonicParsing="false" onAction="#NO" prefHeight="27.0" prefWidth="73.0" text="취소" textFill="WHITE" />
+   </children>
+</AnchorPane>

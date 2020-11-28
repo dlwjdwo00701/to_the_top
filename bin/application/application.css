@@ -17,3 +17,16 @@
 .background {
     -fx-background-color: #1d1d1d;
 }
+
+.button:pressed, .button:default:hover:pressed {
+  -fx-background-color: white;
+  -fx-text-fill: #1d1d1d;
+}
+
+ .list-view {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
+
+ .text-field {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}

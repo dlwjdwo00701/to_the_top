@@ -8,19 +8,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
+import org.jsoup.Connection.Method;
+import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 
 import static application.LoginController.cookies;
 import static application.LoginController.new_check;
 import static application.LoginController.ID_;
+import static application.LoginController.PASS_;
 
 public class LodingController {
 	
@@ -70,55 +74,95 @@ public class LodingController {
 	@FXML Label explain;
 	
 	int check=0;
+	static int dlwjdwo=0;;
 	
-	File SUBJECT_TITLE = new File("c://SmartCampas//"+ID_+"//subject_title.txt");
-	File SUBJECT_VIDEONAME = new File("c://SmartCampas//"+ID_+"//subject_videoName.txt");
-	File SUBJECT_VIDEOPERIOD = new File("c://SmartCampas//"+ID_+"//subject_videoPeriod.txt");
-	File SUBJECT_VIDEOLENGTH = new File("c://SmartCampas//"+ID_+"//subject_videoLength.txt");
-	File SUBJECT_VIDEOLATE = new File("c://SmartCampas//"+ID_+"//subject_videoLate.txt");
-	File CHECK_VIDEO = new File("c://SmartCampas//"+ID_+"//check_video.txt");
-	File CHECK_ASSIGNMENT = new File("c://SmartCampas//"+ID_+"//check_assignment.txt");
-	File TEMP_SUBJECT_ASSIGNMENTNAME = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentName.txt");
-	File TEMP_SUBJECT_ASSIGNMENTPERIOD = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentPeriond.txt");
+	static File COUNT = new File("c://SmartCampas//"+ID_+"//count.txt");
+	static File SUBJECT_TITLE = new File("c://SmartCampas//"+ID_+"//subject_title.txt");
+	static File SUBJECT_VIDEONAME = new File("c://SmartCampas//"+ID_+"//subject_videoName.txt");
+	static File SUBJECT_VIDEOPERIOD = new File("c://SmartCampas//"+ID_+"//subject_videoPeriod.txt");
+	static File SUBJECT_VIDEOLENGTH = new File("c://SmartCampas//"+ID_+"//subject_videoLength.txt");
+	static File SUBJECT_VIDEOLATE = new File("c://SmartCampas//"+ID_+"//subject_videoLate.txt");
+	static File CHECK_VIDEO = new File("c://SmartCampas//"+ID_+"//check_video.txt");
+	static File CHECK_ASSIGNMENT = new File("c://SmartCampas//"+ID_+"//check_assignment.txt");
+	static File TEMP_SUBJECT_ASSIGNMENTNAME = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentName.txt");
+	static File TEMP_SUBJECT_ASSIGNMENTPERIOD = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentPeriond.txt");
 	
 	
 	@FXML protected void CRAWLING(ActionEvent on){  
-		if(new_check==0) {
-			check=1;
-			explain.setText("저장 정보를 불러왔습니다! 맞다면 확인 버튼을 눌러주세요!");
-		}
-		if(check==0) {
-			try {
-				this.access_lecture_index();
-				this.execution_crawling();
-				this.video_assignment_divide();
-				current_time();
-				check_video_count();
-				check_assign_count();
-				
-				FileWriter SUBJECT_TITLE_= new FileWriter(SUBJECT_TITLE);
-				FileWriter SUBJECT_VIDEONAME_= new FileWriter(SUBJECT_VIDEONAME);
-				FileWriter SUBJECT_VIDEOPERIOD_= new FileWriter(SUBJECT_VIDEOPERIOD);
-				FileWriter SUBJECT_VIDEOLENGTH_= new FileWriter(SUBJECT_VIDEOLENGTH);
-				FileWriter SUBJECT_VIDEOLATE_= new FileWriter(SUBJECT_VIDEOLATE);
-				FileWriter CHECK_VIDEO_= new FileWriter(CHECK_VIDEO);
-				FileWriter CHECK_ASSIGNMENT_= new FileWriter(CHECK_ASSIGNMENT);
-				FileWriter TEMP_SUBJECT_ASSIGNMENTNAME_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTNAME);
-				FileWriter TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTPERIOD);
-				
-				
-				explain.setLayoutX(45);
-				explain.setText("수강하시는 강의가 맞나요? 맞으면 확인 버튼을 눌러주세요!");
-				check++;		
-			}	catch(IOException a){
-				
+		if(dlwjdwo==0) {
+			if(new_check==0) {
+				if(check==0) {
+					try {
+						load();
+						current_time();
+						check_video_count();
+						check_assign_count();
+						explain();
+						explain.setText("저장 정보를 불러왔습니다! 맞다면 확인 버튼을 눌러주세요!");
+						check++;
+					} catch(IOException a) {
+						
+					
+				}
+				}
 			}
-		}	
+			else {
+				if(check==0) {
+					try {
+						access_lecture_index();
+						execution_crawling();
+						video_assignment_divide();
+						current_time();
+						check_video_count();
+						check_assign_count();
+						save();		
+						explain.setLayoutX(45);
+						explain.setText("수강하시는 강의가 맞나요? 맞으면 확인 버튼을 눌러주세요!");
+						check++;		
+					}	catch(IOException a){
+						
+					}
+				}
+			}
+			dlwjdwo++;
 		}
+		else {
+			if(check==0) {
+				try {
+					Response loginResponse = (Response)Jsoup.connect("https://myclass.ssu.ac.kr/login/index.php")  //우선적으로는 로그인
+							.data("username", ID_)
+							.data("password" , PASS_)
+							.method(Method.POST)
+							.execute();
+						
+					cookies = loginResponse.cookies();
+					
+					count=0;
+					access_lecture_index();
+					execution_crawling();
+					video_assignment_divide();
+					current_time();
+					check_video_count();
+					check_assign_count();
+					save();		
+					explain.setLayoutX(45);
+					explain.setText("수강하시는 강의가 맞나요? 맞으면 확인 버튼을 눌러주세요!");
+					check++;		
+				}	catch(IOException a){
+					
+				}
+			}
+		}
+		
+	}
 	
 	@FXML protected void OK(ActionEvent on){  
+		if(dlwjdwo==1) {
 			if(check==1) {
 				try{
+					check_x_video_time();
+					check_x_assignment_time();
+					dlwjdwo++;
 				    Parent login = FXMLLoader.load(getClass().getResource("Calendar.fxml"));
 				    Scene scene = new Scene(login);
 				    Stage primaryStage = (Stage)NINE.getScene().getWindow(); // 현재 윈도우 가져오기
@@ -128,13 +172,179 @@ public class LodingController {
 				}
 			}
 		}
+		else {
+			check_x_video_time();
+			check_x_assignment_time();
+			CalendarController.page=0;
+			Stage stage = (Stage) ONE.getScene().getWindow();
+			stage.close();
+		}
+			
+		}
+	
+	public static void save() throws IOException {
+		FileWriter COUNT_= new FileWriter(COUNT);
+		FileWriter SUBJECT_TITLE_= new FileWriter(SUBJECT_TITLE);
+		FileWriter SUBJECT_VIDEONAME_= new FileWriter(SUBJECT_VIDEONAME);
+		FileWriter SUBJECT_VIDEOPERIOD_= new FileWriter(SUBJECT_VIDEOPERIOD);
+		FileWriter SUBJECT_VIDEOLENGTH_= new FileWriter(SUBJECT_VIDEOLENGTH);
+		FileWriter SUBJECT_VIDEOLATE_= new FileWriter(SUBJECT_VIDEOLATE);
+		FileWriter CHECK_VIDEO_= new FileWriter(CHECK_VIDEO);
+		FileWriter CHECK_ASSIGNMENT_= new FileWriter(CHECK_ASSIGNMENT);
+		FileWriter TEMP_SUBJECT_ASSIGNMENTNAME_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTNAME);
+		FileWriter TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTPERIOD);
+		
+		COUNT_.write(Integer.toString(count));
+		COUNT_.flush();
+		
+		int a, b, c;
+		for(a=0;a<count;a++) {
+			SUBJECT_TITLE_.write(subject_title[a]+"\n");
+			SUBJECT_TITLE_.flush();
+			for(b=0;b<15;b++) {
+				for(c=0;c<15;c++) {
+					SUBJECT_VIDEONAME_.write(subject_videoName[a][b][c]+"\n");
+					SUBJECT_VIDEONAME_.flush();
+					SUBJECT_VIDEOPERIOD_.write(subject_videoPeriod[a][b][c]+"\n");
+					SUBJECT_VIDEOPERIOD_.flush();
+					SUBJECT_VIDEOLENGTH_.write(subject_videoLength[a][b][c]+"\n");
+					SUBJECT_VIDEOLENGTH_.flush();
+					SUBJECT_VIDEOLATE_.write(subject_videoLate[a][b][c]+"\n");
+					SUBJECT_VIDEOLATE_.flush();
+				}
+			}
+		}
+		
+		for(a=0;a<count;a++) {
+			for(b=0;b<16;b++) {
+				for(c=0;c<15;c++) {
+					CHECK_VIDEO_.write(check_video[a][b][c]+"\n");
+					CHECK_VIDEO_.flush();
+				}
+			}
+		}
+		
+		for(a=0;a<count;a++) {
+			for(b=0;b<40;b++) {
+				CHECK_ASSIGNMENT_.write(check_assignment[a][b]+"\n");
+				CHECK_ASSIGNMENT_.flush();
+				TEMP_SUBJECT_ASSIGNMENTNAME_.write(temp_subject_assignmentName[a][b]+"\n");
+				TEMP_SUBJECT_ASSIGNMENTNAME_.flush();
+				TEMP_SUBJECT_ASSIGNMENTPERIOD_.write(temp_subject_assignmentPeriond[a][b]+"\n");
+				TEMP_SUBJECT_ASSIGNMENTPERIOD_.flush();
+			}
+		}
+		
+		SUBJECT_TITLE_.close();
+		SUBJECT_VIDEONAME_.close();
+		SUBJECT_VIDEOPERIOD_.close();
+		SUBJECT_VIDEOLENGTH_.close();
+		SUBJECT_VIDEOLATE_.close();
+		CHECK_VIDEO_.close();
+		CHECK_ASSIGNMENT_.close();
+		TEMP_SUBJECT_ASSIGNMENTNAME_.close();
+		TEMP_SUBJECT_ASSIGNMENTPERIOD_.close();
+		COUNT_.close();
+	}
+	
+	public void load() throws IOException{
+		
+		FileReader COUNT_= new FileReader(COUNT);
+		FileReader SUBJECT_TITLE_= new FileReader(SUBJECT_TITLE);
+		FileReader SUBJECT_VIDEONAME_= new FileReader(SUBJECT_VIDEONAME);
+		FileReader SUBJECT_VIDEOPERIOD_= new FileReader(SUBJECT_VIDEOPERIOD);
+		FileReader SUBJECT_VIDEOLENGTH_= new FileReader(SUBJECT_VIDEOLENGTH);
+		FileReader SUBJECT_VIDEOLATE_= new FileReader(SUBJECT_VIDEOLATE);
+		FileReader CHECK_VIDEO_= new FileReader(CHECK_VIDEO);
+		FileReader CHECK_ASSIGNMENT_= new FileReader(CHECK_ASSIGNMENT);
+		FileReader TEMP_SUBJECT_ASSIGNMENTNAME_= new FileReader(TEMP_SUBJECT_ASSIGNMENTNAME);
+		FileReader TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileReader(TEMP_SUBJECT_ASSIGNMENTPERIOD);
+		
+		BufferedReader COUNT__ = new BufferedReader(COUNT_);
+		BufferedReader SUBJECT_TITLE__ = new BufferedReader(SUBJECT_TITLE_);
+		BufferedReader SUBJECT_VIDEONAME__ = new BufferedReader(SUBJECT_VIDEONAME_);
+		BufferedReader SUBJECT_VIDEOPERIOD__ = new BufferedReader(SUBJECT_VIDEOPERIOD_);
+		BufferedReader SUBJECT_VIDEOLENGTH__ = new BufferedReader(SUBJECT_VIDEOLENGTH_);
+		BufferedReader SUBJECT_VIDEOLATE__ = new BufferedReader(SUBJECT_VIDEOLATE_);
+		BufferedReader CHECK_VIDEO__ = new BufferedReader(CHECK_VIDEO_);
+		BufferedReader CHECK_ASSIGNMENT__ = new BufferedReader(CHECK_ASSIGNMENT_);
+		BufferedReader TEMP_SUBJECT_ASSIGNMENTNAME__ = new BufferedReader(TEMP_SUBJECT_ASSIGNMENTNAME_);
+		BufferedReader TEMP_SUBJECT_ASSIGNMENTPERIOD__ = new BufferedReader(TEMP_SUBJECT_ASSIGNMENTPERIOD_);
+		
+        count=Integer.parseInt(COUNT__.readLine());
+            
+        subject_title = new String [count];
+        subject_videoName = new String [count][15][15];
+		subject_videoPeriod = new String [count][15][15];
+		subject_videoLength = new String [count][15][15];
+		subject_videoLate = new String[count][15][15];
+		
+		check_video = new String [count][16][15];
+		check_assignment = new String [count][40];
+		temp_subject_assignmentName = new String [count][40];
+		temp_subject_assignmentPeriond = new String [count][40];
+		
+		int a, b, c;
+		for(a=0;a<count;a++) {
+			subject_title[a]=SUBJECT_TITLE__.readLine();
+			for(b=0;b<15;b++) {
+				for(c=0;c<15;c++) {
+					subject_videoName[a][b][c]=SUBJECT_VIDEONAME__.readLine();
+					if(subject_videoName[a][b][c].equals("null")) {
+						subject_videoName[a][b][c]=null;
+					}
+					subject_videoPeriod[a][b][c]=SUBJECT_VIDEOPERIOD__.readLine();
+					if(subject_videoPeriod[a][b][c].equals("null")) {
+						subject_videoPeriod[a][b][c]=null;
+					}
+					subject_videoLength[a][b][c]=SUBJECT_VIDEOLENGTH__.readLine();
+					if(subject_videoLength[a][b][c].equals("null")) {
+						subject_videoLength[a][b][c]=null;
+					}
+					subject_videoLate[a][b][c]=SUBJECT_VIDEOLATE__.readLine();
+					if(subject_videoLate[a][b][c].equals("null")) {
+						subject_videoLate[a][b][c]=null;
+					}
+				}
+			}
+		}
+		
+		for(a=0;a<count;a++) {
+			for(b=0;b<16;b++) {
+				for(c=0;c<15;c++) {
+					check_video[a][b][c]=CHECK_VIDEO__.readLine();
+					if(check_video[a][b][c].equals("null")) {
+						check_video[a][b][c]=null;
+					}
+				}
+			}
+		}
+		
+		for(a=0;a<count;a++) {
+			for(b=0;b<40;b++) {
+				check_assignment[a][b]=CHECK_ASSIGNMENT__.readLine();
+				if(check_assignment[a][b].equals("null")) {
+					check_assignment[a][b]=null;
+				}
+				temp_subject_assignmentName[a][b]=TEMP_SUBJECT_ASSIGNMENTNAME__.readLine();
+				if(temp_subject_assignmentName[a][b].equals("null")) {
+					temp_subject_assignmentName[a][b]=null;
+				}
+				temp_subject_assignmentPeriond[a][b]=TEMP_SUBJECT_ASSIGNMENTPERIOD__.readLine();
+				if(temp_subject_assignmentPeriond[a][b].equals("null")) {
+					temp_subject_assignmentPeriond[a][b]=null;
+				}
+			}
+		}
+
+	}
 	
 	public void access_lecture_index() throws IOException
 	{
 		Document doc1 = Jsoup.connect("http://myclass.ssu.ac.kr/")
 				.cookies(cookies)
 				.get();
-		
+
 		String docu = doc1.toString();
 		
 		int startIdxCount = 0;
@@ -176,9 +386,9 @@ public class LodingController {
 				endIdx_array[i] = docu.indexOf("<span style=\"color:#999;\">",endIdx_array[i-1]+50);
 				startIdx_array[i] = docu.indexOf("<div class=\"course-title\">",endIdx_array[i-1]);
 			}
-			
 			subject_title[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 		}
+		
 		for (int i = 0; i < startIdx_array.length ; i++)
 		{
 			if(i == 0)
@@ -194,6 +404,7 @@ public class LodingController {
 
 			subject_link[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 		}
+		
 	}
 	
 	public void execution_crawling() throws IOException
@@ -336,6 +547,42 @@ public class LodingController {
 				}
 				array_subject_link[section][k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
 				count2++;
+			}
+		}
+	}
+	
+	public void explain() {
+		int i;
+		for(i=0;i<count;i++) {
+			switch(i) {
+			case 0:
+				ONE.setText(subject_title[i]);
+				break;
+			case 1:
+				TWO.setText(subject_title[i]);
+				break;
+			case 2:
+				THREE.setText(subject_title[i]);
+				break;
+			case 3:
+				FOUR.setText(subject_title[i]);
+				break;
+			case 4:
+				FIVE.setText(subject_title[i]);
+				break;
+			case 5:
+				SIX.setText(subject_title[i]);
+				break;
+			case 6:
+				SEVEN.setText(subject_title[i]);
+				break;
+			case 7:
+				EIGHT.setText(subject_title[i]);
+				break;
+			case 8:
+				NINE.setText(subject_title[i]);
+				break;
+				
 			}
 		}
 	}
@@ -870,10 +1117,14 @@ public class LodingController {
 		{
 			if((month(current_time)<=month(video_date))&&(date(current_time)<=date(video_date)))
 				return true;
+			else if(month(current_time)<month(video_date))
+				return true;
 		}
 		else
 		{
 			if((month(current_time)<=month(video_late))&&(date(current_time)<=date(video_late)))
+				return true;
+			else if(month(current_time)<month(video_late))
 				return true;
 		}
 		return false;
@@ -975,7 +1226,7 @@ public class LodingController {
 				 {
 					 if(subject_videoName[i][j][k] != null && check_video[i][j][k] != null)
 					 {				 
-						 boolean offline = check_video[i][j][k].equals(" 100%");
+						 boolean offline = check_video[i][j][k].trim().equals("100%");
 						 boolean online =  check_video[i][j][k].equals("O");
 						 if(offline == false && online == false)
 						 {

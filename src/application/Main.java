@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import org.jsoup.*;
  
 public class Main extends Application {
  

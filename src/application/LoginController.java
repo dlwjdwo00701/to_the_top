@@ -11,7 +11,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Map;
 
@@ -22,9 +25,10 @@ import org.jsoup.nodes.Document;
 
 public class LoginController {
 	
-	protected static int new_check;
+	protected static int new_check=0;
 	protected static Map<String,String> cookies;
 	protected static String ID_;
+	protected static String PASS_;
 	
 	@FXML Label explain;   //FXML과 매핑시켜줌 
 	@FXML TextField ID;
@@ -33,6 +37,33 @@ public class LoginController {
 	
 	@FXML protected void LoginButton(ActionEvent on) { //해당 매핑된 버튼이 클릭 되었을때 
 		try {
+			File IMP = new File("c://SmartCampas//"+ID.getText());
+			if(IMP.exists()) {
+				String PASSWORDS = PASS.getText();
+				File P = new File("c://SmartCampas//"+ID.getText()+"//PASSW.txt");
+				File SUBJECT_TITLE = new File("c://SmartCampas//"+ID.getText()+"//subject_title.txt");
+				if(P.exists()) {
+					if(SUBJECT_TITLE.exists()) {
+						FileReader P_= new FileReader(P);
+						BufferedReader P__ = new BufferedReader(P_);
+						char[] array =P__.readLine().toCharArray();
+						for (int j = 0; j < array.length; j++) {
+						    array[j]-=2;
+						}
+						String tmp = String.valueOf(array);
+						if(PASSWORDS.equals(tmp)) {
+							ID_=ID.getText();
+							PASS_=PASSWORDS;
+							P__.close();
+							Parent login = FXMLLoader.load(getClass().getResource("Loding.fxml"));
+						    Scene scene = new Scene(login);
+						    Stage primaryStage = (Stage)PASS.getScene().getWindow(); // 현재 윈도우 가져오기
+						    primaryStage.setScene(scene);
+						}
+					}
+				}
+			}
+			
 			
 			Response loginResponse = (Response)Jsoup.connect("https://myclass.ssu.ac.kr/login/index.php")  //우선적으로는 로그인
 					.data("username", ID.getText())
@@ -57,30 +88,36 @@ public class LoginController {
 					if(!SmartCampas.exists()){
 						SmartCampas.mkdirs();
 			        }
-					File IMP = new File("c://SmartCampas//"+ID.getText());
+					String PASSWORDS = PASS.getText();
+					char[] array = PASSWORDS.toCharArray();
+					for (int j = 0; j < array.length; j++) {
+					    array[j]+=2;
+					}
+					PASSWORDS = String.valueOf(array);
 					if(!IMP.exists()) {
 						IMP.mkdirs();
-						new_check=1;
+						new_check++;
 						if(CHECK.isSelected()==true) {
 							if(!PASSW.exists()){
 								FileWriter PASSW_= new FileWriter(PASSW);
-								PASSW_.write(PASS.getText());
+								PASSW_.write(PASSWORDS);
 								PASSW_.flush();
+								PASSW_.close();
 							}
 						}
 					}
 					else {
-						new_check=0;
 						if(CHECK.isSelected()==true) {
 							if(!PASSW.exists()){
 								FileWriter PASSW_= new FileWriter(PASSW);
-								PASSW_.write(PASS.getText());
+								PASSW_.write(PASSWORDS);
 								PASSW_.flush();
+								PASSW_.close();
 					        }
 						}
 					}
 					ID_=ID.getText();
-
+					PASS_=PASS.getText();
 				    Parent login = FXMLLoader.load(getClass().getResource("Loding.fxml"));
 				    Scene scene = new Scene(login);
 				    Stage primaryStage = (Stage)PASS.getScene().getWindow(); // 현재 윈도우 가져오기

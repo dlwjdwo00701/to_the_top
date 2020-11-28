@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.web.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane stylesheets="@../../bin/application/application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NoticeController">
+   <children>
+      <Pane prefHeight="589.0" prefWidth="538.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="589.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="538.0" />
+            <WebView fx:id="WEB" layoutX="14.0" layoutY="14.0" prefHeight="451.0" prefWidth="509.0" />
+            <TextField fx:id="WHAT" layoutX="75.0" layoutY="487.0" prefHeight="23.0" prefWidth="435.0" />
+            <Label layoutX="27.0" layoutY="491.0" text="검색어" />
+            <Button layoutX="87.0" layoutY="538.0" mnemonicParsing="false" onAction="#SEARCH" prefHeight="27.0" prefWidth="91.0" text="검색" textFill="WHITE" />
+            <Button layoutX="356.0" layoutY="538.0" mnemonicParsing="false" onAction="#CLOSE" prefHeight="27.0" prefWidth="91.0" text="종료" textFill="WHITE" />
+            <Button layoutX="216.0" layoutY="538.0" mnemonicParsing="false" onAction="#DEFUALT" prefHeight="27.0" prefWidth="91.0" text="기본" textFill="WHITE" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

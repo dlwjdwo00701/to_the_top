@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddController">
+   <children>
+      <Pane prefHeight="196.0" prefWidth="277.0" stylesheets="@application.css">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="195.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="277.0" />
+            <Button layoutX="36.0" layoutY="142.0" mnemonicParsing="false" onAction="#PLUS" prefHeight="27.0" prefWidth="61.0" text="추가" textFill="WHITE" />
+            <Label layoutX="14.0" layoutY="88.0" text="일정 이름" />
+            <TextField fx:id="NAME" layoutX="79.0" layoutY="84.0" prefHeight="23.0" prefWidth="190.0" />
+            <Button layoutX="176.0" layoutY="143.0" mnemonicParsing="false" onAction="#NO" prefHeight="27.0" prefWidth="61.0" text="취소" textFill="WHITE" />
+            <DatePicker fx:id="DATE" layoutX="78.0" layoutY="32.0" prefHeight="23.0" prefWidth="190.0" />
+            <Label layoutX="14.0" layoutY="36.0" text="일정 일자" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane stylesheets="@application.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Expain_V_Controller">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="191.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="395.0" />
+      <Pane prefHeight="191.0" prefWidth="395.0">
+         <children>
+            <Button layoutX="257.0" layoutY="151.0" mnemonicParsing="false" onAction="#CHECKCHECK" prefHeight="27.0" prefWidth="78.0" text="확인 완료!" textFill="WHITE" />
+            <Button layoutX="49.0" layoutY="151.0" mnemonicParsing="false" onAction="#PICKUP" prefHeight="27.0" prefWidth="78.0" text="가져오기" textFill="WHITE" />
+         </children></Pane>
+      <Label fx:id="name" layoutX="14.0" layoutY="23.0" />
+      <Label fx:id="period" layoutX="14.0" layoutY="52.0" />
+      <Label fx:id="length" layoutX="14.0" layoutY="83.0" prefHeight="15.0" prefWidth="52.0" />
+      <Label fx:id="late" layoutX="14.0" layoutY="115.0" />
+      <Label fx:id="NAME_V" layoutX="73.0" layoutY="22.0" prefHeight="15.0" prefWidth="311.0" text="가져오기 버튼을 눌러주세요!!" />
+      <Label fx:id="PERIOD_V" layoutX="73.0" layoutY="51.0" prefHeight="15.0" prefWidth="311.0" />
+      <Label fx:id="LENGTH_V" layoutX="73.0" layoutY="82.0" prefHeight="15.0" prefWidth="311.0" />
+      <Label fx:id="LATE_V" layoutX="73.0" layoutY="114.0" prefHeight="15.0" prefWidth="311.0" />
+   </children>
+</AnchorPane>
