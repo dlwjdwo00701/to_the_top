@@ -3,7 +3,7 @@
 
 ## 현재까지 완성한 작업
 ### 크롤링 (배준형,이정재)
-#### https://github.com/dlwjdwo00701/to_the_top/tree/master
+#### [https://github.com/dlwjdwo00701/to_the_top/tree/master]
    * 7주차   : 스마트캠퍼스 강의 인덱스 번호와 강의 링크 크롤링.(시작)
    * 7주차2  : 0번 인덱스 제작, SmartCampus 객체화
    * 8~9주차 : 크롤링한 강의 목록을 다듬기 (시간,날짜,텍스트로 내용을 분할함)
