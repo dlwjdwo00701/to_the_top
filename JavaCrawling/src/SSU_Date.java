@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+//학사일정 내용 전반 수정
 
 public class SSU_Date extends SmartCampusTokenizer{
 	protected static final String u_saint_Date_link 
