@@ -201,6 +201,7 @@ public class CalendarController {
 					}
 				}
 			}
+			DATE_U_.close();
 		} catch(IOException a) {
 		}
 		
@@ -231,6 +232,7 @@ public class CalendarController {
 					tmp=0;
 				}
 			}
+			DATE_U_.close();
 		} catch(IOException a) {
 		}
 	}
@@ -604,8 +606,10 @@ public class CalendarController {
 		int a,b,c=0;
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[month-1][date-1][a][b]!=null||date_A[month-1][date-1][a][b]!=null) {
-					c++;
+				if(date-first_day>=0) {
+					if(date_V[month-1][date-first_day][a][b]!=null||date_A[month-1][date-first_day][a][b]!=null) {
+						c++;
+					}
 				}
 				if(c==1) {
 					c++;
@@ -615,8 +619,10 @@ public class CalendarController {
 			c=0;
 		}
 		for(a=0;a<40;a++) {
-			if(date_U[month-1][date-1][a]!=null) {
-				tmp=tmp+"*";
+			if(date-first_day>=0) {
+				if(date_U[month-1][date-first_day][a]!=null) {
+					tmp=tmp+"*";
+				}
 			}
 		}
 		
@@ -1094,23 +1100,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][0][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][0][a][b]);
+				if(date_V[M-1][0-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][0-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][0][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][0][a][b]);
+				if(date_A[M-1][0-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][0-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][0][a]!=null) {
-				mainlist.add(">"+date_U[M-1][0][a]);
+			if(date_U[M-1][0-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][0-first_day+1][a]);
 			}
 		}
 		this_date=0;
@@ -1122,23 +1128,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][1][a][b]);
+				if(date_V[M-1][1-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][1-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][1][a][b]);
+				if(date_A[M-1][1-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][1-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][0][a]);
+			if(date_U[M-1][1-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][1-first_day+1][a]);
 			}
 		}
 		this_date=1;
@@ -1150,23 +1156,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][2][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][2][a][b]);
+				if(date_V[M-1][2-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][2-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][2][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][2][a][b]);
+				if(date_A[M-1][2-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][2-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][2][a]!=null) {
-				mainlist.add(">"+date_U[M-1][2][a]);
+			if(date_U[M-1][2-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][2-first_day+1][a]);
 			}
 		}
 		this_date=2;
@@ -1178,23 +1184,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][3][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][3][a][b]);
+				if(date_V[M-1][3-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][3-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][3][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][3][a][b]);
+				if(date_A[M-1][3-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][3-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][3][a]!=null) {
-				mainlist.add(">"+date_U[M-1][3][a]);
+			if(date_U[M-1][3-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][3-first_day+1][a]);
 			}
 		}
 		this_date=3;
@@ -1206,23 +1212,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][4][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][4][a][b]);
+				if(date_V[M-1][4-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][4-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][4][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][4][a][b]);
+				if(date_A[M-1][4-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][4-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][4][a]!=null) {
-				mainlist.add(">"+date_U[M-1][4][a]);
+			if(date_U[M-1][4-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][4-first_day+1][a]);
 			}
 		}
 		this_date=4;
@@ -1234,23 +1240,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][5][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][5][a][b]);
+				if(date_V[M-1][5-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][5-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][5][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][5][a][b]);
+				if(date_A[M-1][5-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][5-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][5][a]!=null) {
-				mainlist.add(">"+date_U[M-1][5][a]);
+			if(date_U[M-1][5-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][5-first_day+1][a]);
 			}
 		}
 		this_date=5;
@@ -1262,23 +1268,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][6][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][6][a][b]);
+				if(date_V[M-1][6-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][6-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][6][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][6][a][b]);
+				if(date_A[M-1][6-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][6-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][6][a]!=null) {
-				mainlist.add(">"+date_U[M-1][6][a]);
+			if(date_U[M-1][6-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][6-first_day+1][a]);
 			}
 		}
 		this_date=6;
@@ -1290,23 +1296,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][7][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][7][a][b]);
+				if(date_V[M-1][7-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][7-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][7][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][7][a][b]);
+				if(date_A[M-1][7-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][7-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][7][a]!=null) {
-				mainlist.add(">"+date_U[M-1][7][a]);
+			if(date_U[M-1][7-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][7-first_day+1][a]);
 			}
 		}
 		this_date=7;
@@ -1318,23 +1324,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][8][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][8][a][b]);
+				if(date_V[M-1][8-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][8-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][8][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][8][a][b]);
+				if(date_A[M-1][8-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][8-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][8][a]!=null) {
-				mainlist.add(">"+date_U[M-1][8][a]);
+			if(date_U[M-1][8-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][8-first_day+1][a]);
 			}
 		}
 		this_date=8;
@@ -1346,23 +1352,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][9][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][9][a][b]);
+				if(date_V[M-1][9-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][9-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][9][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][9][a][b]);
+				if(date_A[M-1][9-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][9-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][9][a]!=null) {
-				mainlist.add(">"+date_U[M-1][9][a]);
+			if(date_U[M-1][9-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][9-first_day+1][a]);
 			}
 		}
 		this_date=9;
@@ -1374,23 +1380,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][10][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][10][a][b]);
+				if(date_V[M-1][10-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][10-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][10][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][10][a][b]);
+				if(date_A[M-1][10-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][10-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][10][a]!=null) {
-				mainlist.add(">"+date_U[M-1][10][a]);
+			if(date_U[M-1][10-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][10-first_day+1][a]);
 			}
 		}
 		this_date=10;
@@ -1402,23 +1408,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][11][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][11][a][b]);
+				if(date_V[M-1][11-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][11-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][11][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][11][a][b]);
+				if(date_A[M-1][11-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][11-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][11][a]!=null) {
-				mainlist.add(">"+date_U[M-1][11][a]);
+			if(date_U[M-1][11-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][11-first_day+1][a]);
 			}
 		}
 		this_date=11;
@@ -1430,23 +1436,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][12][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][12][a][b]);
+				if(date_V[M-1][12-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][12-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][12][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][12][a][b]);
+				if(date_A[M-1][12-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][12-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][12][a]!=null) {
-				mainlist.add(">"+date_U[M-1][12][a]);
+			if(date_U[M-1][12-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][12-first_day+1][a]);
 			}
 		}
 		this_date=12;
@@ -1458,23 +1464,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][13][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][13][a][b]);
+				if(date_V[M-1][13-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][13-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][13][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][13][a][b]);
+				if(date_A[M-1][13-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][13-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][13][a]!=null) {
-				mainlist.add(">"+date_U[M-1][13][a]);
+			if(date_U[M-1][13-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][13-first_day+1][a]);
 			}
 		}
 		this_date=13;
@@ -1486,23 +1492,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][14][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][14][a][b]);
+				if(date_V[M-1][14-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][14-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][14][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][14][a][b]);
+				if(date_A[M-1][14-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][14-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][14][a]!=null) {
-				mainlist.add(">"+date_U[M-1][14][a]);
+			if(date_U[M-1][14-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][14-first_day+1][a]);
 			}
 		}
 		this_date=14;
@@ -1514,23 +1520,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][15][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][15][a][b]);
+				if(date_V[M-1][15-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][15-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][15][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][15][a][b]);
+				if(date_A[M-1][15-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][15-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][15][a]!=null) {
-				mainlist.add(">"+date_U[M-1][15][a]);
+			if(date_U[M-1][15-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][15-first_day+1][a]);
 			}
 		}
 		this_date=15;
@@ -1542,23 +1548,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][16][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][16][a][b]);
+				if(date_V[M-1][16-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][16-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][16][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][16][a][b]);
+				if(date_A[M-1][16-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][16-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][16][a]!=null) {
-				mainlist.add(">"+date_U[M-1][16][a]);
+			if(date_U[M-1][16-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][16-first_day+1][a]);
 			}
 		}
 		this_date=16;
@@ -1570,23 +1576,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][17][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][17][a][b]);
+				if(date_V[M-1][17-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][17-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][17][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][17][a][b]);
+				if(date_A[M-1][17-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][17-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][17][a]!=null) {
-				mainlist.add(">"+date_U[M-1][17][a]);
+			if(date_U[M-1][17-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][17-first_day+1][a]);
 			}
 		}
 		this_date=17;
@@ -1598,23 +1604,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][18][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][18][a][b]);
+				if(date_V[M-1][18-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][18-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][18][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][18][a][b]);
+				if(date_A[M-1][18-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][18-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][18][a]!=null) {
-				mainlist.add(">"+date_U[M-1][18][a]);
+			if(date_U[M-1][18-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][18-first_day+1][a]);
 			}
 		}
 		this_date=18;
@@ -1626,23 +1632,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][19][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][19][a][b]);
+				if(date_V[M-1][19-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][19-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][19][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][19][a][b]);
+				if(date_A[M-1][19-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][19-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][19][a]!=null) {
-				mainlist.add(">"+date_U[M-1][19][a]);
+			if(date_U[M-1][19-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][19-first_day+1][a]);
 			}
 		}
 		this_date=19;
@@ -1654,23 +1660,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][20][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][20][a][b]);
+				if(date_V[M-1][20-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][20-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][20][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][20][a][b]);
+				if(date_A[M-1][20-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][20-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][20][a]!=null) {
-				mainlist.add(">"+date_U[M-1][20][a]);
+			if(date_U[M-1][20-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][20-first_day+1][a]);
 			}
 		}
 		this_date=20;
@@ -1682,23 +1688,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][21][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][21][a][b]);
+				if(date_V[M-1][21-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][21-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][21][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][21][a][b]);
+				if(date_A[M-1][21-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][21-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][21][a]!=null) {
-				mainlist.add(">"+date_U[M-1][21][a]);
+			if(date_U[M-1][21-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][21-first_day+1][a]);
 			}
 		}
 		this_date=21;
@@ -1710,23 +1716,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][22][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][22][a][b]);
+				if(date_V[M-1][22-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][22-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][22][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][22][a][b]);
+				if(date_A[M-1][22-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][22-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][22][a]!=null) {
-				mainlist.add(">"+date_U[M-1][22][a]);
+			if(date_U[M-1][22-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][22-first_day+1][a]);
 			}
 		}
 		this_date=22;
@@ -1738,23 +1744,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][23][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][23][a][b]);
+				if(date_V[M-1][23-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][23-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][23][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][23][a][b]);
+				if(date_A[M-1][23-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][23-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][23][a]!=null) {
-				mainlist.add(">"+date_U[M-1][23][a]);
+			if(date_U[M-1][23-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][23-first_day+1][a]);
 			}
 		}
 		this_date=23;
@@ -1766,23 +1772,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][24][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][24][a][b]);
+				if(date_V[M-1][24-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][24-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][24][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][24][a][b]);
+				if(date_A[M-1][24-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][24-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][24][a]!=null) {
-				mainlist.add(">"+date_U[M-1][24][a]);
+			if(date_U[M-1][24-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][24-first_day+1][a]);
 			}
 		}
 		this_date=24;
@@ -1794,23 +1800,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][25][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][25][a][b]);
+				if(date_V[M-1][25-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][25-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][25][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][25][a][b]);
+				if(date_A[M-1][25-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][25-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][25][a]!=null) {
-				mainlist.add(">"+date_U[M-1][25][a]);
+			if(date_U[M-1][25-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][25-first_day+1][a]);
 			}
 		}
 		this_date=25;
@@ -1822,23 +1828,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][26][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][26][a][b]);
+				if(date_V[M-1][26-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][26-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][26][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][26][a][b]);
+				if(date_A[M-1][26-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][26-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][26][a]!=null) {
-				mainlist.add(">"+date_U[M-1][26][a]);
+			if(date_U[M-1][26-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][26-first_day+1][a]);
 			}
 		}
 		this_date=26;
@@ -1850,23 +1856,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][27][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][27][a][b]);
+				if(date_V[M-1][27-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][27-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][27][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][27][a][b]);
+				if(date_A[M-1][27-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][27-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][27][a]!=null) {
-				mainlist.add(">"+date_U[M-1][27][a]);
+			if(date_U[M-1][27-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][27-first_day+1][a]);
 			}
 		}
 		this_date=27;
@@ -1878,23 +1884,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][28][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][28][a][b]);
+				if(date_V[M-1][28-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][28-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][28][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][28][a][b]);
+				if(date_A[M-1][28-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][28-first_day+1][a][b]);
 				}
 			}
 		}
 
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][28][a]!=null) {
-				mainlist.add(">"+date_U[M-1][28][a]);
+			if(date_U[M-1][28-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][28-first_day+1][a]);
 			}
 		}
 		this_date=28;
@@ -1906,23 +1912,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][29][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][29][a][b]);
+				if(date_V[M-1][29-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][29-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][29][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][29][a][b]);
+				if(date_A[M-1][29-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][29-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][29][a]!=null) {
-				mainlist.add(">"+date_U[M-1][29][a]);
+			if(date_U[M-1][29-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][29-first_day+1][a]);
 			}
 		}
 		this_date=29;
@@ -1934,23 +1940,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][30][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][30][a][b]);
+				if(date_V[M-1][30-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][30-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][30][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][30][a][b]);
+				if(date_A[M-1][30-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][30-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][30][a]!=null) {
-				mainlist.add(">"+date_U[M-1][30][a]);
+			if(date_U[M-1][30-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][30-first_day+1][a]);
 			}
 		}
 		this_date=30;
@@ -1962,23 +1968,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][31][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][31][a][b]);
+				if(date_V[M-1][31-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][31-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][31][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][31][a][b]);
+				if(date_A[M-1][31-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][31-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][31][a]!=null) {
-				mainlist.add(">"+date_U[M-1][31][a]);
+			if(date_U[M-1][31-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][31-first_day+1][a]);
 			}
 		}
 		this_date=31;
@@ -1990,23 +1996,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][32][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][32][a][b]);
+				if(date_V[M-1][32-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][32-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][32][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][32][a][b]);
+				if(date_A[M-1][32-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][32-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][32][a]!=null) {
-				mainlist.add(">"+date_U[M-1][32][a]);
+			if(date_U[M-1][32-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][32-first_day+1][a]);
 			}
 		}
 		this_date=32;
@@ -2018,23 +2024,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][33][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][33][a][b]);
+				if(date_V[M-1][33-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][33-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][33][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][33][a][b]);
+				if(date_A[M-1][33-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][33-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][33][a]!=null) {
-				mainlist.add(">"+date_U[M-1][33][a]);
+			if(date_U[M-1][33-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][33-first_day+1][a]);
 			}
 		}
 		this_date=33;
@@ -2046,23 +2052,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][34][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][34][a][b]);
+				if(date_V[M-1][34-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][34-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][34][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][34][a][b]);
+				if(date_A[M-1][34-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][34-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][34][a]!=null) {
-				mainlist.add(">"+date_U[M-1][34][a]);
+			if(date_U[M-1][34-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][34-first_day+1][a]);
 			}
 		}
 		this_date=34;
@@ -2074,23 +2080,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][35][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][35][a][b]);
+				if(date_V[M-1][35-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][35-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][35][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][35][a][b]);
+				if(date_A[M-1][35-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][35-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][35][a]!=null) {
-				mainlist.add(">"+date_U[M-1][35][a]);
+			if(date_U[M-1][35-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][35-first_day+1][a]);
 			}
 		}
 		this_date=35;
@@ -2102,23 +2108,23 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][36][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][36][a][b]);
+				if(date_V[M-1][36-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][36-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][36][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][36][a][b]);
+				if(date_A[M-1][36-first_day+1][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][36-first_day+1][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][36][a]!=null) {
-				mainlist.add(">"+date_U[M-1][36][a]);
+			if(date_U[M-1][36-first_day+1][a]!=null) {
+				mainlist.add(">"+date_U[M-1][36-first_day+1][a]);
 			}
 		}
 		this_date=36;

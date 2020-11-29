@@ -336,6 +336,17 @@ public class LodingController {
 				}
 			}
 		}
+		
+		COUNT__.close();
+		SUBJECT_TITLE__.close();
+		SUBJECT_VIDEONAME__.close();
+		SUBJECT_VIDEOPERIOD__.close();
+		SUBJECT_VIDEOLENGTH__.close();
+		SUBJECT_VIDEOLATE__.close();
+		CHECK_VIDEO__.close();
+		CHECK_ASSIGNMENT__.close();
+		TEMP_SUBJECT_ASSIGNMENTNAME__.close();
+		TEMP_SUBJECT_ASSIGNMENTPERIOD__.close();
 
 	}
 	

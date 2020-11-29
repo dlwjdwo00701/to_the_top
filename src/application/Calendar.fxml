@@ -1,131 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="446.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CalendarController">
+<AnchorPane prefHeight="446.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CalendarController">
    <children>
-      <Pane prefHeight="514.0" prefWidth="703.0" stylesheets="@application.css">
+      <Pane prefHeight="596.0" prefWidth="827.0" stylesheets="@application.css">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="514.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="703.0" />
-            <ListView fx:id="MAINLIST" layoutX="523.0" layoutY="55.0" onMouseClicked="#CLICK" prefHeight="401.0" prefWidth="169.0" />
-            <Button layoutX="522.0" layoutY="469.0" mnemonicParsing="false" onAction="#PLUS" text="    추가    " textFill="WHITE" />
-            <Button layoutX="621.0" layoutY="469.0" mnemonicParsing="false" onAction="#DELETE" text="    삭제    " textFill="WHITE" />
-            <Button layoutX="525.0" layoutY="13.0" mnemonicParsing="false" onAction="#_MONTRH" text="지난 달로" textFill="WHITE" />
-            <Button layoutX="621.0" layoutY="14.0" mnemonicParsing="false" onAction="#MONTH_" text="다음 달로" textFill="WHITE" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="MEDIUMAQUAMARINE" height="401.0" layoutX="2.0" layoutY="105.0" stroke="BLACK" strokeType="INSIDE" width="510.0" />
-            <Label layoutX="22.0" layoutY="84.0" text="일요일" />
-            <Label layoutX="97.0" layoutY="84.0" text="월요일" />
-            <Label layoutX="167.0" layoutY="84.0" text="화요일" />
-            <Label layoutX="241.0" layoutY="84.0" text="수요일" />
-            <Label layoutX="314.0" layoutY="84.0" text="목요일" />
-            <Label layoutX="459.0" layoutY="84.0" text="토요일" />
-            <Label layoutX="387.0" layoutY="84.0" text="금요일" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="172.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="504.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="239.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="504.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="306.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="504.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="373.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="504.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="440.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="504.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="395.0" layoutX="75.0" layoutY="108.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="395.0" layoutX="148.0" layoutY="108.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="395.0" layoutX="221.0" layoutY="108.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="395.0" layoutX="293.0" layoutY="108.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="395.0" layoutX="365.0" layoutY="108.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="395.0" layoutX="437.0" layoutY="108.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
-            <Button fx:id="BUTTON1_" layoutX="9.0" layoutY="140.0" mnemonicParsing="false" onAction="#BUTTON1" prefHeight="27.0" prefWidth="58.0" text="1일" textFill="WHITE" />
-            <Button fx:id="BUTTON2_" layoutX="84.0" layoutY="140.0" mnemonicParsing="false" onAction="#BUTTON2" prefHeight="27.0" prefWidth="58.0" text="2일" textFill="WHITE" />
-            <Button fx:id="BUTTON3_" layoutX="157.0" layoutY="140.0" mnemonicParsing="false" onAction="#BUTTON3" prefHeight="27.0" prefWidth="58.0" text="3일" textFill="WHITE" />
-            <Button fx:id="BUTTON4_" layoutX="229.0" layoutY="140.0" mnemonicParsing="false" onAction="#BUTTON4" prefHeight="27.0" prefWidth="58.0" text="4일" textFill="WHITE" />
-            <Button fx:id="BUTTON5_" layoutX="302.0" layoutY="140.0" mnemonicParsing="false" onAction="#BUTTON5" prefHeight="27.0" prefWidth="58.0" text="5일" textFill="WHITE" />
-            <Button fx:id="BUTTON6_" layoutX="374.0" layoutY="141.0" mnemonicParsing="false" onAction="#BUTTON6" prefHeight="27.0" prefWidth="58.0" text="6일" textFill="WHITE" />
-            <Button fx:id="BUTTON7_" layoutX="447.0" layoutY="141.0" mnemonicParsing="false" onAction="#BUTTON7" prefHeight="27.0" prefWidth="58.0" text="7일" textFill="WHITE" />
-            <Button fx:id="BUTTON14_" layoutX="448.0" layoutY="207.0" mnemonicParsing="false" onAction="#BUTTON14" prefHeight="27.0" prefWidth="58.0" text="14일" textFill="WHITE" />
-            <Button fx:id="BUTTON13_" layoutX="375.0" layoutY="207.0" mnemonicParsing="false" onAction="#BUTTON13" prefHeight="27.0" prefWidth="58.0" text="13일" textFill="WHITE" />
-            <Button fx:id="BUTTON12_" layoutX="303.0" layoutY="206.0" mnemonicParsing="false" onAction="#BUTTON12" prefHeight="27.0" prefWidth="58.0" text="12일" textFill="WHITE" />
-            <Button fx:id="BUTTON11_" layoutX="230.0" layoutY="206.0" mnemonicParsing="false" onAction="#BUTTON11" prefHeight="27.0" prefWidth="58.0" text="11일" textFill="WHITE" />
-            <Button fx:id="BUTTON10_" layoutX="158.0" layoutY="206.0" mnemonicParsing="false" onAction="#BUTTON10" prefHeight="27.0" prefWidth="58.0" text="10일" textFill="WHITE" />
-            <Button fx:id="BUTTON9_" layoutX="85.0" layoutY="206.0" mnemonicParsing="false" onAction="#BUTTON9" prefHeight="27.0" prefWidth="58.0" text="9일" textFill="WHITE" />
-            <Button fx:id="BUTTON8_" layoutX="10.0" layoutY="206.0" mnemonicParsing="false" onAction="#BUTTON8" prefHeight="27.0" prefWidth="58.0" text="8일" textFill="WHITE" />
-            <Button fx:id="BUTTON15_" layoutX="9.0" layoutY="272.0" mnemonicParsing="false" onAction="#BUTTON15" prefHeight="27.0" prefWidth="58.0" text="15일" textFill="WHITE" />
-            <Button fx:id="BUTTON16_" layoutX="84.0" layoutY="272.0" mnemonicParsing="false" onAction="#BUTTON16" prefHeight="27.0" prefWidth="58.0" text="16일" textFill="WHITE" />
-            <Button fx:id="BUTTON17_" layoutX="157.0" layoutY="272.0" mnemonicParsing="false" onAction="#BUTTON17" prefHeight="27.0" prefWidth="58.0" text="17일" textFill="WHITE" />
-            <Button fx:id="BUTTON18_" layoutX="229.0" layoutY="272.0" mnemonicParsing="false" onAction="#BUTTON18" prefHeight="27.0" prefWidth="58.0" text="18일" textFill="WHITE" />
-            <Button fx:id="BUTTON19_" layoutX="302.0" layoutY="272.0" mnemonicParsing="false" onAction="#BUTTON19" prefHeight="27.0" prefWidth="58.0" text="19일" textFill="WHITE" />
-            <Button fx:id="BUTTON20_" layoutX="374.0" layoutY="273.0" mnemonicParsing="false" onAction="#BUTTON20" prefHeight="27.0" prefWidth="58.0" text="20일" textFill="WHITE" />
-            <Button fx:id="BUTTON21_" layoutX="447.0" layoutY="273.0" mnemonicParsing="false" onAction="#BUTTON21" prefHeight="27.0" prefWidth="58.0" text="21일" textFill="WHITE" />
-            <Button fx:id="BUTTON28_" layoutX="448.0" layoutY="340.0" mnemonicParsing="false" onAction="#BUTTON28" prefHeight="27.0" prefWidth="58.0" text="28일" textFill="WHITE" />
-            <Button fx:id="BUTTON27_" layoutX="375.0" layoutY="340.0" mnemonicParsing="false" onAction="#BUTTON27" prefHeight="27.0" prefWidth="58.0" text="27일" textFill="WHITE" />
-            <Button fx:id="BUTTON26_" layoutX="303.0" layoutY="339.0" mnemonicParsing="false" onAction="#BUTTON26" prefHeight="27.0" prefWidth="58.0" text="26일" textFill="WHITE" />
-            <Button fx:id="BUTTON25_" layoutX="230.0" layoutY="339.0" mnemonicParsing="false" onAction="#BUTTON25" prefHeight="27.0" prefWidth="58.0" text="25일" textFill="WHITE" />
-            <Button fx:id="BUTTON24_" layoutX="158.0" layoutY="339.0" mnemonicParsing="false" onAction="#BUTTON24" prefHeight="27.0" prefWidth="58.0" text="24일" textFill="WHITE" />
-            <Button fx:id="BUTTON23_" layoutX="85.0" layoutY="339.0" mnemonicParsing="false" onAction="#BUTTON23" prefHeight="27.0" prefWidth="58.0" text="23일" textFill="WHITE" />
-            <Button fx:id="BUTTON22_" layoutX="10.0" layoutY="339.0" mnemonicParsing="false" onAction="#BUTTON22" prefHeight="27.0" prefWidth="58.0" text="22일" textFill="WHITE" />
-            <Button fx:id="BUTTON29_" layoutX="10.0" layoutY="407.0" mnemonicParsing="false" onAction="#BUTTON29" prefHeight="27.0" prefWidth="58.0" text="29일" textFill="WHITE" />
-            <Button fx:id="BUTTON30_" layoutX="85.0" layoutY="407.0" mnemonicParsing="false" onAction="#BUTTON30" prefHeight="27.0" prefWidth="58.0" text="30일" textFill="WHITE" />
-            <Button fx:id="BUTTON31_" layoutX="158.0" layoutY="407.0" mnemonicParsing="false" onAction="#BUTTON31" prefHeight="27.0" prefWidth="58.0" text="31일" textFill="WHITE" />
-            <Button fx:id="BUTTON32_" layoutX="230.0" layoutY="407.0" mnemonicParsing="false" onAction="#BUTTON32" prefHeight="27.0" prefWidth="58.0" text="32일" textFill="WHITE" />
-            <Button fx:id="BUTTON33_" layoutX="303.0" layoutY="407.0" mnemonicParsing="false" onAction="#BUTTON33" prefHeight="27.0" prefWidth="58.0" text="33일" textFill="WHITE" />
-            <Button fx:id="BUTTON34_" layoutX="375.0" layoutY="408.0" mnemonicParsing="false" onAction="#BUTTON34" prefHeight="27.0" prefWidth="58.0" text="34일" textFill="WHITE" />
-            <Button fx:id="BUTTON35_" layoutX="448.0" layoutY="408.0" mnemonicParsing="false" onAction="#BUTTON35" prefHeight="27.0" prefWidth="58.0" text="35일" textFill="WHITE" />
-            <Button fx:id="BUTTON37_" layoutX="84.0" layoutY="472.0" mnemonicParsing="false" onAction="#BUTTON37" prefHeight="27.0" prefWidth="58.0" text="37일" textFill="WHITE" />
-            <Button fx:id="BUTTON36_" layoutX="9.0" layoutY="472.0" mnemonicParsing="false" onAction="#BUTTON36" prefHeight="27.0" prefWidth="58.0" text="36일" textFill="WHITE" />
-            <Label fx:id="LABEL1" layoutX="7.0" layoutY="111.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL2" layoutX="81.0" layoutY="111.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL3" layoutX="155.0" layoutY="111.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL4" layoutX="227.0" layoutY="111.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL5" layoutX="300.0" layoutY="112.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL6" layoutX="371.0" layoutY="112.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL7" layoutX="444.0" layoutY="112.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL14" layoutX="444.0" layoutY="176.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL13" layoutX="371.0" layoutY="176.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL12" layoutX="300.0" layoutY="176.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL11" layoutX="227.0" layoutY="175.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL10" layoutX="155.0" layoutY="175.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL9" layoutX="81.0" layoutY="175.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL8" layoutX="7.0" layoutY="175.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL15" layoutX="8.0" layoutY="241.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL16" layoutX="82.0" layoutY="241.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL17" layoutX="156.0" layoutY="241.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL18" layoutX="228.0" layoutY="241.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL19" layoutX="301.0" layoutY="242.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL20" layoutX="372.0" layoutY="242.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL21" layoutX="445.0" layoutY="242.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL28" layoutX="445.0" layoutY="310.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL27" layoutX="372.0" layoutY="310.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL26" layoutX="301.0" layoutY="310.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL25" layoutX="228.0" layoutY="309.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL24" layoutX="156.0" layoutY="309.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL23" layoutX="82.0" layoutY="309.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL22" layoutX="8.0" layoutY="309.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL29" layoutX="8.0" layoutY="378.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL30" layoutX="82.0" layoutY="378.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL31" layoutX="156.0" layoutY="378.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL32" layoutX="228.0" layoutY="378.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL33" layoutX="301.0" layoutY="379.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL34" layoutX="372.0" layoutY="379.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL35" layoutX="445.0" layoutY="379.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL37" layoutX="83.0" layoutY="443.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
-            <Label fx:id="LABEL36" layoutX="9.0" layoutY="443.0" prefHeight="27.0" prefWidth="65.0" text="ooooooooo" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="596.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="827.0" />
+            <ListView fx:id="MAINLIST" layoutX="607.0" layoutY="70.0" onMouseClicked="#CLICK" prefHeight="470.0" prefWidth="197.0" />
+            <Button layoutX="600.0" layoutY="549.0" mnemonicParsing="false" onAction="#PLUS" text="    추가    " textFill="WHITE" />
+            <Button layoutX="721.0" layoutY="549.0" mnemonicParsing="false" onAction="#DELETE" text="    삭제    " textFill="WHITE" />
+            <Button layoutX="600.0" layoutY="19.0" mnemonicParsing="false" onAction="#_MONTRH" text="지난 달로" textFill="WHITE" />
+            <Button layoutX="721.0" layoutY="19.0" mnemonicParsing="false" onAction="#MONTH_" text="다음 달로" textFill="WHITE" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="MEDIUMAQUAMARINE" height="493.0" layoutX="2.0" layoutY="94.0" stroke="BLACK" strokeType="INSIDE" width="581.0" />
+            <Label layoutX="22.0" layoutY="72.0" text="일요일" />
+            <Label layoutX="105.0" layoutY="72.0" text="월요일" />
+            <Label layoutX="185.0" layoutY="72.0" text="화요일" />
+            <Label layoutX="270.0" layoutY="72.0" text="수요일" />
+            <Label layoutX="353.0" layoutY="72.0" text="목요일" />
+            <Label layoutX="519.0" layoutY="72.0" text="토요일" />
+            <Label layoutX="436.0" layoutY="72.0" text="금요일" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="176.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="574.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="258.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="574.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="340.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="574.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="422.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="574.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="3.0" layoutX="5.0" layoutY="504.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="574.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="480.0" layoutX="85.0" layoutY="101.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="480.0" layoutX="168.0" layoutY="101.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="480.0" layoutX="251.0" layoutY="101.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="480.0" layoutX="417.0" layoutY="101.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="480.0" layoutX="334.0" layoutY="101.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="480.0" layoutX="500.0" layoutY="101.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="4.0" />
+            <Button fx:id="BUTTON1_" layoutX="9.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON1" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON2_" layoutX="93.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON2" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON3_" layoutX="176.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON3" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON4_" layoutX="259.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON4" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON5_" layoutX="342.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON5" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON6_" layoutX="425.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON6" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON7_" layoutX="508.0" layoutY="137.0" mnemonicParsing="false" onAction="#BUTTON7" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON14_" layoutX="508.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON14" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON13_" layoutX="425.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON13" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON12_" layoutX="342.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON12" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON11_" layoutX="259.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON11" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON10_" layoutX="176.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON10" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON9_" layoutX="93.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON9" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON8_" layoutX="9.0" layoutY="219.0" mnemonicParsing="false" onAction="#BUTTON8" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON15_" layoutX="9.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON15" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON16_" layoutX="93.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON16" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON17_" layoutX="176.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON17" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON18_" layoutX="259.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON18" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON19_" layoutX="342.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON19" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON20_" layoutX="425.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON20" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON21_" layoutX="507.0" layoutY="301.0" mnemonicParsing="false" onAction="#BUTTON21" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON28_" layoutX="508.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON28" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON27_" layoutX="425.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON27" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON26_" layoutX="342.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON26" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON25_" layoutX="259.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON25" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON24_" layoutX="176.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON24" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON23_" layoutX="93.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON23" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON22_" layoutX="9.0" layoutY="383.0" mnemonicParsing="false" onAction="#BUTTON22" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON29_" layoutX="9.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON29" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON30_" layoutX="93.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON30" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON31_" layoutX="176.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON31" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON32_" layoutX="259.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON32" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON33_" layoutX="342.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON33" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON34_" layoutX="425.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON34" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON35_" layoutX="508.0" layoutY="465.0" mnemonicParsing="false" onAction="#BUTTON35" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON37_" layoutX="93.0" layoutY="549.0" mnemonicParsing="false" onAction="#BUTTON37" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Button fx:id="BUTTON36_" layoutX="9.0" layoutY="549.0" mnemonicParsing="false" onAction="#BUTTON36" prefHeight="27.0" prefWidth="70.0" textFill="WHITE" />
+            <Label fx:id="LABEL1" layoutX="9.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL2" layoutX="95.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL3" layoutX="177.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL4" layoutX="260.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL5" layoutX="342.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL6" layoutX="426.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL7" layoutX="508.0" layoutY="105.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL14" layoutX="508.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL13" layoutX="426.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL12" layoutX="342.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL11" layoutX="260.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL10" layoutX="177.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL9" layoutX="95.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL8" layoutX="9.0" layoutY="187.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL15" layoutX="9.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL16" layoutX="95.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL17" layoutX="177.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL18" layoutX="260.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL19" layoutX="342.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL20" layoutX="426.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL21" layoutX="508.0" layoutY="269.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL28" layoutX="508.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL27" layoutX="426.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL26" layoutX="342.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL25" layoutX="260.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL24" layoutX="177.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL23" layoutX="95.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL22" layoutX="9.0" layoutY="350.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL29" layoutX="9.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL30" layoutX="95.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL31" layoutX="177.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL32" layoutX="260.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL33" layoutX="342.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL34" layoutX="426.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL35" layoutX="508.0" layoutY="433.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL37" layoutX="95.0" layoutY="516.0" prefHeight="27.0" prefWidth="70.0" />
+            <Label fx:id="LABEL36" layoutX="9.0" layoutY="516.0" prefHeight="27.0" prefWidth="70.0" />
             <Label fx:id="MONTH" layoutX="13.0" layoutY="11.0" text="월">
                <font>
                   <Font size="41.0" />
                </font>
             </Label>
-            <Button layoutX="440.0" layoutY="13.0" mnemonicParsing="false" onAction="#RELOAD" prefHeight="27.0" prefWidth="72.0" text="재갱신" textFill="WHITE" />
-            <Button layoutX="356.0" layoutY="13.0" mnemonicParsing="false" onAction="#LOAD" prefHeight="27.0" prefWidth="72.0" text="불러오기" textFill="WHITE" />
-            <Label fx:id="EXPLAIN" layoutX="241.0" layoutY="52.0" text="처음 접속 시 불러오기를 눌러주세요!">
+            <Button layoutX="496.0" layoutY="13.0" mnemonicParsing="false" onAction="#RELOAD" prefHeight="33.0" prefWidth="89.0" text="재갱신" textFill="WHITE" />
+            <Button layoutX="398.0" layoutY="13.0" mnemonicParsing="false" onAction="#LOAD" prefHeight="33.0" prefWidth="89.0" text="불러오기" textFill="WHITE" />
+            <Label fx:id="EXPLAIN" layoutX="311.0" layoutY="52.0" text="처음 접속 시 불러오기를 눌러주세요!">
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Button layoutX="272.0" layoutY="13.0" mnemonicParsing="false" onAction="#checkV" text="영상 확인" textFill="WHITE" />
-            <Button layoutX="188.0" layoutY="13.0" mnemonicParsing="false" onAction="#checkA" text="과제 확인" textFill="WHITE" />
-            <Button layoutX="104.0" layoutY="13.0" mnemonicParsing="false" onAction="#NOTICE" prefHeight="27.0" prefWidth="72.0" text="공지사항" textFill="WHITE" />
+            <Button layoutX="300.0" layoutY="13.0" mnemonicParsing="false" onAction="#checkV" prefHeight="33.0" prefWidth="89.0" text="영상 확인" textFill="WHITE" />
+            <Button layoutX="202.0" layoutY="13.0" mnemonicParsing="false" onAction="#checkA" prefHeight="33.0" prefWidth="89.0" text="과제 확인" textFill="WHITE" />
+            <Button layoutX="104.0" layoutY="13.0" mnemonicParsing="false" onAction="#NOTICE" prefHeight="33.0" prefWidth="89.0" text="공지사항" textFill="WHITE" />
          </children>
       </Pane>
    </children>

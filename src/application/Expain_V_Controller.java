@@ -60,5 +60,8 @@ public class Expain_V_Controller {
 			LENGTH_V.setText(LodingController.if_notattendent_week_videoLength[CalendarController.check_subject]);
 			LATE_V.setText(LodingController.if_notattendent_week_videoLate[CalendarController.check_subject]);
 		}
+		CalendarController.no_click=0;
+		CalendarController.click_check=0;
+		
 	}
 }

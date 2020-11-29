@@ -1,13 +1,17 @@
 package application;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,13 +39,32 @@ public class LoginController {
 	@FXML TextField PASS;
 	@FXML CheckBox CHECK;
 	
+	@FXML ChoiceBox<String> MAINBOX;
+	
+	private ObservableList<String> mainlist;  
+	
+	@FXML protected void OPEN(MouseEvent event){ 
+		mainlist = FXCollections.observableArrayList();
+		File folder = new File("c://SmartCampas");
+		File[] listOfFiles = folder.listFiles();
+		
+		for (int i = 0; i < listOfFiles.length; i++) {
+			File P = new File("c://SmartCampas//"+listOfFiles[i].getName()+"//PASSW.txt");
+			if(P.exists()) {
+				mainlist.add(listOfFiles[i].getName());
+			}
+		}
+		
+		MAINBOX.setItems(mainlist);
+	}
+	
 	@FXML protected void LoginButton(ActionEvent on) { //해당 매핑된 버튼이 클릭 되었을때 
 		try {
-			File IMP = new File("c://SmartCampas//"+ID.getText());
-			if(IMP.exists()) {
-				String PASSWORDS = PASS.getText();
-				File P = new File("c://SmartCampas//"+ID.getText()+"//PASSW.txt");
-				File SUBJECT_TITLE = new File("c://SmartCampas//"+ID.getText()+"//subject_title.txt");
+			
+			String tmp_=MAINBOX.getValue();
+			if(tmp_!=null) {
+				File P = new File("c://SmartCampas//"+tmp_+"//PASSW.txt");
+				File SUBJECT_TITLE = new File("c://SmartCampas//"+tmp_+"//subject_title.txt");
 				if(P.exists()) {
 					if(SUBJECT_TITLE.exists()) {
 						FileReader P_= new FileReader(P);
@@ -50,20 +73,18 @@ public class LoginController {
 						for (int j = 0; j < array.length; j++) {
 						    array[j]-=2;
 						}
-						String tmp = String.valueOf(array);
-						if(PASSWORDS.equals(tmp)) {
-							ID_=ID.getText();
-							PASS_=PASSWORDS;
-							P__.close();
-							Parent login = FXMLLoader.load(getClass().getResource("Loding.fxml"));
-						    Scene scene = new Scene(login);
-						    Stage primaryStage = (Stage)PASS.getScene().getWindow(); // 현재 윈도우 가져오기
-						    primaryStage.setScene(scene);
+						ID_=tmp_;
+						PASS_=String.valueOf(array);
+						P__.close();
+						Parent login = FXMLLoader.load(getClass().getResource("Loding.fxml"));
+						Scene scene = new Scene(login);
+						Stage primaryStage = (Stage)PASS.getScene().getWindow(); // 현재 윈도우 가져오기
+						primaryStage.setScene(scene);
 						}
 					}
 				}
-			}
 			
+			File IMP = new File("c://SmartCampas//"+ID.getText());
 			
 			Response loginResponse = (Response)Jsoup.connect("https://myclass.ssu.ac.kr/login/index.php")  //우선적으로는 로그인
 					.data("username", ID.getText())
