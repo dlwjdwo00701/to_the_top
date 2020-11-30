@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.Map;
 
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -8,18 +7,18 @@ import org.jsoup.nodes.Document;
 
 
 public class SmartCampus_others extends SmartCampusTokenizer{
-	protected static Map<String,String> cookies_SSU;
+	
 	protected static final String url_setting 
-		= "https://scatch.ssu.ac.kr";
+		= "http://myclass.ssu.ac.kr/local/ubion/user/mycourse_setting.php";
 	
 	public static void moveToSettingSubject () throws IOException
 	{
-		Response ssu_search = (Response)Jsoup.connect(Login_URL)
-				.data("value", "배준형")
-				.execute();
-		Document doc = ssu_search.parse();
-		System.out.println("" + doc.toString());
-		System.out.println(ssu_search);
+		//일단 로그인
+		is_login();
+		Document setting_subject = Jsoup.connect(url_setting)
+				.cookies(cookies)
+				.get();
+		System.out.println(setting_subject);
 	}
 	
 	

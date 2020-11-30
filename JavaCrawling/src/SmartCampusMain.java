@@ -1342,9 +1342,10 @@ class SmartCampusTokenizer extends SmartCampus
 	
 	/*과제 체크 함수 */
 	public static boolean assignment_verse_current(String assign_date)
-	{
-
+	{		
 		if((month(current_time)<=month(assign_date))&&(date(current_time)<=date(assign_date)))
+			return true;
+		else if(month(current_time) < month(assign_date))
 			return true;
 		return false;
 	}
