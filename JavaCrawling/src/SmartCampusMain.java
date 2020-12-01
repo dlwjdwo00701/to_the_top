@@ -553,10 +553,10 @@ import org.jsoup.nodes.Document;
 		*/
 		public static void video_assignment_divide() throws IOException
 		{
-			subject_videoName = new String [count][15][15];
-			subject_videoPeriod = new String [count][15][15];
-			subject_videoLength = new String [count][15][15];
-			subject_videoLate = new String[count][15][15];
+			subject_videoName = new String [count][16][15];
+			subject_videoPeriod = new String [count][16][15];
+			subject_videoLength = new String [count][16][15];
+			subject_videoLate = new String[count][16][15];
 //			subject_assignmentName = new String [count][15];
 //			subject_assignmentPeriond = new String [count][15];
 			
@@ -605,6 +605,7 @@ import org.jsoup.nodes.Document;
 //					int week_assign_count = 0;
 					for (int data = 0 ; data < 15 ; data++)
 					{
+//						System.out.println("Data = "+data+", array_subject_link = "+array_subject_link[count_sub][week][data]);
 						if(judgeFunction(array_subject_link[count_sub][week][data]).equals("video"))
 						{ 	
 //							System.out.println("data = "+array_subject_link[count_sub][week][data]);
@@ -782,7 +783,35 @@ import org.jsoup.nodes.Document;
 //					System.out.println(doc_video_check_string.substring(online_check_previous_count00,online_check_previous_count0));
 					online_check_previous_count = online_check_previous_count0;
 				}
-			}			
+			}	
+			
+	
+			
+			if(k == 15)
+			{
+				String final_week = "</tbody>";
+				int online_check_previous_count_final = doc_video_check_string.indexOf(final_week,online_check_previous_count00);
+				online_check_previous_count = online_check_previous_count_final;
+			}
+			
+			
+			
+			//긴급 디버그용
+			/*
+			if((k == 15 || k == 14) && section == 4)
+			{
+				System.out.println("check = "+online_check_previous_count00);
+				System.out.println("===============");
+				System.out.println(doc_video_check_string.substring(online_check_previous_count00 , online_check_previous_count));
+				System.out.println("===============");
+				if(k == 15)
+					System.out.println(doc_video_check_string);
+				
+			}
+			*/
+			
+			
+			
 			if(offline_check_previous_count != -1)
 			{
 				
@@ -861,7 +890,8 @@ import org.jsoup.nodes.Document;
 				int index_start_X = 0;
 				int index_start_another = 0;
 //				int index_end = 0;
-			
+				
+
 				while(true)
 				{
 					String length_cal = "<td class=\"text-center\">";
@@ -889,7 +919,13 @@ import org.jsoup.nodes.Document;
 					else
 					{
 						next_value = check_video_online_block.indexOf(len_online2,small_index) + len_online2.length();
+						//(긴급)디버그용으로 추가 (2020.12.01)
+						/*
+						if(k == 15)
+							break;
+							*/
 //						System.out.println("start = " + index_start_X+", end = "+(index_start_X+1));
+//						System.out.println(k+"주차,"+ "check = " + next_value);
 //						System.out.println(check_video_online_block.substring(index_start_X+length_cal.length(),index_start_X+length_cal.length()+1));
 						check_video[section][k][count_online-1] = check_video_online_block.substring(small_index+length_cal.length(),small_index+length_cal.length()+1);
 //						System.out.println(check_video_online_block.substring(small_index+length_cal.length(),small_index+length_cal.length()+1));
@@ -1045,10 +1081,10 @@ import org.jsoup.nodes.Document;
 				 System.out.println("====================================================================================");
 				 System.out.println("subject = "+subject_title[i]);
 				 System.out.println();
-				 for(int j = 0 ; j < 15 ; j++)
+				 for(int j = 0 ; j < 16 ; j++)
 				 {
 					 System.out.println("------------------------------------------------------");
-					 System.out.println("week = "+(j+1));
+					 System.out.println("week = "+(j));
 
 					 if(j != 0 && check_video[i][j][0] == null)
 					 {
@@ -1266,7 +1302,7 @@ class SmartCampusTokenizer extends SmartCampus
 		int count_video_check = 0;
 		for(int i = 0 ; i < count ; i++)
 		 {
-			 for(int j = 0 ; j < 15 ; j++)
+			 for(int j = 0 ; j < 16 ; j++)
 			 {
 				 for(int k = 0 ; k < 15 ; k++)
 				 {
@@ -1418,7 +1454,7 @@ class SmartCampusTokenizer extends SmartCampus
 		count_notWatching_video = 1;
 		for(int i = 0 ; i < count ; i++)
 		 {
-			 for(int j = 0 ; j < 15 ; j++)
+			 for(int j = 0 ; j < 16 ; j++)
 			 {
 				 for(int k = 0 ; k < 15 ; k++)
 				 {
