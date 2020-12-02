@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -422,6 +426,7 @@ import org.jsoup.nodes.Document;
 						if(lecture_start == -1 || lecture_start == first_index ||lecture_end > endIdxLink)
 							break;
 					}
+//					System.out.println(doc_link_string.substring(lecture_start+len_start.length(),lecture_end));
 					array_subject_link[section][k][count2] = doc_link_string.substring(lecture_start+len_start.length(),lecture_end);
 //					System.out.println("count = "+count2+"\n"+array_subject_link[section][k][count2]); //한 색션(과목)당 출력
 //					System.out.println(""+array_subject_link[section][k][count2]); //한 주차당 출력
@@ -434,7 +439,7 @@ import org.jsoup.nodes.Document;
 		public static void execution_crawling() throws IOException
 		{
 			//array_subject_link[강의 인덱스][달][자료]
-			array_subject_link = new String [count][16][15];
+			array_subject_link = new String [count][16][20];
 			check_video_link = new String [count];
 			check_assignment_link = new String [count];
 			
@@ -704,6 +709,8 @@ import org.jsoup.nodes.Document;
 					}
 				}
 			}
+			
+	
 		}
 		
 		
@@ -1621,6 +1628,7 @@ public class SmartCampusMain {
 //		SmartCampus.execute();
 	
 		SmartCampusTokenizer.execute();
+		SmartCampus.save();
 //		SmartCampusTokenizer.current_time();
 //		SmartCampusTokenizer.execute_tokenizer();
 		
