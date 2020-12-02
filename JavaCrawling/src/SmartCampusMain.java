@@ -49,6 +49,16 @@ import org.jsoup.nodes.Document;
 		protected static String[][] temp_subject_assignmentPeriond;
 		//강의 체크 목록에서 이번주에 듣지않은 강의목록 띄울 수 있으면 좋겠음.
 		
+		
+		
+		/*교과 과목인지 판단해서 미리 링크 삭제하는 알고리즘 (2020.12.02)*/
+		protected static String [] subject_title_temp; //임시 객체
+	 	protected static String [] subject_link_temp; //임시 객체
+	 	protected static String [] check_sub_label_array;
+		
+		
+		
+		
 		/* 메소드들*/
 		public static void login() throws IOException
 		{
@@ -98,7 +108,7 @@ import org.jsoup.nodes.Document;
 //			System.out.println(""+doc1.toString());
 //			System.out.println("=========================================\n");
 			String docu = doc1.toString();
-			
+//			System.out.println(docu);
 			//int count = 1;
 			int startIdxCount = 0;
 			int endIdxCount =0;
@@ -120,8 +130,11 @@ import org.jsoup.nodes.Document;
 					++count;
 				}
 			}
-			subject_title = new String [count];
-			subject_link = new String [count];
+			
+			
+			subject_title_temp = new String [count];
+			subject_link_temp = new String [count];
+			check_sub_label_array = new String [count];
 //			System.out.println(""+count);
 			
 			int [] startIdx_array = new int [count];
@@ -142,8 +155,8 @@ import org.jsoup.nodes.Document;
 					endIdx_array[i] = docu.indexOf("<span style=\"color:#999;\">",endIdx_array[i-1]+50);
 					startIdx_array[i] = docu.indexOf("<div class=\"course-title\">",endIdx_array[i-1]);
 				}
-//				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
-				subject_title[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
+				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
+				subject_title_temp[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 			}
 			for (int i = 0; i < startIdx_array.length ; i++)
 			{
@@ -157,9 +170,39 @@ import org.jsoup.nodes.Document;
 					endIdx_array[i] = docu.indexOf("\" class=\"course_link\">",endIdx_array[i-1]+50);
 					startIdx_array[i] = docu.indexOf("<div class=\"course_box\">",endIdx_array[i-1]);
 				}
-//				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
-				subject_link[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
+				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
+				subject_link_temp[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 			}
+			
+			/*2020 12 02 추가된 코드들*/
+			for (int i = 0; i < startIdx_array.length ; i++)
+			{
+				int check_Sub_label_end_idx = 0;
+				String check_Sub_label_start_str = "<div class=\"label label-course\">";
+				String check_Sub_label_end_str = "</div>";
+				int check_Sub_label_start_idx = docu.indexOf(check_Sub_label_start_str,check_Sub_label_end_idx);
+				check_Sub_label_end_idx = docu.indexOf(check_Sub_label_end_str,check_Sub_label_start_idx);
+//				System.out.println(""+docu.substring(check_Sub_label_start_idx+check_Sub_label_start_str.length(),check_Sub_label_end_idx).trim());
+				check_sub_label_array[i] = docu.substring(check_Sub_label_start_idx+check_Sub_label_start_str.length(),check_Sub_label_end_idx).trim();
+			}
+			
+			
+			subject_title = new String [count];
+			subject_link = new String [count];
+			//가공 함수 (2020.12.02)
+			int sub_count = 0;
+			for (int i = 0 ; i < count ; i++)
+			{
+				if(check_sub_label_array[i].equals("교과"))
+				{
+					subject_title[sub_count] = subject_title_temp[i];
+					subject_link[sub_count] = subject_link_temp[i];
+					sub_count++;
+				}
+			}
+//			System.out.println("count = "+sub_count);
+			count = sub_count;
+			
 		}
 		
 		/* 문자열 분리 함수 */
@@ -1557,12 +1600,15 @@ public class SmartCampusMain {
 	public static void main(String[] args) throws IOException {
 //		SmartCampus.execute_debug(0);
 //		SmartCampus.execute();
-		
-		
+	
 //		SmartCampusTokenizer.execute();
 //		SmartCampusTokenizer.current_time();
-		SmartCampusTokenizer.execute_tokenizer();
-
+//		SmartCampusTokenizer.execute_tokenizer();
+		
+		
+		/*KMOCC 동아리대비 긴급 디버깅*/
+		SmartCampus.is_login();
+		SmartCampus.access_lecture_index();
 	}
 
 }
