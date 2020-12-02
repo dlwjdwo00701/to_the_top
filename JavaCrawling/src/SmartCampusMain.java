@@ -111,97 +111,116 @@ import org.jsoup.nodes.Document;
 //			System.out.println(docu);
 			//int count = 1;
 			int startIdxCount = 0;
-			int endIdxCount =0;
 			//count를 구해서 총 강의가 몇 개 있는지 판단.
+			count = 0;
 			while (true)
 			{
-				if(count == 1)
-				{
-					endIdxCount = docu.indexOf("<span style=\"color:#999;\">");
-					startIdxCount = docu.indexOf("<div class=\"course-title\">");
-					++count;
-				}
-				else
-				{
-					endIdxCount = docu.indexOf("<span style=\"color:#999;\">",endIdxCount+50);
-					startIdxCount = docu.indexOf("<div class=\"course-title\">",endIdxCount);
-					if(startIdxCount == -1)
-						break;
-					++count;
-				}
+				String sub_check = "<div class=\"course-title\">";
+//				System.out.println("count = "+ count);
+
+				int pre = startIdxCount;
+				startIdxCount = docu.indexOf(sub_check,startIdxCount+sub_check.length());
+//				System.out.println(startIdxCount);
+				if(startIdxCount == -1 || pre > startIdxCount)
+					break;
+				++count;
 			}
-			
+//			System.out.println("count = "+count);
 			
 			subject_title_temp = new String [count];
 			subject_link_temp = new String [count];
 			check_sub_label_array = new String [count];
 //			System.out.println(""+count);
 			
-			int [] startIdx_array = new int [count];
-			int [] endIdx_array = new int [count];
+
 
 			//해시값으로 만들려했으나 의미없을 것 같아서 일단 주석처리
 //			HashMap<String,String> index_subject_link = new HashMap<>() ;
 			
-			for (int i = 0; i < startIdx_array.length ; i++)
+			int startIdx_array = 0;
+			int endIdx_array = 0;
+			
+			int minus_idx = 0;
+			for (int i = 0; i < count ; i++)
 			{
-				if(i == 0)
+				String start_str = "<div class=\"course-title\">";
+				String end_str = "<span style=\"color:#999;\">";
+				
+				startIdx_array = docu.indexOf(start_str,endIdx_array);
+				endIdx_array = docu.indexOf(end_str,startIdx_array+start_str.length());
+				
+//				System.out.println("=======================================================");
+//				System.out.println("start , end "+startIdx_array+","+endIdx_array );
+//				System.out.println("=======================================================");
+				
+				if(endIdx_array == -1)
 				{
-					endIdx_array[i] = docu.indexOf("<span style=\"color:#999;\">");
-					startIdx_array[i] = docu.indexOf("<div class=\"course-title\">");
+					subject_title_temp[i] = null;
+					minus_idx++;
 				}
-				else
-				{
-					endIdx_array[i] = docu.indexOf("<span style=\"color:#999;\">",endIdx_array[i-1]+50);
-					startIdx_array[i] = docu.indexOf("<div class=\"course-title\">",endIdx_array[i-1]);
+				else {
+					String modify= docu.substring(startIdx_array+start_str.length(),endIdx_array).trim();
+					String[] split_h3 = modify.split(">");
+//					System.out.println(""+split_h3[1]);
+					subject_title_temp[i] = split_h3[1];
 				}
-				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
-				subject_title_temp[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
-			}
-			for (int i = 0; i < startIdx_array.length ; i++)
-			{
-				if(i == 0)
-				{
-					endIdx_array[i] = docu.indexOf("\" class=\"course_link\">");
-					startIdx_array[i] = docu.indexOf("<div class=\"course_box\">");
-				}
-				else
-				{
-					endIdx_array[i] = docu.indexOf("\" class=\"course_link\">",endIdx_array[i-1]+50);
-					startIdx_array[i] = docu.indexOf("<div class=\"course_box\">",endIdx_array[i-1]);
-				}
-				System.out.println(""+docu.substring(startIdx_array[i]+48,endIdx_array[i]));
-				subject_link_temp[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 			}
 			
+			
+			startIdx_array = 0;
+			endIdx_array = 0;
+			int checkpoint_idx = 0;
+			for (int i = 0; i < count ; i++)
+			{
+				String checkpoint = "<div class=\"course_box\">";
+				String start_str = "<a href=\"";
+				String end_str = "\" class=\"course_link\">";
+				checkpoint_idx = docu.indexOf(checkpoint,endIdx_array);
+				startIdx_array = docu.indexOf(start_str,checkpoint_idx);
+				endIdx_array = docu.indexOf(end_str,startIdx_array+start_str.length());
+
+				if(endIdx_array == -1)
+				{
+					subject_link_temp[i] = null;
+				}
+					
+				else {
+//					System.out.println(""+docu.substring(startIdx_array+start_str.length(),endIdx_array));
+					subject_link_temp[i] = docu.substring(startIdx_array+start_str.length(),endIdx_array);
+				}
+			}
+			
+			
 			/*2020 12 02 추가된 코드들*/
-			for (int i = 0; i < startIdx_array.length ; i++)
+			//더 좋은 방법으로 수정함 ("<div class=\"course_box\">") 이 부분은 교과과정에만 존재할 수 있음.
+			/*
+			for (int i = 0; i < count ; i++)
 			{
 				int check_Sub_label_end_idx = 0;
 				String check_Sub_label_start_str = "<div class=\"label label-course\">";
 				String check_Sub_label_end_str = "</div>";
 				int check_Sub_label_start_idx = docu.indexOf(check_Sub_label_start_str,check_Sub_label_end_idx);
 				check_Sub_label_end_idx = docu.indexOf(check_Sub_label_end_str,check_Sub_label_start_idx);
-//				System.out.println(""+docu.substring(check_Sub_label_start_idx+check_Sub_label_start_str.length(),check_Sub_label_end_idx).trim());
+				System.out.println(""+docu.substring(check_Sub_label_start_idx+check_Sub_label_start_str.length(),check_Sub_label_end_idx).trim());
 				check_sub_label_array[i] = docu.substring(check_Sub_label_start_idx+check_Sub_label_start_str.length(),check_Sub_label_end_idx).trim();
 			}
+			*/
 			
-			
+			count -= minus_idx;
 			subject_title = new String [count];
 			subject_link = new String [count];
 			//가공 함수 (2020.12.02)
 			int sub_count = 0;
 			for (int i = 0 ; i < count ; i++)
 			{
-				if(check_sub_label_array[i].equals("교과"))
+				if(subject_link_temp[i] != null)
 				{
 					subject_title[sub_count] = subject_title_temp[i];
 					subject_link[sub_count] = subject_link_temp[i];
 					sub_count++;
 				}
 			}
-//			System.out.println("count = "+sub_count);
-			count = sub_count;
+//			System.out.println("count = "+count);
 			
 		}
 		
@@ -1601,14 +1620,16 @@ public class SmartCampusMain {
 //		SmartCampus.execute_debug(0);
 //		SmartCampus.execute();
 	
-//		SmartCampusTokenizer.execute();
+		SmartCampusTokenizer.execute();
 //		SmartCampusTokenizer.current_time();
 //		SmartCampusTokenizer.execute_tokenizer();
 		
 		
 		/*KMOCC 동아리대비 긴급 디버깅*/
+		/*
 		SmartCampus.is_login();
 		SmartCampus.access_lecture_index();
+		*/
 	}
 
 }
