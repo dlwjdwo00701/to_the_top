@@ -670,7 +670,7 @@ import org.jsoup.nodes.Document;
 					
 					int week_video_count = 0;
 //					int week_assign_count = 0;
-					for (int data = 0 ; data < 15 ; data++)
+					for (int data = 0 ; data < 20 ; data++)
 					{
 //						System.out.println("Data = "+data+", array_subject_link = "+array_subject_link[count_sub][week][data]);
 						if(judgeFunction(array_subject_link[count_sub][week][data]).equals("video"))
@@ -1237,6 +1237,189 @@ import org.jsoup.nodes.Document;
 				 count_login++;
 			 }
 		 }
+		 
+		 
+		 
+		 static String ID_  = "20203049";
+		 static File COUNT = new File("c://SmartCampas//"+ID_+"//count.txt");
+		 static File SUBJECT_TITLE = new File("c://SmartCampas//"+ID_+"//subject_title.txt");
+		 static File SUBJECT_VIDEONAME = new File("c://SmartCampas//"+ID_+"//subject_videoName.txt");
+		 static File SUBJECT_VIDEOPERIOD = new File("c://SmartCampas//"+ID_+"//subject_videoPeriod.txt");
+		 static File SUBJECT_VIDEOLENGTH = new File("c://SmartCampas//"+ID_+"//subject_videoLength.txt");
+		 static File SUBJECT_VIDEOLATE = new File("c://SmartCampas//"+ID_+"//subject_videoLate.txt");
+		 static File CHECK_VIDEO = new File("c://SmartCampas//"+ID_+"//check_video.txt");
+		 static File CHECK_ASSIGNMENT = new File("c://SmartCampas//"+ID_+"//check_assignment.txt");
+		 static File TEMP_SUBJECT_ASSIGNMENTNAME = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentName.txt");
+		 static File TEMP_SUBJECT_ASSIGNMENTPERIOD = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentPeriond.txt");	 
+		 
+		 public static void save() throws IOException {
+		      FileWriter COUNT_= new FileWriter(COUNT);
+		      FileWriter SUBJECT_TITLE_= new FileWriter(SUBJECT_TITLE);
+		      FileWriter SUBJECT_VIDEONAME_= new FileWriter(SUBJECT_VIDEONAME);
+		      FileWriter SUBJECT_VIDEOPERIOD_= new FileWriter(SUBJECT_VIDEOPERIOD);
+		      FileWriter SUBJECT_VIDEOLENGTH_= new FileWriter(SUBJECT_VIDEOLENGTH);
+		      FileWriter SUBJECT_VIDEOLATE_= new FileWriter(SUBJECT_VIDEOLATE);
+		      FileWriter CHECK_VIDEO_= new FileWriter(CHECK_VIDEO);
+		      FileWriter CHECK_ASSIGNMENT_= new FileWriter(CHECK_ASSIGNMENT);
+		      FileWriter TEMP_SUBJECT_ASSIGNMENTNAME_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTNAME);
+		      FileWriter TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTPERIOD);
+		      
+		      COUNT_.write(Integer.toString(count));
+		      COUNT_.flush();
+		      
+		      int a, b, c;
+		      for(a=0;a<count;a++) {
+		         SUBJECT_TITLE_.write(subject_title[a]+"\n");
+		         SUBJECT_TITLE_.flush();
+		         for(b=0;b<16;b++) {
+		            for(c=0;c<15;c++) {
+		               SUBJECT_VIDEONAME_.write(subject_videoName[a][b][c]+"\n");
+		               SUBJECT_VIDEONAME_.flush();
+		               SUBJECT_VIDEOPERIOD_.write(subject_videoPeriod[a][b][c]+"\n");
+		               SUBJECT_VIDEOPERIOD_.flush();
+		               SUBJECT_VIDEOLENGTH_.write(subject_videoLength[a][b][c]+"\n");
+		               SUBJECT_VIDEOLENGTH_.flush();
+		               SUBJECT_VIDEOLATE_.write(subject_videoLate[a][b][c]+"\n");
+		               SUBJECT_VIDEOLATE_.flush();
+		            }
+		         }
+		      }
+		      
+		      for(a=0;a<count;a++) {
+		         for(b=0;b<16;b++) {
+		            for(c=0;c<15;c++) {
+		               CHECK_VIDEO_.write(check_video[a][b][c]+"\n");
+		               CHECK_VIDEO_.flush();
+		            }
+		         }
+		      }
+		      
+		      for(a=0;a<count;a++) {
+		         for(b=0;b<40;b++) {
+		            CHECK_ASSIGNMENT_.write(check_assignment[a][b]+"\n");
+		            CHECK_ASSIGNMENT_.flush();
+		            TEMP_SUBJECT_ASSIGNMENTNAME_.write(temp_subject_assignmentName[a][b]+"\n");
+		            TEMP_SUBJECT_ASSIGNMENTNAME_.flush();
+		            TEMP_SUBJECT_ASSIGNMENTPERIOD_.write(temp_subject_assignmentPeriond[a][b]+"\n");
+		            TEMP_SUBJECT_ASSIGNMENTPERIOD_.flush();
+		         }
+		      }
+		      
+		      SUBJECT_TITLE_.close();
+		      SUBJECT_VIDEONAME_.close();
+		      SUBJECT_VIDEOPERIOD_.close();
+		      SUBJECT_VIDEOLENGTH_.close();
+		      SUBJECT_VIDEOLATE_.close();
+		      CHECK_VIDEO_.close();
+		      CHECK_ASSIGNMENT_.close();
+		      TEMP_SUBJECT_ASSIGNMENTNAME_.close();
+		      TEMP_SUBJECT_ASSIGNMENTPERIOD_.close();
+		      COUNT_.close();
+		   }
+		   
+		   public void load() throws IOException{
+		      
+		      FileReader COUNT_= new FileReader(COUNT);
+		      FileReader SUBJECT_TITLE_= new FileReader(SUBJECT_TITLE);
+		      FileReader SUBJECT_VIDEONAME_= new FileReader(SUBJECT_VIDEONAME);
+		      FileReader SUBJECT_VIDEOPERIOD_= new FileReader(SUBJECT_VIDEOPERIOD);
+		      FileReader SUBJECT_VIDEOLENGTH_= new FileReader(SUBJECT_VIDEOLENGTH);
+		      FileReader SUBJECT_VIDEOLATE_= new FileReader(SUBJECT_VIDEOLATE);
+		      FileReader CHECK_VIDEO_= new FileReader(CHECK_VIDEO);
+		      FileReader CHECK_ASSIGNMENT_= new FileReader(CHECK_ASSIGNMENT);
+		      FileReader TEMP_SUBJECT_ASSIGNMENTNAME_= new FileReader(TEMP_SUBJECT_ASSIGNMENTNAME);
+		      FileReader TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileReader(TEMP_SUBJECT_ASSIGNMENTPERIOD);
+		      
+		      BufferedReader COUNT__ = new BufferedReader(COUNT_);
+		      BufferedReader SUBJECT_TITLE__ = new BufferedReader(SUBJECT_TITLE_);
+		      BufferedReader SUBJECT_VIDEONAME__ = new BufferedReader(SUBJECT_VIDEONAME_);
+		      BufferedReader SUBJECT_VIDEOPERIOD__ = new BufferedReader(SUBJECT_VIDEOPERIOD_);
+		      BufferedReader SUBJECT_VIDEOLENGTH__ = new BufferedReader(SUBJECT_VIDEOLENGTH_);
+		      BufferedReader SUBJECT_VIDEOLATE__ = new BufferedReader(SUBJECT_VIDEOLATE_);
+		      BufferedReader CHECK_VIDEO__ = new BufferedReader(CHECK_VIDEO_);
+		      BufferedReader CHECK_ASSIGNMENT__ = new BufferedReader(CHECK_ASSIGNMENT_);
+		      BufferedReader TEMP_SUBJECT_ASSIGNMENTNAME__ = new BufferedReader(TEMP_SUBJECT_ASSIGNMENTNAME_);
+		      BufferedReader TEMP_SUBJECT_ASSIGNMENTPERIOD__ = new BufferedReader(TEMP_SUBJECT_ASSIGNMENTPERIOD_);
+		      
+		        count=Integer.parseInt(COUNT__.readLine());
+		            
+		        subject_title = new String [count];
+		        subject_videoName = new String [count][16][15];
+		      subject_videoPeriod = new String [count][16][15];
+		      subject_videoLength = new String [count][16][15];
+		      subject_videoLate = new String[count][16][15];
+		      
+		      check_video = new String [count][16][15];
+		      check_assignment = new String [count][40];
+		      temp_subject_assignmentName = new String [count][40];
+		      temp_subject_assignmentPeriond = new String [count][40];
+		      
+		      int a, b, c;
+		      for(a=0;a<count;a++) {
+		         subject_title[a]=SUBJECT_TITLE__.readLine();
+		         for(b=0;b<16;b++) {
+		            for(c=0;c<15;c++) {
+		               subject_videoName[a][b][c]=SUBJECT_VIDEONAME__.readLine();
+		               if(subject_videoName[a][b][c].equals("null")) {
+		                  subject_videoName[a][b][c]=null;
+		               }
+		               subject_videoPeriod[a][b][c]=SUBJECT_VIDEOPERIOD__.readLine();
+		               if(subject_videoPeriod[a][b][c].equals("null")) {
+		                  subject_videoPeriod[a][b][c]=null;
+		               }
+		               subject_videoLength[a][b][c]=SUBJECT_VIDEOLENGTH__.readLine();
+		               if(subject_videoLength[a][b][c].equals("null")) {
+		                  subject_videoLength[a][b][c]=null;
+		               }
+		               subject_videoLate[a][b][c]=SUBJECT_VIDEOLATE__.readLine();
+		               if(subject_videoLate[a][b][c].equals("null")) {
+		                  subject_videoLate[a][b][c]=null;
+		               }
+		            }
+		         }
+		      }
+		      
+		      for(a=0;a<count;a++) {
+		         for(b=0;b<16;b++) {
+		            for(c=0;c<15;c++) {
+		               check_video[a][b][c]=CHECK_VIDEO__.readLine();
+		               if(check_video[a][b][c].equals("null")) {
+		                  check_video[a][b][c]=null;
+		               }
+		            }
+		         }
+		      }
+		      
+		      for(a=0;a<count;a++) {
+		         for(b=0;b<40;b++) {
+		            check_assignment[a][b]=CHECK_ASSIGNMENT__.readLine();
+		            if(check_assignment[a][b].equals("null")) {
+		               check_assignment[a][b]=null;
+		            }
+		            temp_subject_assignmentName[a][b]=TEMP_SUBJECT_ASSIGNMENTNAME__.readLine();
+		            if(temp_subject_assignmentName[a][b].equals("null")) {
+		               temp_subject_assignmentName[a][b]=null;
+		            }
+		            temp_subject_assignmentPeriond[a][b]=TEMP_SUBJECT_ASSIGNMENTPERIOD__.readLine();
+		            if(temp_subject_assignmentPeriond[a][b].equals("null")) {
+		               temp_subject_assignmentPeriond[a][b]=null;
+		            }
+		         }
+		      }
+		      
+		      COUNT__.close();
+		      SUBJECT_TITLE__.close();
+		      SUBJECT_VIDEONAME__.close();
+		      SUBJECT_VIDEOPERIOD__.close();
+		      SUBJECT_VIDEOLENGTH__.close();
+		      SUBJECT_VIDEOLATE__.close();
+		      CHECK_VIDEO__.close();
+		      CHECK_ASSIGNMENT__.close();
+		      TEMP_SUBJECT_ASSIGNMENTNAME__.close();
+		      TEMP_SUBJECT_ASSIGNMENTPERIOD__.close();
+
+		   }
+		 
 }
 
  
@@ -1468,7 +1651,7 @@ class SmartCampusTokenizer extends SmartCampus
 		 {
 			 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
 			 {
-				 if(temp_subject_assignmentName[section_s][count_assign] != null)
+				 if(temp_subject_assignmentPeriond[section_s][count_assign] != null)
 				 {
 					 /*
 					 System.out.println("과제 명 = "+temp_subject_assignmentName[section_s][count_assign]);
@@ -1556,14 +1739,23 @@ class SmartCampusTokenizer extends SmartCampus
 		for (int section_s = 0 ; section_s < count ; section_s++)
 		 {
 			 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
-			 {
+			 {					
 				 if(temp_subject_assignmentName[section_s][count_assign] != null)
 				 {
 					 boolean assign_check = check_assignment[section_s][count_assign].equals("미제출");
-					 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
-					 if(assign_check == true && time_check == true)
+//					 System.out.println(temp_subject_assignmentPeriond[section_s][count_assign]);
+//					 System.out.println(temp_subject_assignmentPeriond[section_s][count_assign]);
+					 if(temp_subject_assignmentPeriond[section_s][count_assign].equals("-"))
 					 {
-						 count_notPassed_assign++;
+						 temp_subject_assignmentPeriond[section_s][count_assign] = null;
+					 }
+					 else
+					 {
+						 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
+						 if(assign_check == true && time_check == true)
+						 {
+							 count_notPassed_assign++;
+						 }
 					 }
 				 }
 			 }
@@ -1627,11 +1819,11 @@ public class SmartCampusMain {
 //		SmartCampus.execute_debug(0);
 //		SmartCampus.execute();
 	
-		SmartCampusTokenizer.execute();
-		SmartCampus.save();
+//		SmartCampusTokenizer.execute();
+//		SmartCampus.save();
 //		SmartCampusTokenizer.current_time();
-//		SmartCampusTokenizer.execute_tokenizer();
-		
+		SmartCampusTokenizer.execute_tokenizer();
+//		SmartCampus.save();
 		
 		/*KMOCC 동아리대비 긴급 디버깅*/
 		/*
