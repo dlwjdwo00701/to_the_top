@@ -13,7 +13,18 @@ public class SmartCampusOption extends SmartCampusTokenizer {
 	/*2020.11.19 추가된 필드*/
 	//남은 동영상 최종 길이
 	private static String video_length_total;
-
+	
+	
+	/*2020.12.02.추가된 필드*/
+	private static int thisWeek;
+	private static String thisweek_videoName[][]; //[과목명][강의 인덱스]
+	private static String thisweek_videoPeriod[][]; //[과목명][강의 인덱스]
+	private static String thisweek_videoLength[][]; //[과목명][강의 인덱스]
+	private static String thisweek_videoLate[][]; //[과목명][강의 인덱스]
+	private static String thisweek_checkVideo[][]; //강의를 들었는지 체크하는 함수
+	
+	
+	
 	// 24시간 전에 알려줌 (뒤의 시간은 0시로 고정해둠) -> 원래 시간을 따르면 23:59가 있어 문제가 발생할 수 있음.
 	// 미래에 시간 조절 함수도 넣을 생각.
 	public static String calulate_date_function(String date_smartCampus) throws IOException {
@@ -249,14 +260,114 @@ public class SmartCampusOption extends SmartCampusTokenizer {
 	
 	
 	
+	/*2020 12 02 추가된 메소드*/
+	//주차를 찾아주는 함수. 
+	public static void find_thisWeek () throws IOException {
+		Document doc_link = Jsoup.connect(subject_link[1])
+				.cookies(cookies)
+				.get();
+		String doc_link_string = doc_link.toString();
+//		System.out.println(doc_link_string);
+		
+		String this_week_checkPoint = "이번 주";
+		String this_week_str_start = "<h3 class=\"sectionname\"><span>";
+		String this_week_str_end = "주차";
+		
+		int this_week_idx_start = doc_link_string.indexOf(this_week_str_start);
+		int this_week_idx_end = doc_link_string.indexOf(this_week_str_end , this_week_idx_start);
+		String this_week_str = doc_link_string.substring(this_week_idx_start+this_week_str_start.length() , this_week_idx_end);
+//		System.out.println(this_week_str);
+		
+		//이번 주차 정수값.
+		thisWeek = Integer.parseInt(this_week_str);
+	}
+	
+	
+	//이번주차만 모아둔 객체
+	public static void tokenizer_thisWeek()
+	{
+		thisweek_videoName = new String [count][15];
+		thisweek_videoPeriod = new String [count][15];
+		thisweek_videoLength = new String [count][15];
+		thisweek_videoLate = new String [count][15];
+		thisweek_checkVideo = new String [count][15];
+		
+		for(int subject = 0 ; subject < count ; subject++)
+		{
+			for (int data = 0 ; data < 15 ; data++)
+			{
+				thisweek_videoName[subject][data] = subject_videoName[subject][thisWeek][data];
+				thisweek_videoPeriod[subject][data] = subject_videoPeriod[subject][thisWeek][data];
+				thisweek_videoLength[subject][data] = subject_videoLength[subject][thisWeek][data];
+				thisweek_videoLate[subject][data] = subject_videoLate[subject][thisWeek][data];
+				thisweek_checkVideo[subject][data] = check_video[subject][thisWeek][data];
+			}
+			
+		}
+	}
+	
+	
+	//이번 주차만 나온 객체 출력
+	public static void print_thisWeekVideo()
+	{
+		int count_index_thisweek = 0;
+		for(int subject = 0 ; subject < count ; subject++)
+		{
+			for (int data = 0 ; data < 15 ; data++)
+			{
+				if(thisweek_videoName[subject][data] != null)
+				{
+					System.out.println("Count = "+count_index_thisweek);
+					System.out.println("과목 명 = "+thisweek_videoName[subject][data]);
+					System.out.println("수강 기간  = "+thisweek_videoPeriod[subject][data]);
+					System.out.println("영상 길이  = "+thisweek_videoLength[subject][data]);
+					if(thisweek_videoLate[subject][data]  != null)
+					{
+						System.out.println("지각 기간(있는경우)  = "+thisweek_videoLate[subject][data] );
+					}
+					System.out.println("진도 확인(O/X or %) = "+thisweek_checkVideo[subject][data]);
+					System.out.println();
+					count_index_thisweek++;
+				}
+			}
+			
+		}
+	}
+	
+	public static void execute_thisWeek () throws IOException{
+		//Login 잘못 입력했을 때 방지.
+		System.out.println("======================================================================");
+		is_login();
+		System.out.println("======================================================================");
+		System.out.println("A. 로그인 중....");
+		access_lecture_index();
+		System.out.println("======================================================================");
+		System.out.println("B. 강의 목록 확인 중(주의 ! 스마트 캠퍼스에서 숨김을 해놓은 경우 나타나지 않음)....");
+		System.out.println("======================================================================");
+		execution_crawling();
+		System.out.println("======================================================================");
+		System.out.println("C. 강좌 , 과제 업데이트 중 ....");
+		System.out.println("======================================================================");
+		video_assignment_divide();
+		
+		
+		//-------------------------------------------------------------------------------------------
+		//2020.12.02 이번 주차만 다루는 함수들
+		find_thisWeek(); //이번주차를 알려줌 thisWeek이 이번주타를 가리킴 (멤버변수)
+		tokenizer_thisWeek(); //이번 주차의 데이터만 뽑아오는 함수
+		System.out.println("======================================================================");
+		System.out.println("D. 이번 주차 강의 출력 예정 ....");
+		System.out.println("======================================================================");
+		print_thisWeekVideo();
+	}
 	
 	
 	
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		execite_options();
-
+//		execite_options();
+		execute_thisWeek();
 	}
 
 }
