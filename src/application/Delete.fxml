@@ -7,10 +7,10 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DeleteController">
+<AnchorPane prefHeight="139.0" prefWidth="262.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.DeleteController">
    <children>
-      <Pane prefHeight="174.0" prefWidth="301.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="174.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="301.0" />
+      <Pane prefHeight="148.0" prefWidth="292.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="148.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="292.0" />
       <Label fx:id="TMP" layoutX="29.0" layoutY="49.0" prefHeight="15.0" prefWidth="247.0" text="선택하신 일정을 삭제하시겠습니까?">
          <font>
             <Font size="15.0" />

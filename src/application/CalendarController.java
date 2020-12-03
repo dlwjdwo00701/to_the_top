@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,8 +22,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class CalendarController {
+public class CalendarController implements Initializable{
 	
 	@FXML Label LABEL1;
 	@FXML Label LABEL2;
@@ -104,7 +107,10 @@ public class CalendarController {
 	@FXML Label MONTH;
 	@FXML ListView<String> MAINLIST;
 	
-	int M=0;
+	static int del=0;
+	
+	static int M=0;
+	static int D=0;
 	static int page=0;
 	
 	static int check_subject=0;
@@ -115,7 +121,7 @@ public class CalendarController {
 	
 	static File DATE_U = new File("c://SmartCampas//"+ID_+"//date_u.txt");
 	
-	protected static String[][][] videoP = new String [LodingController.count][15][15];
+	protected static String[][][] videoP = new String [LodingController.count][16][15];
 	protected static String[][] assP = new String [LodingController.count][40];
 	
 	protected static String[][][][] date_V = new String [12][37][LodingController.count][40];
@@ -124,12 +130,16 @@ public class CalendarController {
 	
 	protected static int[][] checking = new int [12][37];
 	
-	@FXML protected void LOAD(ActionEvent on){  
-		if(page==0) {
+	protected static int inf=0;
+	
+	
+	public void initialize(URL location, ResourceBundle resources) {
 			if(DATE_U.exists()) {
 				load();
 			}
 			M=month(LodingController.current_time);
+			D=date(LodingController.current_time);
+			int no_up=0;
 			MONTH.setText(Integer.toString(M)+"월");
 			
 			EXPLAIN.setText("");
@@ -138,7 +148,6 @@ public class CalendarController {
 			
 			
 			int a, b, c,d=0;
-			
 			for(a=0;a<12;a++) {
 				for(b=0;b<37;b++) {
 					for(c=0;c<LodingController.count;c++) {
@@ -151,7 +160,89 @@ public class CalendarController {
 			}
 			d=0;
 			for(a=0;a<LodingController.count;a++) {
-				for(b=0;b<15;b++) {
+				for(b=0;b<16;b++) {
+					for(c=0;c<15;c++) {
+						if(LodingController.subject_videoPeriod[a][b][c] != null) {
+							if(month(LodingController.subject_videoPeriod[a][b][c].split("~")[1].trim())==M&&date(LodingController.subject_videoPeriod[a][b][c].split("~")[1].trim())==D+1) {
+								no_up++;
+							}
+							videoP[a][b][c]=LodingController.subject_videoPeriod[a][b][c].split("~")[1].trim();
+							date_V[month(videoP[a][b][c])-1][date(videoP[a][b][c])-1+first_day-1][a][d]=LodingController.subject_videoName[a][b][c];
+							d++;
+						}
+					}
+					d=0;
+				}
+			}
+			
+			for(a=0;a<LodingController.count;a++) {
+				for(b=0;b<40;b++) {
+					if(LodingController.temp_subject_assignmentPeriond[a][b] != null) {
+						if(month(LodingController.temp_subject_assignmentPeriond[a][b])==M&&date(LodingController.temp_subject_assignmentPeriond[a][b])==D+1) {
+							no_up++;
+						}
+						assP[a][b]=LodingController.temp_subject_assignmentPeriond[a][b];
+						date_A[month(assP[a][b])-1][date(assP[a][b])-1+first_day-1][a][d]=LodingController.temp_subject_assignmentName[a][b];
+						d++;
+					}
+				}
+				d=0;
+			}
+			
+			resetting_L();
+			
+			mainlist = FXCollections.observableArrayList();
+			
+			for(a=0;a<LodingController.count;a++) {
+				mainlist.add(Integer.toString(a+1)+" "+LodingController.subject_title[a]);
+			}
+			
+			MAINLIST.setItems(mainlist);
+			
+			if(no_up!=0) {
+				try {
+					Parent add = FXMLLoader.load(getClass().getResource("Warn.fxml"));
+				    Scene scene = new Scene(add);
+				    Stage plus = new  Stage(); 
+				    Image icon = new Image(getClass().getResourceAsStream("app.png"));
+				    plus.getIcons().add(icon);
+			        plus.setTitle("과탑을 향해서");
+				    plus.setScene(scene);
+				    plus.showAndWait();;
+				} catch(IOException f) {
+					
+				}
+			}
+			page++;
+			this_date=-1;
+	}
+	
+	void LOAD(){  
+			if(DATE_U.exists()) {
+				load();
+			}
+			M=month(LodingController.current_time);
+			MONTH.setText(Integer.toString(M)+"월");
+			
+			EXPLAIN.setText("");
+			
+			setting();
+			
+			
+			int a, b, c,d=0;
+			for(a=0;a<12;a++) {
+				for(b=0;b<37;b++) {
+					for(c=0;c<LodingController.count;c++) {
+						for(d=0;d<40;d++) {
+							date_V[a][b][c][d]=null;
+							date_A[a][b][c][d]=null;
+						}
+					}
+				}
+			}
+			d=0;
+			for(a=0;a<LodingController.count;a++) {
+				for(b=0;b<16;b++) {
 					for(c=0;c<15;c++) {
 						if(LodingController.subject_videoPeriod[a][b][c] != null) {
 							videoP[a][b][c]=LodingController.subject_videoPeriod[a][b][c].split("~")[1].trim();
@@ -184,9 +275,7 @@ public class CalendarController {
 			
 			MAINLIST.setItems(mainlist);
 			page++;
-			this_date=-1;
-		}
-		
+			this_date=-1;		
 	}
 	
 	static void save() {
@@ -606,27 +695,41 @@ public class CalendarController {
 		int a,b,c=0;
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date-first_day>=0) {
-					if(date_V[month-1][date-first_day][a][b]!=null||date_A[month-1][date-first_day][a][b]!=null) {
+				if(date-first_day+2>=0&&date-first_day+2<=36) {
+					if(date_V[month-1][date-first_day+2][a][b]!=null||date_A[month-1][date-first_day+2][a][b]!=null) {
 						c++;
 					}
 				}
 				if(c==1) {
 					c++;
-					tmp=tmp+Integer.toString(a+1);
+					tmp=tmp+Integer.toString(a+1)+"/";
 				}
 			}
 			c=0;
 		}
 		for(a=0;a<40;a++) {
-			if(date-first_day>=0) {
-				if(date_U[month-1][date-first_day][a]!=null) {
-					tmp=tmp+"*";
+			if(date-first_day+2>=0&&date-first_day+2<=36) {
+				if(date_U[month-1][date-first_day+2][a]!=null) {
+					tmp=tmp+"*"+"/";
 				}
 			}
 		}
-		
-		return tmp;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==month) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==date-first_day+1) {
+						tmp=tmp+"#"+"/";
+					}
+				}
+			}
+		}
+
+		if(!tmp.equals("")) {
+			return tmp.substring(0,tmp.length()-1);
+		}
+		else {
+			return tmp;
+		}
 	}
 	
 	public void resetting_L() {
@@ -800,11 +903,14 @@ public class CalendarController {
 				Parent add = FXMLLoader.load(getClass().getResource("Loding.fxml"));
 			    Scene scene = new Scene(add);
 			    Stage plus = new  Stage(); // 현재 윈도우 가져오기
-			    plus.getIcons().add(new Image("file:resources/icon/app.png"));
+			    Image icon = new Image(getClass().getResourceAsStream("app.png"));
+			    plus.getIcons().add(icon);
 			    plus.setTitle("과탑을 향해서");
 			    plus.setScene(scene);
-			    plus.show();
-			    EXPLAIN.setText("재갱신시 불러오기 버튼을 꼭 눌러주세요!");
+			    plus.showAndWait();
+			    if(!plus.isShowing()) {
+			    	LOAD();
+			    }
 			}
 		    
 		} catch(IOException a) {
@@ -812,20 +918,40 @@ public class CalendarController {
 		}
 	}
 	
+	@FXML protected void kakaka(ActionEvent on){  
+		try {
+			Parent add = FXMLLoader.load(getClass().getResource("Help.fxml"));
+		    Scene scene = new Scene(add);
+		    Stage plus = new  Stage(); 
+		    Image icon = new Image(getClass().getResourceAsStream("app.png"));
+		    plus.getIcons().add(icon);
+		    plus.setTitle("과탑을 향해서");
+		    plus.setScene(scene);
+		    plus.showAndWait();
+		    if(!plus.isShowing()) {
+		    	if(del==1) {
+		    		Stage stage = (Stage) MAINLIST.getScene().getWindow();
+		    		stage.close();
+		    	}
+		    }
+		}	catch(IOException a){
+			
+		}
+	}
+	
 	@FXML protected void PLUS(ActionEvent on){  
 		try {
-			if(page>0) {
 				Parent add = FXMLLoader.load(getClass().getResource("Add.fxml"));
 			    Scene scene = new Scene(add);
 			    Stage plus = new  Stage(); // 현재 윈도우 가져오기
-			    plus.getIcons().add(new Image("file:resources/icon/app.png"));
+			    Image icon = new Image(getClass().getResourceAsStream("app.png"));
+			    plus.getIcons().add(icon);
 			    plus.setTitle("과탑을 향해서");
 			    plus.setScene(scene);
-			    plus.show();
-			    page=0;
-			    EXPLAIN.setText("추가시 불러오기 버튼을 꼭 눌러주세요!");
-			}
-		    
+			    plus.showAndWait();
+			    if(!plus.isShowing()) {
+			    	LOAD();
+			    }
 		} catch(IOException a) {
 			
 		}
@@ -853,7 +979,7 @@ public class CalendarController {
 						}
 					}
 				}
-				for(b=0;b<15;b++) {
+				for(b=0;b<16;b++) {
 					if(okok!=0) {
 						break;
 					}
@@ -886,16 +1012,18 @@ public class CalendarController {
 				}
 				okok=0;
 				
-				EXPLAIN.setText("삭제시 불러오기를 꼭 눌러주세요");
-				page=0;
 				try {
 					Parent add = FXMLLoader.load(getClass().getResource("Delete.fxml"));
 				    Scene scene = new Scene(add);
 				    Stage plus = new  Stage(); 
-				    plus.getIcons().add(new Image("file:resources/icon/app.png"));
+				    Image icon = new Image(getClass().getResourceAsStream("app.png"));
+				    plus.getIcons().add(icon);
 			        plus.setTitle("과탑을 향해서");
 				    plus.setScene(scene);
-				    plus.show();
+				    plus.showAndWait();
+				    if(!plus.isShowing()) {
+				    	LOAD();
+				    }
 				} catch(IOException n) {
 					
 				}
@@ -1009,6 +1137,9 @@ public class CalendarController {
 	static int click_check=0;
 	
 	@FXML protected void CLICK(MouseEvent event){  
+		
+		if(event.getClickCount()==2) {
+		
 		try {
 			if(no_click==0) {
 				int a,b,c;
@@ -1031,7 +1162,7 @@ public class CalendarController {
 						}
 					}
 				}
-				for(b=0;b<15;b++) {
+				for(b=0;b<16;b++) {
 					if(no_click!=0) {
 						break;
 					}
@@ -1066,13 +1197,15 @@ public class CalendarController {
 			Parent add = FXMLLoader.load(getClass().getResource("Explain_V.fxml"));
 		    Scene scene = new Scene(add);
 		    Stage plus = new  Stage(); 
-		    plus.getIcons().add(new Image("file:resources/icon/app.png"));
+		    Image icon = new Image(getClass().getResourceAsStream("app.png"));
+		    plus.getIcons().add(icon);
 	        plus.setTitle("과탑을 향해서");
 		    plus.setScene(scene);
 		    plus.show();
 			}
 		} catch(IOException a) {
 			
+		}
 		}
 	}
 	
@@ -1081,8 +1214,9 @@ public class CalendarController {
 			Parent add = FXMLLoader.load(getClass().getResource("Notice.fxml"));
 		    Scene scene = new Scene(add);
 		    Stage plus = new  Stage(); 
-		    plus.getIcons().add(new Image("file:resources/icon/app.png"));
 	        plus.setTitle("과탑을 향해서");
+	        Image icon = new Image(getClass().getResourceAsStream("app.png"));
+		    plus.getIcons().add(icon);
 		    plus.setScene(scene);
 		    plus.show();
 			
@@ -1100,26 +1234,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][0-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][0-first_day+1][a][b]);
+				if(date_V[M-1][0-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][0-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][0-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][0-first_day+1][a][b]);
+				if(date_A[M-1][0-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][0-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][0-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][0-first_day+1][a]);
+			if(date_U[M-1][0-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][0-first_day+3][a]);
 			}
 		}
 		this_date=0;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON2(ActionEvent on){  
@@ -1128,26 +1271,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][1-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][1-first_day+1][a][b]);
+				if(date_V[M-1][1-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][1-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][1-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][1-first_day+1][a][b]);
+				if(date_A[M-1][1-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][1-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][1-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][1-first_day+1][a]);
+			if(date_U[M-1][1-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][1-first_day+3][a]);
 			}
 		}
 		this_date=1;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON3(ActionEvent on){  
@@ -1156,26 +1308,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][2-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][2-first_day+1][a][b]);
+				if(date_V[M-1][2-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][2-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][2-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][2-first_day+1][a][b]);
+				if(date_A[M-1][2-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][2-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][2-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][2-first_day+1][a]);
+			if(date_U[M-1][2-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][2-first_day+3][a]);
 			}
 		}
 		this_date=2;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON4(ActionEvent on){  
@@ -1184,26 +1345,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][3-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][3-first_day+1][a][b]);
+				if(date_V[M-1][3-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][3-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][3-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][3-first_day+1][a][b]);
+				if(date_A[M-1][3-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][3-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][3-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][3-first_day+1][a]);
+			if(date_U[M-1][3-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][3-first_day+3][a]);
 			}
 		}
 		this_date=3;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON5(ActionEvent on){  
@@ -1212,23 +1382,33 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][4-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][4-first_day+1][a][b]);
+				if(date_V[M-1][4-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][4-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][4-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][4-first_day+1][a][b]);
+				if(date_A[M-1][4-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][4-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][4-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][4-first_day+1][a]);
+			if(date_U[M-1][4-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][4-first_day+3][a]);
+			}
+		}
+		
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==4-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
 			}
 		}
 		this_date=4;
@@ -1240,26 +1420,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][5-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][5-first_day+1][a][b]);
+				if(date_V[M-1][5-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][5-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][5-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][5-first_day+1][a][b]);
+				if(date_A[M-1][5-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][5-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][5-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][5-first_day+1][a]);
+			if(date_U[M-1][5-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][5-first_day+3][a]);
 			}
 		}
 		this_date=5;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON7(ActionEvent on){  
@@ -1268,26 +1457,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][6-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][6-first_day+1][a][b]);
+				if(date_V[M-1][6-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][6-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][6-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][6-first_day+1][a][b]);
+				if(date_A[M-1][6-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][6-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][6-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][6-first_day+1][a]);
+			if(date_U[M-1][6-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][6-first_day+3][a]);
 			}
 		}
 		this_date=6;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON8(ActionEvent on){  
@@ -1296,26 +1494,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][7-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][7-first_day+1][a][b]);
+				if(date_V[M-1][7-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][7-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][7-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][7-first_day+1][a][b]);
+				if(date_A[M-1][7-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][7-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][7-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][7-first_day+1][a]);
+			if(date_U[M-1][7-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][7-first_day+3][a]);
 			}
 		}
 		this_date=7;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON9(ActionEvent on){  
@@ -1324,26 +1531,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][8-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][8-first_day+1][a][b]);
+				if(date_V[M-1][8-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][8-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][8-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][8-first_day+1][a][b]);
+				if(date_A[M-1][8-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][8-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][8-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][8-first_day+1][a]);
+			if(date_U[M-1][8-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][8-first_day+3][a]);
 			}
 		}
 		this_date=8;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON10(ActionEvent on){  
@@ -1352,26 +1568,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][9-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][9-first_day+1][a][b]);
+				if(date_V[M-1][9-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][9-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][9-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][9-first_day+1][a][b]);
+				if(date_A[M-1][9-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][9-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][9-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][9-first_day+1][a]);
+			if(date_U[M-1][9-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][9-first_day+3][a]);
 			}
 		}
 		this_date=9;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON11(ActionEvent on){  
@@ -1380,26 +1605,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][10-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][10-first_day+1][a][b]);
+				if(date_V[M-1][10-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][10-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][10-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][10-first_day+1][a][b]);
+				if(date_A[M-1][10-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][10-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][10-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][10-first_day+1][a]);
+			if(date_U[M-1][10-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][10-first_day+3][a]);
 			}
 		}
 		this_date=10;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON12(ActionEvent on){  
@@ -1408,26 +1642,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][11-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][11-first_day+1][a][b]);
+				if(date_V[M-1][11-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][11-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][11-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][11-first_day+1][a][b]);
+				if(date_A[M-1][11-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][11-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][11-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][11-first_day+1][a]);
+			if(date_U[M-1][11-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][11-first_day+3][a]);
 			}
 		}
 		this_date=11;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON13(ActionEvent on){  
@@ -1436,26 +1679,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][12-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][12-first_day+1][a][b]);
+				if(date_V[M-1][12-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][12-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][12-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][12-first_day+1][a][b]);
+				if(date_A[M-1][12-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][12-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][12-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][12-first_day+1][a]);
+			if(date_U[M-1][12-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][12-first_day+3][a]);
 			}
 		}
 		this_date=12;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON14(ActionEvent on){  
@@ -1464,26 +1716,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][13-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][13-first_day+1][a][b]);
+				if(date_V[M-1][13-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][13-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][13-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][13-first_day+1][a][b]);
+				if(date_A[M-1][13-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][13-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][13-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][13-first_day+1][a]);
+			if(date_U[M-1][13-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][13-first_day+3][a]);
 			}
 		}
 		this_date=13;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON15(ActionEvent on){  
@@ -1492,26 +1753,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][14-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][14-first_day+1][a][b]);
+				if(date_V[M-1][14-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][14-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][14-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][14-first_day+1][a][b]);
+				if(date_A[M-1][14-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][14-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][14-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][14-first_day+1][a]);
+			if(date_U[M-1][14-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][14-first_day+3][a]);
 			}
 		}
 		this_date=14;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON16(ActionEvent on){  
@@ -1520,26 +1790,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][15-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][15-first_day+1][a][b]);
+				if(date_V[M-1][15-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][15-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][15-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][15-first_day+1][a][b]);
+				if(date_A[M-1][15-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][15-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][15-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][15-first_day+1][a]);
+			if(date_U[M-1][15-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][15-first_day+3][a]);
 			}
 		}
 		this_date=15;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON17(ActionEvent on){  
@@ -1548,26 +1827,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][16-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][16-first_day+1][a][b]);
+				if(date_V[M-1][16-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][16-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][16-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][16-first_day+1][a][b]);
+				if(date_A[M-1][16-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][16-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][16-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][16-first_day+1][a]);
+			if(date_U[M-1][16-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][16-first_day+3][a]);
 			}
 		}
 		this_date=16;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON18(ActionEvent on){  
@@ -1576,26 +1864,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][17-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][17-first_day+1][a][b]);
+				if(date_V[M-1][17-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][17-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][17-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][17-first_day+1][a][b]);
+				if(date_A[M-1][17-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][17-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][17-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][17-first_day+1][a]);
+			if(date_U[M-1][17-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][17-first_day+3][a]);
 			}
 		}
 		this_date=17;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON19(ActionEvent on){  
@@ -1604,26 +1901,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][18-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][18-first_day+1][a][b]);
+				if(date_V[M-1][18-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][18-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][18-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][18-first_day+1][a][b]);
+				if(date_A[M-1][18-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][18-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][18-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][18-first_day+1][a]);
+			if(date_U[M-1][18-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][18-first_day+3][a]);
 			}
 		}
 		this_date=18;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON20(ActionEvent on){  
@@ -1632,26 +1938,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][19-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][19-first_day+1][a][b]);
+				if(date_V[M-1][19-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][19-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][19-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][19-first_day+1][a][b]);
+				if(date_A[M-1][19-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][19-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][19-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][19-first_day+1][a]);
+			if(date_U[M-1][19-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][19-first_day+3][a]);
 			}
 		}
 		this_date=19;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON21(ActionEvent on){  
@@ -1660,26 +1975,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][20-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][20-first_day+1][a][b]);
+				if(date_V[M-1][20-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][20-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][20-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][20-first_day+1][a][b]);
+				if(date_A[M-1][20-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][20-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][20-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][20-first_day+1][a]);
+			if(date_U[M-1][20-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][20-first_day+3][a]);
 			}
 		}
 		this_date=20;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON22(ActionEvent on){  
@@ -1688,26 +2012,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][21-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][21-first_day+1][a][b]);
+				if(date_V[M-1][21-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][21-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][21-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][21-first_day+1][a][b]);
+				if(date_A[M-1][21-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][21-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][21-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][21-first_day+1][a]);
+			if(date_U[M-1][21-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][21-first_day+3][a]);
 			}
 		}
 		this_date=21;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON23(ActionEvent on){  
@@ -1716,26 +2049,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][22-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][22-first_day+1][a][b]);
+				if(date_V[M-1][22-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][22-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][22-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][22-first_day+1][a][b]);
+				if(date_A[M-1][22-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][22-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][22-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][22-first_day+1][a]);
+			if(date_U[M-1][22-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][22-first_day+3][a]);
 			}
 		}
 		this_date=22;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON24(ActionEvent on){  
@@ -1744,26 +2086,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][23-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][23-first_day+1][a][b]);
+				if(date_V[M-1][23-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][23-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][23-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][23-first_day+1][a][b]);
+				if(date_A[M-1][23-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][23-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][23-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][23-first_day+1][a]);
+			if(date_U[M-1][23-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][23-first_day+3][a]);
 			}
 		}
 		this_date=23;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON25(ActionEvent on){  
@@ -1772,26 +2123,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][24-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][24-first_day+1][a][b]);
+				if(date_V[M-1][24-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][24-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][24-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][24-first_day+1][a][b]);
+				if(date_A[M-1][24-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][24-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][24-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][24-first_day+1][a]);
+			if(date_U[M-1][24-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][24-first_day+3][a]);
 			}
 		}
 		this_date=24;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON26(ActionEvent on){  
@@ -1800,26 +2160,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][25-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][25-first_day+1][a][b]);
+				if(date_V[M-1][25-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][25-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][25-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][25-first_day+1][a][b]);
+				if(date_A[M-1][25-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][25-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][25-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][25-first_day+1][a]);
+			if(date_U[M-1][25-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][25-first_day+3][a]);
 			}
 		}
 		this_date=25;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON27(ActionEvent on){  
@@ -1828,26 +2197,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][26-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][26-first_day+1][a][b]);
+				if(date_V[M-1][26-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][26-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][26-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][26-first_day+1][a][b]);
+				if(date_A[M-1][26-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][26-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][26-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][26-first_day+1][a]);
+			if(date_U[M-1][26-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][26-first_day+3][a]);
 			}
 		}
 		this_date=26;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON28(ActionEvent on){  
@@ -1856,26 +2234,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][27-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][27-first_day+1][a][b]);
+				if(date_V[M-1][27-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][27-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][27-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][27-first_day+1][a][b]);
+				if(date_A[M-1][27-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][27-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][27-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][27-first_day+1][a]);
+			if(date_U[M-1][27-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][27-first_day+3][a]);
 			}
 		}
 		this_date=27;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON29(ActionEvent on){  
@@ -1884,26 +2271,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][28-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][28-first_day+1][a][b]);
+				if(date_V[M-1][28-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][28-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][28-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][28-first_day+1][a][b]);
+				if(date_A[M-1][28-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][28-first_day+3][a][b]);
 				}
 			}
 		}
 
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][28-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][28-first_day+1][a]);
+			if(date_U[M-1][28-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][28-first_day+3][a]);
 			}
 		}
 		this_date=28;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON30(ActionEvent on){  
@@ -1912,26 +2308,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][29-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][29-first_day+1][a][b]);
+				if(date_V[M-1][29-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][29-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][29-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][29-first_day+1][a][b]);
+				if(date_A[M-1][29-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][29-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][29-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][29-first_day+1][a]);
+			if(date_U[M-1][29-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][29-first_day+3][a]);
 			}
 		}
 		this_date=29;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON31(ActionEvent on){  
@@ -1940,26 +2345,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][30-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][30-first_day+1][a][b]);
+				if(date_V[M-1][30-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][30-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][30-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][30-first_day+1][a][b]);
+				if(date_A[M-1][30-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][30-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][30-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][30-first_day+1][a]);
+			if(date_U[M-1][30-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][30-first_day+3][a]);
 			}
 		}
 		this_date=30;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON32(ActionEvent on){  
@@ -1968,26 +2382,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][31-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][31-first_day+1][a][b]);
+				if(date_V[M-1][31-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][31-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][31-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][31-first_day+1][a][b]);
+				if(date_A[M-1][31-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][31-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][31-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][31-first_day+1][a]);
+			if(date_U[M-1][31-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][31-first_day+3][a]);
 			}
 		}
 		this_date=31;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON33(ActionEvent on){  
@@ -1996,26 +2419,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][32-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][32-first_day+1][a][b]);
+				if(date_V[M-1][32-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][32-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][32-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][32-first_day+1][a][b]);
+				if(date_A[M-1][32-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][32-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][32-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][32-first_day+1][a]);
+			if(date_U[M-1][32-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][32-first_day+3][a]);
 			}
 		}
 		this_date=32;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON34(ActionEvent on){  
@@ -2024,26 +2456,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][33-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][33-first_day+1][a][b]);
+				if(date_V[M-1][33-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][33-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][33-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][33-first_day+1][a][b]);
+				if(date_A[M-1][33-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][33-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][33-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][33-first_day+1][a]);
+			if(date_U[M-1][33-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][33-first_day+3][a]);
 			}
 		}
 		this_date=33;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON35(ActionEvent on){  
@@ -2052,26 +2493,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][34-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][34-first_day+1][a][b]);
+				if(date_V[M-1][34-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][34-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][34-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][34-first_day+1][a][b]);
+				if(date_A[M-1][34-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][34-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][34-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][34-first_day+1][a]);
+			if(date_U[M-1][34-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][34-first_day+3][a]);
 			}
 		}
 		this_date=34;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON36(ActionEvent on){  
@@ -2080,26 +2530,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][35-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][35-first_day+1][a][b]);
+				if(date_V[M-1][35-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][35-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][35-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][35-first_day+1][a][b]);
+				if(date_A[M-1][35-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][35-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][35-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][35-first_day+1][a]);
+			if(date_U[M-1][35-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][35-first_day+3][a]);
 			}
 		}
 		this_date=35;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	@FXML protected void BUTTON37(ActionEvent on){  
@@ -2108,26 +2567,35 @@ public class CalendarController {
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_V[M-1][36-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_V[M-1][36-first_day+1][a][b]);
+				if(date_V[M-1][36-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_V[M-1][36-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<LodingController.count;a++) {
 			for(b=0;b<40;b++) {
-				if(date_A[M-1][36-first_day+1][a][b]!=null) {
-					mainlist.add(a+1+">"+date_A[M-1][36-first_day+1][a][b]);
+				if(date_A[M-1][36-first_day+3][a][b]!=null) {
+					mainlist.add(a+1+">"+date_A[M-1][36-first_day+3][a][b]);
 				}
 			}
 		}
 		
 		for(a=0;a<40;a++) {
-			if(date_U[M-1][36-first_day+1][a]!=null) {
-				mainlist.add(">"+date_U[M-1][36-first_day+1][a]);
+			if(date_U[M-1][36-first_day+3][a]!=null) {
+				mainlist.add(">"+date_U[M-1][36-first_day+3][a]);
 			}
 		}
 		this_date=36;
+		for(a=0;a<LodingController.count_usaint_date;a++) {
+			if(LodingController.usaint_schedule[a]!=null) {
+				if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[1])==M) {
+					if(Integer.parseInt(LodingController.usaint_date_token[a][0].split(" ")[0].split("-")[2])==this_date-first_day+2) {
+						mainlist.add("#"+LodingController.usaint_schedule[a]);
+					}
+				}
+			}
+		}
 		MAINLIST.setItems(mainlist);
 	}
 	

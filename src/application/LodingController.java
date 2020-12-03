@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
@@ -57,6 +58,23 @@ public class LodingController {
 	protected static String if_notPassed_AssignedName[];
 	protected static String if_notPassed_AssignedDate[];
 	
+	protected static String[] subject_title_temp;
+	protected static String[] subject_link_temp;
+	protected static String[] check_sub_label_array;
+	
+	protected static final String u_saint_Date_link 
+	= "https://ssu.ac.kr/%ED%95%99%EC%82%AC/%ED%95%99%EC%82%AC%EC%9D%BC%EC%A0%95/?years=2020";
+	protected static final String u_saint_Date_link2
+	="https://ssu.ac.kr/%ED%95%99%EC%82%AC/%ED%95%99%EC%82%AC%EC%9D%BC%EC%A0%95/?years=2019";
+	
+	
+	/*아래 두 배열은 날짜에 따른 스케쥴 일정을 저장함.*/
+	protected static String[] usaint_date; 
+	protected static String[] usaint_schedule; 
+	protected static int count_usaint_date;
+	
+	protected static String [][] usaint_date_token; 
+	
 	protected static int count_notWatching_video;
 	protected static int count_notPassed_assign;
 	
@@ -74,7 +92,11 @@ public class LodingController {
 	@FXML Label explain;
 	
 	int check=0;
-	static int dlwjdwo=0;;
+	static int dlwjdwo=0;
+	
+	static File USAINT_DATE_TOKEN = new File("c://SmartCampas//"+ID_+"//usaint_date_token.txt");
+	static File USAINT_SCHEDULE = new File("c://SmartCampas//"+ID_+"//usaint_schedule.txt");
+	static File COUNT_USAINT_DATE = new File("c://SmartCampas//"+ID_+"//count_usaint_date.txt");
 	
 	static File COUNT = new File("c://SmartCampas//"+ID_+"//count.txt");
 	static File SUBJECT_TITLE = new File("c://SmartCampas//"+ID_+"//subject_title.txt");
@@ -88,6 +110,111 @@ public class LodingController {
 	static File TEMP_SUBJECT_ASSIGNMENTPERIOD = new File("c://SmartCampas//"+ID_+"//temp_subject_assignmentPeriond.txt");
 	
 	
+	public static void u_saint_date_block_crawl() throws IOException
+	{
+		Document usaint_date_link = Jsoup.connect(u_saint_Date_link)
+				.get();
+		String usaint_date_toString = usaint_date_link.toString();
+		String start_block = "<h5 class=\"font-weight-light mb-0\"><strong>";
+		String end_block = "<footer id=\"footer\" class=\"d-print-none\">";
+		
+		int start_block_index = usaint_date_toString.indexOf(start_block);
+		int end_block_index = usaint_date_toString.indexOf(end_block);
+		String one_block = usaint_date_toString.substring(start_block_index,end_block_index);
+		
+		
+		String one_block_start_str = "<div class=\"col-12 col-lg-4 col-xl-3 font-weight-normal text-primary\">";
+		String one_block_end_str ="</div> </li>"; 
+		
+		int next = 0;
+		count_usaint_date = 1;
+		while(true)
+		{
+			int one_block_start_idx = one_block.indexOf(one_block_start_str,next);
+			int one_block_end_idx = one_block.indexOf(one_block_end_str,one_block_start_idx);
+			if(one_block_start_idx == -1)
+				break;
+			next = one_block_end_idx;
+			count_usaint_date++;
+		}
+		
+		
+		next = 0;
+		usaint_date = new String [count_usaint_date];
+		usaint_schedule = new String [count_usaint_date]; 
+		int count_array = 0;
+		while(true)
+		{
+			int one_block_start_idx = one_block.indexOf(one_block_start_str,next);
+			int one_block_end_idx = one_block.indexOf(one_block_end_str,one_block_start_idx);
+			if(one_block_start_idx == -1)
+				break;
+			String one_block_date = one_block.substring(one_block_start_idx,one_block_end_idx);
+			next = one_block_end_idx;
+			
+			String date_start_str = "<div class=\"col-12 col-lg-4 col-xl-3 font-weight-normal text-primary\">";
+			String date_end_str = "</div>";
+			int date_start_idx = one_block_date.indexOf(date_start_str);
+			int date_end_idx = one_block_date.indexOf(date_end_str);
+			usaint_date[count_array] = one_block_date.substring(date_start_idx+date_start_str.length(),date_end_idx).trim();
+			
+			String date_start_str2 = "<div class=\"col-12 col-lg-8 col-xl-9\">";
+			String date_end_str2 = "</div>";
+			int date_start_idx2 = one_block_date.indexOf(date_start_str2);
+			int date_end_idx2 = one_block_date.indexOf(date_end_str2,date_start_idx2);
+			usaint_schedule[count_array] = one_block_date.substring(date_start_idx2+date_start_str2.length(),date_end_idx2).trim();
+			count_array++;
+		}
+	}
+	
+	// tokenzier : 01.13 (월) ~ 01.15 (수) 형식을 -> 2020-01-13 00:00:00 ~ 2020-01-15 00:00:00 형식으로 전환
+	public static void usaint_date_tokenzier()
+	{
+		usaint_date_token = new String [count_usaint_date][2];
+		String current_time_temp = current_time;
+		int current_year = year(current_time_temp);
+		String current_year1 = Integer.toString(current_year)+"-";
+		
+		
+		for(int  i = 0 ; i < count_usaint_date ; i++)
+		{
+			if(usaint_date[i] != null)
+			{
+				int check_point = usaint_date[i].indexOf("~");
+				if(check_point != -1)
+				{
+					String[] split_format1 = usaint_date[i].trim().split(Pattern.quote("~"));
+					int end2 = split_format1[0].indexOf("(");
+					split_format1[0] = split_format1[0].substring(0,end2);
+					split_format1[0] = split_format1[0].trim().replace(".","-");
+					
+					int end = split_format1[1].indexOf("(");
+					split_format1[1] = split_format1[1].substring(0,end);
+					split_format1[1] = split_format1[1].trim().replace(".","-");
+					
+					String start_date = current_year1+split_format1[0] + " 00:00:00";
+					String end_date = current_year1+split_format1[1] + " 23:59:59";
+					usaint_date_token[i][0] = start_date;
+					usaint_date_token[i][1] = end_date;
+					
+					
+				}
+				else
+				{
+					String split_format2[] = usaint_date[i].split(" ");
+					split_format2[0] = split_format2[0].trim().replace(".","-");
+					
+					
+					String start_date = current_year1+split_format2[0] + " 00:00:00";
+					String end_date = current_year1+split_format2[0] + " 23:59:59";
+					usaint_date_token[i][0] = start_date;
+					usaint_date_token[i][1] = end_date;
+				}
+			}
+			
+		}
+	}
+	
 	@FXML protected void CRAWLING(ActionEvent on){  
 		if(dlwjdwo==0) {
 			if(new_check==0) {
@@ -100,7 +227,7 @@ public class LodingController {
 						explain();
 						explain.setText("저장 정보를 불러왔습니다! 맞다면 확인 버튼을 눌러주세요!");
 						check++;
-					} catch(IOException a) {
+					} catch(Exception a) {
 						
 					
 				}
@@ -109,13 +236,18 @@ public class LodingController {
 			else {
 				if(check==0) {
 					try {
+						current_time();
+						
+						u_saint_date_block_crawl();
+						usaint_date_tokenzier();
+						
 						access_lecture_index();
 						execution_crawling();
 						video_assignment_divide();
-						current_time();
+						
 						check_video_count();
 						check_assign_count();
-						save();		
+						save();	
 						explain.setLayoutX(45);
 						explain.setText("수강하시는 강의가 맞나요? 맞으면 확인 버튼을 눌러주세요!");
 						check++;		
@@ -137,11 +269,15 @@ public class LodingController {
 						
 					cookies = loginResponse.cookies();
 					
+					current_time();
+					
+					u_saint_date_block_crawl();
+					usaint_date_tokenzier();
+					
 					count=0;
 					access_lecture_index();
 					execution_crawling();
 					video_assignment_divide();
-					current_time();
 					check_video_count();
 					check_assign_count();
 					save();		
@@ -182,6 +318,8 @@ public class LodingController {
 			
 		}
 	
+	protected static int thisWeek;
+	
 	public static void save() throws IOException {
 		FileWriter COUNT_= new FileWriter(COUNT);
 		FileWriter SUBJECT_TITLE_= new FileWriter(SUBJECT_TITLE);
@@ -194,14 +332,34 @@ public class LodingController {
 		FileWriter TEMP_SUBJECT_ASSIGNMENTNAME_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTNAME);
 		FileWriter TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileWriter(TEMP_SUBJECT_ASSIGNMENTPERIOD);
 		
+		FileWriter USAINT_DATE_TOKEN_ = new FileWriter(USAINT_DATE_TOKEN);
+		FileWriter USAINT_SCHEDULE_ = new FileWriter(USAINT_SCHEDULE);
+		FileWriter COUNT_USAINT_DATE_ = new FileWriter(COUNT_USAINT_DATE);
+		
 		COUNT_.write(Integer.toString(count));
 		COUNT_.flush();
 		
+		COUNT_USAINT_DATE_.write(Integer.toString(count_usaint_date));
+		COUNT_USAINT_DATE_.flush();
+		
 		int a, b, c;
+		
+		for(a=0;a<count_usaint_date;a++) {
+			USAINT_SCHEDULE_.write(usaint_schedule[a]+"\n");
+			USAINT_SCHEDULE_.flush();
+		}
+		
+		for(a=0;a<count_usaint_date;a++) {
+			for(b=0;b<2;b++) {
+				USAINT_DATE_TOKEN_.write(usaint_date_token[a][b]+"\n");
+				USAINT_DATE_TOKEN_.flush();
+			}
+		}
+		
 		for(a=0;a<count;a++) {
 			SUBJECT_TITLE_.write(subject_title[a]+"\n");
 			SUBJECT_TITLE_.flush();
-			for(b=0;b<15;b++) {
+			for(b=0;b<16;b++) {
 				for(c=0;c<15;c++) {
 					SUBJECT_VIDEONAME_.write(subject_videoName[a][b][c]+"\n");
 					SUBJECT_VIDEONAME_.flush();
@@ -235,6 +393,10 @@ public class LodingController {
 			}
 		}
 		
+		USAINT_DATE_TOKEN_.close();
+		USAINT_SCHEDULE_.close();
+		COUNT_USAINT_DATE_.close();
+		
 		SUBJECT_TITLE_.close();
 		SUBJECT_VIDEONAME_.close();
 		SUBJECT_VIDEOPERIOD_.close();
@@ -260,6 +422,10 @@ public class LodingController {
 		FileReader TEMP_SUBJECT_ASSIGNMENTNAME_= new FileReader(TEMP_SUBJECT_ASSIGNMENTNAME);
 		FileReader TEMP_SUBJECT_ASSIGNMENTPERIOD_= new FileReader(TEMP_SUBJECT_ASSIGNMENTPERIOD);
 		
+		FileReader USAINT_DATE_TOKEN_ = new FileReader(USAINT_DATE_TOKEN);
+		FileReader USAINT_SCHEDULE_ = new FileReader(USAINT_SCHEDULE);
+		FileReader COUNT_USAINT_DATE_ = new FileReader(COUNT_USAINT_DATE);
+		
 		BufferedReader COUNT__ = new BufferedReader(COUNT_);
 		BufferedReader SUBJECT_TITLE__ = new BufferedReader(SUBJECT_TITLE_);
 		BufferedReader SUBJECT_VIDEONAME__ = new BufferedReader(SUBJECT_VIDEONAME_);
@@ -271,23 +437,49 @@ public class LodingController {
 		BufferedReader TEMP_SUBJECT_ASSIGNMENTNAME__ = new BufferedReader(TEMP_SUBJECT_ASSIGNMENTNAME_);
 		BufferedReader TEMP_SUBJECT_ASSIGNMENTPERIOD__ = new BufferedReader(TEMP_SUBJECT_ASSIGNMENTPERIOD_);
 		
+		BufferedReader USAINT_DATE_TOKEN__ = new BufferedReader(USAINT_DATE_TOKEN_);
+		BufferedReader USAINT_SCHEDULE__ = new BufferedReader(USAINT_SCHEDULE_);
+		BufferedReader COUNT_USAINT_DATE__ = new BufferedReader(COUNT_USAINT_DATE_);
+		
+		int a, b, c;
+		
         count=Integer.parseInt(COUNT__.readLine());
-            
+        
+        count_usaint_date=Integer.parseInt(COUNT_USAINT_DATE__.readLine());
+        
+        usaint_date_token=new String[count_usaint_date][2];
+        usaint_schedule=new String[count_usaint_date];
+        
+        for(a=0;a<count_usaint_date;a++) {
+        	usaint_schedule[a]=USAINT_SCHEDULE__.readLine();
+			if(usaint_schedule[a].equals("null")) {
+				usaint_schedule[a]=null;
+			}
+		}
+        
+        for(a=0;a<count_usaint_date;a++) {
+        	for(b=0;b<2;b++) {
+        		usaint_date_token[a][b]=USAINT_DATE_TOKEN__.readLine();
+    			if(usaint_date_token[a][b].equals("null")) {
+    				usaint_date_token[a][b]=null;
+    			}
+        	}
+		}
+        
         subject_title = new String [count];
-        subject_videoName = new String [count][15][15];
-		subject_videoPeriod = new String [count][15][15];
-		subject_videoLength = new String [count][15][15];
-		subject_videoLate = new String[count][15][15];
+        subject_videoName = new String [count][16][15];
+		subject_videoPeriod = new String [count][16][15];
+		subject_videoLength = new String [count][16][15];
+		subject_videoLate = new String[count][16][15];
 		
 		check_video = new String [count][16][15];
 		check_assignment = new String [count][40];
 		temp_subject_assignmentName = new String [count][40];
 		temp_subject_assignmentPeriond = new String [count][40];
 		
-		int a, b, c;
 		for(a=0;a<count;a++) {
 			subject_title[a]=SUBJECT_TITLE__.readLine();
-			for(b=0;b<15;b++) {
+			for(b=0;b<16;b++) {
 				for(c=0;c<15;c++) {
 					subject_videoName[a][b][c]=SUBJECT_VIDEONAME__.readLine();
 					if(subject_videoName[a][b][c].equals("null")) {
@@ -337,6 +529,10 @@ public class LodingController {
 			}
 		}
 		
+		
+		USAINT_DATE_TOKEN__.close();
+		USAINT_SCHEDULE__.close();
+		COUNT_USAINT_DATE__.close();
 		COUNT__.close();
 		SUBJECT_TITLE__.close();
 		SUBJECT_VIDEONAME__.close();
@@ -357,63 +553,81 @@ public class LodingController {
 				.get();
 
 		String docu = doc1.toString();
-		
 		int startIdxCount = 0;
-		int endIdxCount =0;
-		
+		count = 0;
 		while (true)
 		{
-			if(count == 1)
+			String sub_check = "<div class=\"course-title\">";
+
+			int pre = startIdxCount;
+			startIdxCount = docu.indexOf(sub_check,startIdxCount+sub_check.length());
+			if(startIdxCount == -1 || pre > startIdxCount)
+				break;
+			++count;
+		}	
+		subject_title_temp = new String [count];
+		subject_link_temp = new String [count];
+		check_sub_label_array = new String [count];
+		
+		int startIdx_array = 0;
+		int endIdx_array = 0;
+		
+		int minus_idx = 0;
+		for (int i = 0; i < count ; i++)
+		{
+			String start_str = "<div class=\"course-title\">";
+			String end_str = "<span style=\"color:#999;\">";
+			
+			startIdx_array = docu.indexOf(start_str,endIdx_array);
+			endIdx_array = docu.indexOf(end_str,startIdx_array+start_str.length());
+							
+			if(endIdx_array == -1)
 			{
-				endIdxCount = docu.indexOf("<span style=\"color:#999;\">");
-				startIdxCount = docu.indexOf("<div class=\"course-title\">");
-				++count;
+				subject_title_temp[i] = null;
+				minus_idx++;
 			}
-			else
-			{
-				endIdxCount = docu.indexOf("<span style=\"color:#999;\">",endIdxCount+50);
-				startIdxCount = docu.indexOf("<div class=\"course-title\">",endIdxCount);
-				if(startIdxCount == -1)
-					break;
-				++count;
+			else {
+				String modify= docu.substring(startIdx_array+start_str.length(),endIdx_array).trim();
+				String[] split_h3 = modify.split(">");
+				subject_title_temp[i] = split_h3[1];
 			}
 		}
 		
+		
+		startIdx_array = 0;
+		endIdx_array = 0;
+		int checkpoint_idx = 0;
+		for (int i = 0; i < count ; i++)
+		{
+			String checkpoint = "<div class=\"course_box\">";
+			String start_str = "<a href=\"";
+			String end_str = "\" class=\"course_link\">";
+			checkpoint_idx = docu.indexOf(checkpoint,endIdx_array);
+			startIdx_array = docu.indexOf(start_str,checkpoint_idx);
+			endIdx_array = docu.indexOf(end_str,startIdx_array+start_str.length());
+
+			if(endIdx_array == -1)
+			{
+				subject_link_temp[i] = null;
+			}
+				
+			else {
+				subject_link_temp[i] = docu.substring(startIdx_array+start_str.length(),endIdx_array);
+			}
+		}
+				
+		count -= minus_idx;
 		subject_title = new String [count];
 		subject_link = new String [count];
-		
-		int [] startIdx_array = new int [count];
-		int [] endIdx_array = new int [count];
-		
-		for (int i = 0; i < startIdx_array.length ; i++)
+		int sub_count = 0;
+		for (int i = 0 ; i < count ; i++)
 		{
-			if(i == 0)
+			if(subject_link_temp[i] != null)
 			{
-				endIdx_array[i] = docu.indexOf("<span style=\"color:#999;\">");
-				startIdx_array[i] = docu.indexOf("<div class=\"course-title\">");
+				subject_title[sub_count] = subject_title_temp[i];
+				subject_link[sub_count] = subject_link_temp[i];
+				sub_count++;
 			}
-			else
-			{
-				endIdx_array[i] = docu.indexOf("<span style=\"color:#999;\">",endIdx_array[i-1]+50);
-				startIdx_array[i] = docu.indexOf("<div class=\"course-title\">",endIdx_array[i-1]);
-			}
-			subject_title[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
-		}
-		
-		for (int i = 0; i < startIdx_array.length ; i++)
-		{
-			if(i == 0)
-			{
-				endIdx_array[i] = docu.indexOf("\" class=\"course_link\">");
-				startIdx_array[i] = docu.indexOf("<div class=\"course_box\">");
-			}
-			else
-			{
-				endIdx_array[i] = docu.indexOf("\" class=\"course_link\">",endIdx_array[i-1]+50);
-				startIdx_array[i] = docu.indexOf("<div class=\"course_box\">",endIdx_array[i-1]);
-			}
-
-			subject_link[i] = docu.substring(startIdx_array[i]+48,endIdx_array[i]);
 		}
 		
 	}
@@ -421,7 +635,7 @@ public class LodingController {
 	public void execution_crawling() throws IOException
 	{
 		//array_subject_link[강의 인덱스][달][자료]
-		array_subject_link = new String [count][16][15];
+		array_subject_link = new String [count][16][20];
 		check_video_link = new String [count];
 		check_assignment_link = new String [count];
 		
@@ -600,10 +814,10 @@ public class LodingController {
 	
 	public void video_assignment_divide() throws IOException
 	{
-		subject_videoName = new String [count][15][15];
-		subject_videoPeriod = new String [count][15][15];
-		subject_videoLength = new String [count][15][15];
-		subject_videoLate = new String[count][15][15];
+		subject_videoName = new String [count][16][15];
+		subject_videoPeriod = new String [count][16][15];
+		subject_videoLength = new String [count][16][15];
+		subject_videoLate = new String[count][16][15];
 		
 		/*2020.11.05 추가된 과제,영상 시청 현황 체크 필드 생성자 */
 		check_video = new String [count][16][15];
@@ -666,7 +880,7 @@ public class LodingController {
 				count_video_check = video_check_function(doc_video_check ,count_sub, count_video_check,week);
 				
 				int week_video_count = 0;
-				for (int data = 0 ; data < 15 ; data++)
+				for (int data = 0 ; data < 20 ; data++)
 				{
 					if(judgeFunction(array_subject_link[count_sub][week][data]).equals("video"))
 					{ 	
@@ -751,7 +965,14 @@ public class LodingController {
 					{
 						online_check_previous_count = online_check_previous_count0;
 					}
-				}			
+				}
+				
+				if(k==15) {
+					String final_week = "</tbody>";
+					int online_check_previous_count_final = doc_video_check_string.indexOf(final_week,online_check_previous_count00);
+					online_check_previous_count=online_check_previous_count_final;
+				}
+				
 				if(offline_check_previous_count != -1)
 				{
 					
@@ -1154,7 +1375,7 @@ public class LodingController {
 		int count_video_check = 0;
 		for(int i = 0 ; i < count ; i++)
 		 {
-			 for(int j = 0 ; j < 15 ; j++)
+			 for(int j = 0 ; j < 16 ; j++)
 			 {
 				 for(int k = 0 ; k < 15 ; k++)
 				 {
@@ -1190,8 +1411,9 @@ public class LodingController {
 
 	public static boolean assignment_verse_current(String assign_date)
 	{
-
 		if((month(current_time)<=month(assign_date))&&(date(current_time)<=date(assign_date)))
+			return true;
+		else if(month(current_time)<month(assign_date))
 			return true;
 		return false;
 	}
@@ -1208,7 +1430,7 @@ public class LodingController {
 		 {
 			 for(int count_assign = 0 ; count_assign < 40 ; count_assign++)
 			 {
-				 if(temp_subject_assignmentName[section_s][count_assign] != null)
+				 if(temp_subject_assignmentPeriond[section_s][count_assign] != null)
 				 {
 		
 					 boolean assign_check = check_assignment[section_s][count_assign].equals("미제출");
@@ -1231,7 +1453,7 @@ public class LodingController {
 		count_notWatching_video = 1;
 		for(int i = 0 ; i < count ; i++)
 		 {
-			 for(int j = 0 ; j < 15 ; j++)
+			 for(int j = 0 ; j < 16 ; j++)
 			 {
 				 for(int k = 0 ; k < 15 ; k++)
 				 {
@@ -1266,10 +1488,17 @@ public class LodingController {
 				 if(temp_subject_assignmentName[section_s][count_assign] != null)
 				 {
 					 boolean assign_check = check_assignment[section_s][count_assign].equals("미제출");
-					 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
-					 if(assign_check == true && time_check == true)
+					 if(temp_subject_assignmentPeriond[section_s][count_assign].equals("-"))
 					 {
-						 count_notPassed_assign++;
+						 temp_subject_assignmentPeriond[section_s][count_assign] = null;
+					 }
+					 else
+					 {
+						 boolean time_check = assignment_verse_current(temp_subject_assignmentPeriond[section_s][count_assign]);
+						 if(assign_check == true && time_check == true)
+						 {
+							 count_notPassed_assign++;
+						 }
 					 }
 				 }
 			 }

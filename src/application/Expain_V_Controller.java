@@ -1,11 +1,14 @@
 package application;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class Expain_V_Controller {
+public class Expain_V_Controller implements Initializable{
 	
 	@FXML Label NAME_V;
 	@FXML Label PERIOD_V;
@@ -22,8 +25,8 @@ public class Expain_V_Controller {
 		Stage stage = (Stage) NAME_V.getScene().getWindow();
 		stage.close();
 	}
-	
-	@FXML protected void PICKUP(ActionEvent on){  
+		
+	public void initialize(URL location, ResourceBundle resources) {
 		if(CalendarController.click_check==2) {
 			name.setText("과목 이름");
 			period.setText("강의 기한");
@@ -62,6 +65,5 @@ public class Expain_V_Controller {
 		}
 		CalendarController.no_click=0;
 		CalendarController.click_check=0;
-		
 	}
 }

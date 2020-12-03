@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AddController">
    <children>
-      <Pane prefHeight="211.0" prefWidth="320.0" stylesheets="@application.css">
+      <Pane prefHeight="198.0" prefWidth="305.0" stylesheets="@application.css">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="211.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="320.0" />
             <Button layoutX="36.0" layoutY="152.0" mnemonicParsing="false" onAction="#PLUS" prefHeight="33.0" prefWidth="76.0" text="추가" textFill="WHITE" />

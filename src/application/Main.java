@@ -19,8 +19,10 @@ public class Main extends Application {
         System.setProperty("prism.lcdtext", "false"); // 폰트파일 로드전에 실행
         Font.loadFont(getClass().getResourceAsStream("font.ttf"), 10);
         
-        primaryStage.getIcons().add(new Image("file:resources/icon/app.png"));
+        Image icon = new Image(getClass().getResourceAsStream("app.png"));
+        primaryStage.getIcons().add(icon);
 
+        primaryStage.setResizable(false);
         primaryStage.setTitle("과탑을 향해서");
         primaryStage.setScene(scene);
         primaryStage.show();

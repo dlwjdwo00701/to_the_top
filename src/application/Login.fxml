@@ -4,29 +4,31 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="367.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="357.0" prefWidth="517.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LoginController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="357.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="368.0" />
-      <Button layoutX="38.0" layoutY="293.0" mnemonicParsing="false" onAction="#LoginButton" prefHeight="33.0" prefWidth="114.0" text="    로그인    " textFill="WHITE" />
-      <Button layoutX="219.0" layoutY="293.0" mnemonicParsing="false" onAction="#DeleteButton" prefHeight="33.0" prefWidth="114.0" text="    지우기    " textFill="WHITE" />
-      <Label fx:id="explain" layoutX="54.0" layoutY="261.0" text="스캠 아이디와 비밀번호를 입력해주세요." underline="true" />
-      <Label layoutX="107.0" layoutY="25.0" text="과탑을 향해서">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="427.0" layoutY="-1.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="632.0" />
+      <Button layoutX="62.0" layoutY="293.0" mnemonicParsing="false" onAction="#LoginButton" prefHeight="33.0" prefWidth="114.0" text="    로그인    " textFill="WHITE" />
+      <Button layoutX="329.0" layoutY="293.0" mnemonicParsing="false" onAction="#DeleteButton" prefHeight="33.0" prefWidth="114.0" text="    지우기    " textFill="WHITE" />
+      <Label fx:id="explain" layoutX="152.0" layoutY="207.0" text="스마트캠퍼스 아이디와 비밀번호를 입력해주세요." underline="true" />
+      <Label layoutX="182.0" layoutY="28.0" text="과탑을 향해서">
          <font>
             <Font name="System Bold" size="26.0" />
          </font>
       </Label>
-      <Label layoutX="46.0" layoutY="83.0" text="아이디" />
-      <Label layoutX="39.0" layoutY="133.0" text="비밀번호" />
-      <TextField fx:id="ID" layoutX="134.0" layoutY="78.0" prefHeight="29.0" prefWidth="200.0" />
-      <TextField fx:id="PASS" layoutX="134.0" layoutY="128.0" prefHeight="29.0" prefWidth="200.0" />
-      <CheckBox fx:id="CHECK" layoutX="11.0" layoutY="229.0" mnemonicParsing="false" text="비밀번호를 저장하시겠습니까? 보안에 취약합니다." />
-      <Label layoutX="129.0" layoutY="337.0" prefHeight="19.0" prefWidth="249.0" text="제작자:이정재 배준형 장승헌 이건욱" />
-      <ChoiceBox fx:id="MAINBOX" layoutX="134.0" layoutY="178.0" onMouseClicked="#OPEN" prefHeight="29.0" prefWidth="200.0" />
-      <Label layoutX="33.0" layoutY="183.0" text="자동로그인" />
+      <Label layoutX="54.0" layoutY="83.0" text="아이디" />
+      <Label layoutX="47.0" layoutY="133.0" text="비밀번호" />
+      <TextField fx:id="ID" layoutX="152.0" layoutY="78.0" prefHeight="29.0" prefWidth="329.0" />
+      <CheckBox fx:id="CHECK" layoutX="152.0" layoutY="173.0" mnemonicParsing="false" text="비밀번호를 저장하시겠습니까?" />
+      <Label layoutX="264.0" layoutY="332.0" prefHeight="19.0" prefWidth="249.0" text="제작자:이정재 배준형 장승헌 이건욱" />
+      <ChoiceBox fx:id="MAINBOX" layoutX="152.0" layoutY="243.0" prefHeight="29.0" prefWidth="329.0" />
+      <Label layoutX="40.0" layoutY="251.0" text="자동로그인" />
+      <PasswordField fx:id="PASS" layoutX="152.0" layoutY="128.0" prefHeight="29.0" prefWidth="329.0" />
+      <Button layoutX="470.0" layoutY="293.0" mnemonicParsing="false" onAction="#HELP" text="?" textFill="WHITE" />
    </children>
 </Pane>

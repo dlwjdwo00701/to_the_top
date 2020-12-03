@@ -8,7 +8,7 @@
 
 <AnchorPane stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Expain_V_Controller">
    <children>
-      <Pane prefHeight="222.0" prefWidth="435.0">
+      <Pane prefHeight="205.0" prefWidth="413.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="222.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="435.0" />
             <Label fx:id="LATE_V" layoutX="95.0" layoutY="130.0" prefHeight="15.0" prefWidth="311.0" />
@@ -16,8 +16,7 @@
             <Label fx:id="PERIOD_V" layoutX="95.0" layoutY="95.0" prefHeight="15.0" prefWidth="311.0" />
             <Label fx:id="late" layoutX="14.0" layoutY="130.0" prefHeight="19.0" prefWidth="64.0" />
             <Label fx:id="length" layoutX="14.0" layoutY="62.0" prefHeight="19.0" prefWidth="64.0" />
-            <Button layoutX="275.0" layoutY="168.0" mnemonicParsing="false" onAction="#CHECKCHECK" prefHeight="33.0" prefWidth="97.0" text="확인 완료!" textFill="WHITE" />
-            <Button layoutX="61.0" layoutY="168.0" mnemonicParsing="false" onAction="#PICKUP" prefHeight="33.0" prefWidth="97.0" text="가져오기" textFill="WHITE" />
+            <Button layoutX="286.0" layoutY="162.0" mnemonicParsing="false" onAction="#CHECKCHECK" prefHeight="33.0" prefWidth="97.0" text="확인 완료!" textFill="WHITE" />
             <Label fx:id="NAME_V" layoutX="95.0" layoutY="28.0" prefHeight="15.0" prefWidth="311.0" text="가져오기 버튼을 눌러주세요!!" />
             <Label fx:id="name" layoutX="14.0" layoutY="28.0" prefHeight="19.0" prefWidth="64.0" text="name" />
             <Label fx:id="period" layoutX="14.0" layoutY="95.0" prefHeight="19.0" prefWidth="64.0" />

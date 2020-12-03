@@ -8,11 +8,11 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane stylesheets="@../../bin/application/application.css" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NoticeController">
+<AnchorPane stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.NoticeController">
    <children>
-      <Pane prefHeight="589.0" prefWidth="538.0">
+      <Pane prefHeight="577.0" prefWidth="527.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="589.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="538.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="604.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="558.0" />
             <WebView fx:id="WEB" layoutX="14.0" layoutY="14.0" prefHeight="451.0" prefWidth="509.0" />
             <TextField fx:id="WHAT" layoutX="76.0" layoutY="487.0" prefHeight="23.0" prefWidth="435.0" />
             <Label layoutX="22.0" layoutY="491.0" text="검색어" />

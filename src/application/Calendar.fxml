@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="446.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CalendarController">
+<AnchorPane prefHeight="446.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CalendarController">
    <children>
       <Pane prefHeight="596.0" prefWidth="827.0" stylesheets="@application.css">
          <children>
@@ -117,8 +117,8 @@
                </font>
             </Label>
             <Button layoutX="496.0" layoutY="13.0" mnemonicParsing="false" onAction="#RELOAD" prefHeight="33.0" prefWidth="89.0" text="재갱신" textFill="WHITE" />
-            <Button layoutX="398.0" layoutY="13.0" mnemonicParsing="false" onAction="#LOAD" prefHeight="33.0" prefWidth="89.0" text="불러오기" textFill="WHITE" />
-            <Label fx:id="EXPLAIN" layoutX="311.0" layoutY="52.0" text="처음 접속 시 불러오기를 눌러주세요!">
+            <Button layoutX="398.0" layoutY="13.0" mnemonicParsing="false" onAction="#kakaka" prefHeight="33.0" prefWidth="89.0" text="설정" textFill="WHITE" />
+            <Label fx:id="EXPLAIN" layoutX="311.0" layoutY="52.0">
                <font>
                   <Font size="16.0" />
                </font></Label>

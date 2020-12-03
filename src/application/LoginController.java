@@ -5,29 +5,33 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import org.jsoup.*;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.nodes.Document;
 
-public class LoginController {
+public class LoginController implements Initializable{
 	
 	protected static int new_check=0;
 	protected static Map<String,String> cookies;
@@ -43,15 +47,16 @@ public class LoginController {
 	
 	private ObservableList<String> mainlist;  
 	
-	@FXML protected void OPEN(MouseEvent event){ 
+	public void initialize(URL location, ResourceBundle resources) {
 		mainlist = FXCollections.observableArrayList();
 		File folder = new File("c://SmartCampas");
-		File[] listOfFiles = folder.listFiles();
-		
-		for (int i = 0; i < listOfFiles.length; i++) {
-			File P = new File("c://SmartCampas//"+listOfFiles[i].getName()+"//PASSW.txt");
-			if(P.exists()) {
-				mainlist.add(listOfFiles[i].getName());
+		if(folder.exists()) {
+			File[] listOfFiles = folder.listFiles();
+			for (int i = 0; i < listOfFiles.length; i++) {
+				File P = new File("c://SmartCampas//"+listOfFiles[i].getName()+"//PASSW.txt");
+				if(P.exists()) {
+					mainlist.add(listOfFiles[i].getName());
+				}
 			}
 		}
 		
@@ -60,7 +65,6 @@ public class LoginController {
 	
 	@FXML protected void LoginButton(ActionEvent on) { //해당 매핑된 버튼이 클릭 되었을때 
 		try {
-			
 			String tmp_=MAINBOX.getValue();
 			if(tmp_!=null) {
 				File P = new File("c://SmartCampas//"+tmp_+"//PASSW.txt");
@@ -148,7 +152,6 @@ public class LoginController {
 				}
 			}
 			else {
-				explain.setLayoutY(180);   //레이블 위치 재조정과 해당 레이블 내용 갱신
 				explain.setLayoutX(47);
 				explain.setText("아이디와 비밀번호가 틀렸습니다. 확인해주세요.");
 			}
@@ -164,5 +167,14 @@ public class LoginController {
 		ID.clear();
 		PASS.clear();
 		}
-
+	
+	@FXML protected void HELP(ActionEvent on){
+		try { 
+			Desktop.getDesktop().browse(new URI("https://github.com/dlwjdwo00701/to_the_top"));
+			  } catch (IOException e1) { 
+			   
+			  } catch (URISyntaxException e1) { 
+			  
+			  } 
+	} 
 }
