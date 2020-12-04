@@ -6,7 +6,7 @@
 
 
 ## 사용 방법
-* 설명 문서 (개발자용) : [1.docx](https://github.com/dlwjdwo00701/to_the_top/files/5641364/1.docx)
+* 설명 문서 (개발자용) : [[과탑을 향하여] 설명서(개발자용).docx](https://github.com/dlwjdwo00701/to_the_top/files/5641696/default.docx)
 * 설명 문서 (사용자용) : 
   1. 
 ------------------------------------------
