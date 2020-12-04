@@ -65,7 +65,10 @@
      2. 참고 유튜브 : [코딩러]Java로 구현한 Crawler #1 , #2 ,#3 / [https://www.youtube.com/watch?v=XGyt3DAfZTk&t=103s]
      3. 참고 블로그 : Jsoup을 활용한 크롤링(IT일상 크롤링) / [https://blog.naver.com/chae1789/221861915056]
      
-     
+  ### UI부분
+     1. : 추가바람
+ ------------------------------------------
+
      
   ## 프로젝트 개발자 정보
      * 이정재 (소프트 19학번) : dlwjdwo00701@naver.com
