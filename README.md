@@ -55,8 +55,8 @@
    ------------------------------------------
   ### 크롤링 부분
   #### 멤버 변수들
-  ##### SmartCampusMain 클래스의 필드들
   ------------------------------------------
+  ##### SmartCampusMain 클래스의 필드들
   * <img width="712" alt="SmartCampusMain 클래스 변수들" src="https://user-images.githubusercontent.com/70988272/101139015-46541380-3654-11eb-8afc-6c2f0b246322.PNG">
   * 첫 화면에서 강의 명/강의 링크를 담는 배열
   1.     subject_title [강의 개수의 index] , subject_link [강의 링크의 index]
