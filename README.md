@@ -58,7 +58,6 @@
   ##### SmartCampusMain 클래스의 필드들
   ------------------------------------------
   * <img width="712" alt="SmartCampusMain 클래스 변수들" src="https://user-images.githubusercontent.com/70988272/101139015-46541380-3654-11eb-8afc-6c2f0b246322.PNG">
-  *(멤버 변수에 대한 설명)
   * 첫 화면에서 강의 명/강의 링크를 담는 배열
   1.     subject_title [강의 개수의 index] , subject_link [강의 링크의 index]
   
@@ -83,19 +82,17 @@
 ------------------------------------------
   ##### SmartCampusTokenzier 클래스의 필드들
   * <img width="678" alt="SmartCampusTokenizer" src="https://user-images.githubusercontent.com/70988272/101142411-e875fa80-3658-11eb-9a1e-d91eba468f0e.PNG">
-   * (멤버 변수에 대한 설명)
    * 현재 시간을 알려주는 String 객체
    1.     current_time
    
    * 이번주차에 시청하지 않은(X) 강의를 가공한 배열 (강의 과목명 / 이름 / 기간 / 지각 기간 / 길이)
    1.     if_notattendent_week_videoSubject / videoName / videoDate / videoLate / videoLength
    
-   * 이번주차에 시청하지 않은(X) 과제를 가공한 배열 (강의 과목명 / 이름 / 기간 / 지각 기간 / 길이)
+   * 이번주차에 제출하지 않은(X) 과제를 가공한 배열 (강의 과목명 / 이름 / 기간 / 지각 기간 / 길이)
    1.     if_notPassed_AssignedSubject / AssignedName / AssignedDate
   ------------------------------------------
   ##### SmartCampusOption 클래스의 필드들
   * <img width="678" alt="SmartCampusOption" src="https://user-images.githubusercontent.com/70988272/101139657-3688ff00-3655-11eb-8501-0b908764309f.PNG">
-  * (멤버 변수에 대한 설명)
   * 미제출/미수강 강의가 있는 경우 하루 전날에 알려주기 위해서 (원래 기한 -1 )일을 담아둔 배열
   1.      assign_cal_date [과제]
   2.      video_cal_date [강의 인덱스][0 (강의 기한 기준)] , video_cal_date [강의 인덱스][0 (지각 기한 기준)]
