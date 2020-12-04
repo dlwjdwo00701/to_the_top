@@ -127,7 +127,7 @@
   * video_assignment_divide(); | 강의와 과제를 분리하는 함수
   * current_time();       | 현재시간을 알려주는 함수
   * check_video_count();  | 강의를 들었는지 (o/x) 체크하는 함수
-  * check_assign_count(); | 과제를 했는지 
+  * check_assign_count(); | 과제를 했는지 (제출/미제출) 체크하는 함수
 
  ------------------------------------------
  #### UI 부분
