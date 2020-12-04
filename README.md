@@ -56,6 +56,7 @@
   ### 크롤링 부분
   #### 멤버 변수들
   ##### SmartCampusMain 클래스의 필드들
+  ------------------------------------------
   * <img width="712" alt="SmartCampusMain 클래스 변수들" src="https://user-images.githubusercontent.com/70988272/101139015-46541380-3654-11eb-8afc-6c2f0b246322.PNG">
   *     (멤버 변수에 대한 설명)
   * 첫 화면에서 강의 명/강의 링크를 담는 배열
@@ -79,7 +80,7 @@
   
   * 교과 과목인지 비교과 과목인지 판단하는 필드들 (임시로 비교과까지 모두 담아둬서 가공하는 방식)
   1.     subject_title_temp / subject_link_temp / check_sub_label_array
-
+------------------------------------------
   ##### SmartCampusTokenzier 클래스의 필드들
   * <img width="678" alt="SmartCampusTokenizer" src="https://user-images.githubusercontent.com/70988272/101142411-e875fa80-3658-11eb-9a1e-d91eba468f0e.PNG">
    *     (멤버 변수에 대한 설명)
@@ -91,7 +92,7 @@
    
    * 이번주차에 시청하지 않은(X) 과제를 가공한 배열 (강의 과목명 / 이름 / 기간 / 지각 기간 / 길이)
    1.     if_notPassed_AssignedSubject / AssignedName / AssignedDate
-  
+  ------------------------------------------
   ##### SmartCampusOption 클래스의 필드들
   * <img width="678" alt="SmartCampusOption" src="https://user-images.githubusercontent.com/70988272/101139657-3688ff00-3655-11eb-8501-0b908764309f.PNG">
   *     (멤버 변수에 대한 설명)
@@ -104,7 +105,7 @@
   
   * 이번 주차에 미제출/미수강 된 강의를 알려주는 배열들 (checkVideo = 제출 여부)
   1.      thisweek_videoName / videoPeriod / videoLength / videoLate / checkVideo [해당 강좌 index] [DAta}
-  
+  ------------------------------------------
   
   ##### SSU Date 클래스의 필드들
   * <img width="675" alt="SSU 학사일정" src="https://user-images.githubusercontent.com/70988272/101139731-4c96bf80-3655-11eb-9c7e-fcf31220f9b2.PNG">
@@ -115,7 +116,7 @@
   * 학사일정을 스마트 캠퍼스 일정 형식으로 전환 (2020.00.00 00:00:00)
   1.      usaint_date_token [0 (시작 날짜) / 1(끝 날짜)] [스케쥴 Data]
   
-  
+  ------------------------------------------
   
   
   
