@@ -6,9 +6,9 @@
 
 
 ## 사용 방법
-* 설명 문서 : [1.docx](https://github.com/dlwjdwo00701/to_the_top/files/5641364/1.docx)
-  1. javaFX 다운로드 하기 : [https://gluonhq.com/products/javafx/] 링크에 들어가서 Download 해주세요.
-  2. 
+* 설명 문서 (개발자용) : [1.docx](https://github.com/dlwjdwo00701/to_the_top/files/5641364/1.docx)
+* 설명 문서 (사용자용) : 
+  1. 
 ------------------------------------------
 
 
