@@ -88,7 +88,7 @@
    * 이번주차에 시청하지 않은(X) 강의를 가공한 배열 (강의 과목명 / 이름 / 기간 / 지각 기간 / 길이)
    1.     if_notattendent_week_videoSubject / videoName / videoDate / videoLate / videoLength
    
-   * 이번주차에 제출하지 않은(X) 과제를 가공한 배열 (강의 과목명 / 이름 / 기간 / 지각 기간 / 길이)
+   * 이번주차에 제출하지 않은(X) 과제를 가공한 배열 (과제 과목명 / 과제 이름 / 과제 기한)
    1.     if_notPassed_AssignedSubject / AssignedName / AssignedDate
   ------------------------------------------
   ##### SmartCampusOption 클래스의 필드들
