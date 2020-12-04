@@ -116,8 +116,25 @@
   1.      usaint_date_token [0 (시작 날짜) / 1(끝 날짜)] [스케쥴 Data]
   
   
-  ### 멤버 함수들
-   
+  
+  
+  
+  #### 멤버 함수들
+  * 멤버 변수는 너무 많아 주요 메소드 들만 체크했습니다.
+  *<img width="635" alt="exe" src="https://user-images.githubusercontent.com/70988272/101144395-9aaec180-365b-11eb-8c3f-714d8bd6a82d.PNG">
+  
+  * is_login(); | 로그인 함수
+  * access_lecture_index();    | 강의 인덱스를 계산하는 함수
+  * execution_crawling();      | 강의 안의 과제/강의들을 함꺼번에 크롤링하는 함수
+  * video_assignment_divide(); | 강의와 과제를 분리하는 함수
+  * current_time();       | 현재시간을 알려주는 함수
+  * check_video_count();  | 강의를 들었는지 (o/x) 체크하는 함수
+  * check_assign_count(); | 과제를 했는지 
+
+ ------------------------------------------
+ #### UI 부분
+ 
+ ------------------------------------------
  
   ## 작업 브랜치 목록
      1. Main   : 프로젝트 입구 간판 (이름과 현재까지 완성된 세부내용만 기록)
