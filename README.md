@@ -104,7 +104,7 @@
 
 ### 학생의 스마트캠퍼스 관련된 각종 정보들을 크롤링해온 멤버 변수들
 
-  * <img width="712" alt="SmartCampusMain 클래스 변수들" src="https://user-images.githubusercontent.com/70988272/101139015-46541380-3654-11eb-8afc-6c2f0b246322.PNG">
+  <img width="712" alt="SmartCampusMain 클래스 변수들" src="https://user-images.githubusercontent.com/70988272/101139015-46541380-3654-11eb-8afc-6c2f0b246322.PNG">
  
 
 입력받은 사용자의 비밀번호와 아이디를 통해 스마트캠퍼스 서버에 세션을 보내 로그인상태를 유지해주는 로그인 확인 쿠키
@@ -141,7 +141,7 @@
 
 ------------------------------------------
 ### 과제, 영상 제출 및 수강 여부를 체크해주는 멤버 변수들
-  * <img width="678" alt="SmartCampusTokenizer" src="https://user-images.githubusercontent.com/70988272/101142411-e875fa80-3658-11eb-9a1e-d91eba468f0e.PNG">
+  <img width="678" alt="SmartCampusTokenizer" src="https://user-images.githubusercontent.com/70988272/101142411-e875fa80-3658-11eb-9a1e-d91eba468f0e.PNG">
   
   현재 시간을 알려주는 String 객체
 
@@ -162,7 +162,7 @@
 
 ### 학교 학사일정 관련 멤버 변수들
 
-  * <img width="675" alt="SSU 학사일정" src="https://user-images.githubusercontent.com/70988272/101139731-4c96bf80-3655-11eb-9c7e-fcf31220f9b2.PNG">
+  <img width="675" alt="SSU 학사일정" src="https://user-images.githubusercontent.com/70988272/101139731-4c96bf80-3655-11eb-9c7e-fcf31220f9b2.PNG">
   
   학사 일정을 담은 배열
 
@@ -180,7 +180,7 @@
   
   ### 멤버 함수들(주요 함수들만 설명합니다.)
   
-  *<img width="635" alt="exe" src="https://user-images.githubusercontent.com/70988272/101144395-9aaec180-365b-11eb-8c3f-714d8bd6a82d.PNG">
+  <img width="635" alt="exe" src="https://user-images.githubusercontent.com/70988272/101144395-9aaec180-365b-11eb-8c3f-714d8bd6a82d.PNG">
   
 * is_login(); | 로그인 함수
 
