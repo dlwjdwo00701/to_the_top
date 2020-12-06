@@ -2,13 +2,25 @@
 ## [과탑을 향해서] Introduce
 ------------------------------------------
 # 목차
- 1.  : 프로젝트 소개 
-      * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#1]
- 2.  : 설치 및 사용 메뉴얼 
-      * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#2-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%82%AC%EC%9A%A9-%EB%A9%94%EB%89%B4%EC%96%BC]
- 3.  : 프로젝트 개발자 정보
-      * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A0%95%EB%B3%B4]
-
+ 1.  : 프로젝트 소개 [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#1]
+       * 작업 브랜치 목록
+       * 프로젝트 필요성
+       * 프로젝트 차별성
+       * 유용성 및 기대효과
+       * 프로젝트를 진행하며 추가하고 디버그 한 기록들.
+       * Program Field/Method (멤버 변수/멤버 함수) Description (내부 설명)
+       
+ 2.  : 설치 및 사용 메뉴얼 [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#2-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%82%AC%EC%9A%A9-%EB%A9%94%EB%89%B4%EC%96%BC]
+       * 사용 방법
+       * UI 부분
+       * 로그인 창
+       * 로딩 창
+       * 캘린더 창
+ 
+ 3.  : 참고 서적과, URL, 내용들 , 개발자 정보들 []
+       * 클롤링 부분 Reference
+       * JavaFx 부분 Reference
+       * 프로젝트 개발자 정보
 
 ------------------------------------------
 # 1. 프로젝트 소개
@@ -316,7 +328,9 @@
  
  
  
-  ## 참고 서적과, URL, 내용들
+ # 3. 참고 서적과, URL, 내용들 , 개발자 정보들
+------------------------------------------
+
   ### 크롤링 부분
      1. 참고 서적   : Do It! 자바 스크립트 + 제이쿼리 입문/정인용 지음/이지스 퍼블리싱 (2019 개정)
      2. 참고 유튜브 : [코딩러]Java로 구현한 Crawler #1 , #2 ,#3 / [https://www.youtube.com/watch?v=XGyt3DAfZTk&t=103s]
