@@ -203,27 +203,18 @@
 
 ![image](https://user-images.githubusercontent.com/50694545/101280416-3b43e380-380c-11eb-8a79-67da0743142d.png)
 
-1. AddController.java –추가 기능 관련 이벤트 처리
-2. CalendarController.java –캘린더 이벤트 처리
-3. DeleteController.java –삭제 기능 이벤트 처리
-4. Explain_V_Controller.java – 상세정보 표시 이벤트 처리
-5. HelpController.java –도움말 기능 이벤트 처리
-6. LodingController.java –로딩창 이벤트 처리
-7. LoginController.java –로그인창 이벤트 처리
-8. Main.java –프로그램 메인문 시작 함수
-9. NoticeController.java –공지사항 기능 이벤트 처리
-10. WarnController.java –하루전 알림 기능 이벤트 처리
-11. Add.fxml –추가 창 ui 구현
-12. Calendar.fxml –캘린더 창 ui 구현
-13. Delete.fxml –삭제 창 ui 구현
-14. Explain_V.fxml –상세정보 창 ui 구현
-15. Help.fxml –도움말 창 ui 구현
-16. Loding.fxml –로딩창 ui 구현
-17. Login.fxml –로그인 창 ui 구현
-18. Notice.fxml –공지사항 창 ui 구현
-19.  Warn.fxml –하루전 알림 창 ui 구현
-20. app.png –프로그램 아이콘 파일
-21. font.ttf –프로그램 폰트(경기천년제목 BOLD체 사용)
+* Main.java –프로그램 메인문 시작 함수
+* app.png –프로그램 아이콘 파일
+* font.ttf –프로그램 폰트(경기천년제목 BOLD체 사용)
+*  AddController.java –추가 기능 관련 이벤트 처리, Add.fxml –추가 창 ui 구현
+* CalendarController.java –캘린더 이벤트 처리, Calendar.fxml –캘린더 창 ui 구현
+* DeleteController.java –삭제 기능 이벤트 처리, Delete.fxml –삭제 창 ui 구현
+* Explain_V_Controller.java – 상세정보 표시 이벤트 처리, Explain_V.fxml –상세정보 창 ui 구현
+* HelpController.java –도움말 기능 이벤트 처리, Help.fxml –도움말 창 ui 구현
+* LodingController.java –로딩창 이벤트 처리, Loding.fxml –로딩창 ui 구현
+* LoginController.java –로그인창 이벤트 처리, Login.fxml –로그인 창 ui 구현
+* NoticeController.java –공지사항 기능 이벤트 처리, Notice.fxml –공지사항 창 ui 구현
+* WarnController.java –하루전 알림 기능 이벤트 처리, Warn.fxml –하루전 알림 창 ui 구현
  -----------------------------------------------------------
 
  # 2. 설치 및 사용 메뉴얼
