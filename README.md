@@ -34,7 +34,7 @@
   
 ------------------------------------------
 
-  ## 작업 브랜치 목록 ( [Master](https://github.com/dlwjdwo00701/to_the_top/tree/master) , [ui_](https://github.com/dlwjdwo00701/to_the_top/tree/ui_) )
+  ## 작업 브랜치 목록 ( [Master](https://github.com/dlwjdwo00701/to_the_top/tree/master) , [ui_](https://github.com/dlwjdwo00701/to_the_top/tree/ui_),[read](https://github.com/dlwjdwo00701/to_the_top/tree/read))
      1. Main   : 프로젝트 입구 간판
      2. Master : 정보 크롤링 담당 브랜치(배준형,이정재)
      3. ui_    : 캘린더 UI,css및 크롤링 데이터를 실질적으로 다루는 브랜치 (이정재,김승헌,이건욱)
