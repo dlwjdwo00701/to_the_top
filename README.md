@@ -3,7 +3,7 @@
 ------------------------------------------
 # 목차
 ## I : 프로젝트 소개 [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#1]
-## II : 설치 및 사용 메뉴얼 []
+## II : 설치 및 사용 메뉴얼 [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#2]
 
 
 ------------------------------------------
