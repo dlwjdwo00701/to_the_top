@@ -5,13 +5,13 @@
  -----------------------------------------------------------
 
 # 목차
- 1. (프로젝트 소개와 필요성)[#프로젝트-소개와-필요성]
-       * [작업 브랜치 목록](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%EC%9E%91%EC%97%85-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EB%AA%A9%EB%A1%9D--master--ui_--read)
+ 1.  : [프로젝트 소개와 필요성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%86%8C%EA%B0%9C%EC%99%80-%ED%95%84%EC%9A%94%EC%84%B1) 
+       * [작업 브랜치 목록](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98-%EC%B0%A8%EB%B3%84%EC%84%B1)
        * [프로젝트 필요성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%ED%95%84%EC%9A%94%EC%84%B1)
        * [프로젝트 차별성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98-%EC%B0%A8%EB%B3%84%EC%84%B1)
        * [유용성 및 기대효과](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%EC%9C%A0%EC%9A%A9%EC%84%B1-%EB%B0%8F-%EA%B8%B0%EB%8C%80%ED%9A%A8%EA%B3%BC)
-       * [프로젝트를 진행하며 추가하고 디버그 한 기록들.](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89%ED%95%98%EB%A9%B0-%EC%B6%94%EA%B0%80%ED%95%98%EA%B3%A0-%EB%94%94%EB%B2%84%EA%B7%B8-%ED%95%9C-%EA%B8%B0%EB%A1%9D%EB%93%A4)
-       * [Program Field/Method (멤버 변수/멤버 함수) Description (내부 설명)](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#program-fieldmethod-%EB%A9%A4%EB%B2%84-%EB%B3%80%EC%88%98%EB%A9%A4%EB%B2%84-%ED%95%A8%EC%88%98-description-%EB%82%B4%EB%B6%80-%EC%84%A4%EB%AA%85)
+       * [프로젝트 라이브러리 및 구현과 디버그](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89%ED%95%98%EB%A9%B0-%EC%B6%94%EA%B0%80%ED%95%98%EA%B3%A0-%EB%94%94%EB%B2%84%EA%B7%B8-%ED%95%9C-%EA%B8%B0%EB%A1%9D%EB%93%A4)
+       * [내부 코드 설명](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%EB%82%B4%EB%B6%80-%EC%BD%94%EB%93%9C-%EC%84%A4%EB%AA%85)
  
  
  2.  : [설치 및 사용 메뉴얼](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#2-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%82%AC%EC%9A%A9-%EB%A9%94%EB%89%B4%EC%96%BC) 
@@ -73,7 +73,7 @@
 
 ------------------------------------------
 
-## 1.3 프로젝트 라이브러리 및 구현과 디버그
+## 프로젝트 라이브러리 및 구현과 디버그
 -----------------------------------------
 저희의 프로젝트는 JAVA언어를 이용해서 개발했으며, Eclipse IDE를 이용해 개발을 진행했습니다. 스마트캠퍼스에 사용자의 아이디와 비밀번호의 정보를 세션을 통해 보내 쿠키값을 유지해야 했습니다. 이에 찾아본 결과 JSOUP이라는 라이브러리가 있었고, 이를 이용했습니다. 또한 JAVA를 이용해 UI를 구현하고자 찾아본 결과, JAVAFX 라이브러리가 있었으며, 사용하게 되었습니다. 처음 사용해보는 라이브러리들이기에 많은 어려움이 있었으나, 열심히 노력해 마무리할 수 있었습니다. 또 스마트캠퍼스의 경우에는 많은 사용자, 많은 교수님들이 사용하시기에 정말 많은 변수들이 있었습니다. 과목 설정이 다른 경우, 정규 과목이 아니라 동아리가 있는 경우. 영어 과목의 경우, 과제 기한이 없는 경우, 과제가 다른 곳에 공지되어 있는 경우... 등등 많은 변수들이 있었습니다. 프로젝트를 진행하면서 열심히 노력해 최대한 많은 상황들을 다루고자 했습니다.
 
