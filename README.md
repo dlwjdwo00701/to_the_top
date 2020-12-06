@@ -1,5 +1,5 @@
 # to_the_top
-## [과탑을 향해서] 
+## [과탑을 향해서] Introduce
 ________________________________________________
 # 목차
  1.  : [프로젝트 소개](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%86%8C%EA%B0%9C) 
