@@ -5,7 +5,7 @@
  -----------------------------------------------------------
 
 # 목차
- 1. (프로젝트 소개)[#프로젝트-소개]
+ 1. (프로젝트 소개와 필요성)[#프로젝트-소개와-필요성]
        * [작업 브랜치 목록](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%EC%9E%91%EC%97%85-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EB%AA%A9%EB%A1%9D--master--ui_--read)
        * [프로젝트 필요성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%ED%95%84%EC%9A%94%EC%84%B1)
        * [프로젝트 차별성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98-%EC%B0%A8%EB%B3%84%EC%84%B1)
