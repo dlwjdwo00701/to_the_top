@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="377.0" prefWidth="489.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LodingController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="LEMONCHIFFON" height="377.0" stroke="LEMONCHIFFON" strokeType="INSIDE" width="489.0" />
+      <Label fx:id="ONE" layoutX="10.0" layoutY="47.0" text="1" />
+      <Label fx:id="TWO" layoutX="10.0" layoutY="75.0" text="2" />
+      <Label fx:id="THREE" layoutX="10.0" layoutY="101.0" text="3" />
+      <Label fx:id="FOUR" layoutX="10.0" layoutY="127.0" text="4" />
+      <Label fx:id="FIVE" layoutX="10.0" layoutY="157.0" text="5" />
+      <Label fx:id="SIX" layoutX="10.0" layoutY="187.0" text="6" />
+      <Label fx:id="SEVEN" layoutX="10.0" layoutY="218.0" text="7" />
+      <Label fx:id="EIGHT" layoutX="10.0" layoutY="246.0" text="8" />
+      <Label fx:id="NINE" layoutX="10.0" layoutY="275.0" text="9" />
+      <Label fx:id="explain" layoutX="31.0" layoutY="23.0" text="갱신 버튼을 누르고 잠시만 기다려 주세요! 정보를 가져오고 있어요!" />
+      <Button layoutX="75.0" layoutY="314.0" mnemonicParsing="false" onAction="#CRAWLING" prefHeight="37.0" prefWidth="98.0" text="갱신" textFill="WHITE" />
+      <Button layoutX="319.0" layoutY="314.0" mnemonicParsing="false" onAction="#OK" prefHeight="37.0" prefWidth="98.0" text="확인" textFill="WHITE" />
+   </children>
+</Pane>

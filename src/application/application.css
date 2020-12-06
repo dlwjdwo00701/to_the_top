@@ -1,0 +1,32 @@
+ .label {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
+
+ .check-box {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
+
+ .button {
+-fx-font-family: "GyeonggiTitle Bold"; 
+-fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+}
+
+.background {
+    -fx-background-color: #1d1d1d;
+}
+
+.button:pressed, .button:default:hover:pressed {
+  -fx-background-color: white;
+  -fx-text-fill: #1d1d1d;
+}
+
+ .list-view {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
+
+ .text-field {
+-fx-font-family: "GyeonggiTitle Bold"; 
+}
