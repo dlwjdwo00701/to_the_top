@@ -7,9 +7,9 @@
 # 목차
  1. [프로젝트 소개와 필요성](#프로젝트-소개와-필요성)
        * [작업 브랜치 목록](#작업-브랜치-목록--master--ui_--read)
-       * [프로젝트 필요성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%9D%98-%ED%95%84%EC%9A%94%EC%84%B1)
-       * [프로젝트 차별성](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98-%EC%B0%A8%EB%B3%84%EC%84%B1)
-       * [유용성 및 기대효과](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%EC%9C%A0%EC%9A%A9%EC%84%B1-%EB%B0%8F-%EA%B8%B0%EB%8C%80%ED%9A%A8%EA%B3%BC)
+       * [프로젝트 필요성](#프로젝트-필요성)
+       * [프로젝트 차별성](#프로젝트-차별성)
+       * [유용성 및 기대효과](#유용성-및-기대효과)
        * [프로젝트를 진행하며 추가하고 디버그 한 기록들.](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EC%A7%84%ED%96%89%ED%95%98%EB%A9%B0-%EC%B6%94%EA%B0%80%ED%95%98%EA%B3%A0-%EB%94%94%EB%B2%84%EA%B7%B8-%ED%95%9C-%EA%B8%B0%EB%A1%9D%EB%93%A4)
        * [Program Field/Method (멤버 변수/멤버 함수) Description (내부 설명)](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#program-fieldmethod-%EB%A9%A4%EB%B2%84-%EB%B3%80%EC%88%98%EB%A9%A4%EB%B2%84-%ED%95%A8%EC%88%98-description-%EB%82%B4%EB%B6%80-%EC%84%A4%EB%AA%85)
  
