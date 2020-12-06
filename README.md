@@ -20,7 +20,7 @@
        * 캘린더 창
  
  3.  : 참고 서적과, URL, 내용들 , 개발자 정보들 
- * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#3-%EC%B0%B8%EA%B3%A0-%EC%84%9C%EC%A0%81%EA%B3%BC-url-%EB%82%B4%EC%9A%A9%EB%93%A4--%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A0%95%EB%B3%B4%EB%93%A4]
+ * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#3]
        * 클롤링 부분 Reference
        * JavaFx 부분 Reference
        * 프로젝트 개발자 정보
