@@ -6,6 +6,8 @@
       * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#1]
  2.  : 설치 및 사용 메뉴얼 
       * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#2-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%82%AC%EC%9A%A9-%EB%A9%94%EB%89%B4%EC%96%BC]
+ 3.  : 프로젝트 개발자 정보
+      * [https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A0%95%EB%B3%B4]
 
 
 ------------------------------------------
