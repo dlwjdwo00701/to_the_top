@@ -1,7 +1,9 @@
 # to_the_top
 ## [과탑을 향해서] Introduce
 <center><img src="https://user-images.githubusercontent.com/47067905/101271773-44f82780-37c9-11eb-960e-e394c4e160e4.png" width="300" height="300"></center>
-________________________________________________
+
+ -----------------------------------------------------------
+
 # 목차
  1.  : [프로젝트 소개](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#1-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%86%8C%EA%B0%9C) 
        * [작업 브랜치 목록](https://github.com/dlwjdwo00701/to_the_top/blob/main/README.md#%EC%9E%91%EC%97%85-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EB%AA%A9%EB%A1%9D)
